@@ -1,0 +1,68 @@
+{
+    "name": "online-store-vite",
+    "version": "1.0.0",
+    "description": "Online store (Avito clone) - React + Node.js + PostgreSQL",
+    "private": true,
+    "type": "module",
+    "workspaces": [
+        "client",
+        "server"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+        "dev:client": "npm run dev --workspace=client",
+        "dev:server": "npm run dev --workspace=server",
+        "build": "npm run build --workspace=client && npm run build --workspace=server",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "lint:client": "eslint client/**/*.{ts,tsx}",
+        "lint:server": "eslint server/**/*.ts",
+        "format": "prettier --write \"**/*.{ts,tsx,css,scss,json,md}\"",
+        "format:check": "prettier --check \"**/*.{ts,tsx,css,scss,json,md}\"",
+        "lint:css": "stylelint \"client/**/*.{css,scss}\"",
+        "lint:css:fix": "stylelint \"client/**/*.{css,scss}\" --fix",
+        "type-check": "echo \"no type-check yet\"",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.15.0",
+        "@typescript-eslint/eslint-plugin": "^8.15.0",
+        "@typescript-eslint/parser": "^8.15.0",
+        "concurrently": "^8.2.2",
+        "eslint": "^9.15.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "eslint-plugin-react": "^7.37.2",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "eslint-plugin-react-refresh": "^0.4.14",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.2.10",
+        "postcss-scss": "^4.0.9",
+        "prettier": "^3.3.3",
+        "stylelint": "^16.26.1",
+        "stylelint-config-standard": "^36.0.1",
+        "stylelint-order": "^7.0.0"
+    },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "client/**/*.{css,scss}": [
+            "stylelint --fix",
+            "prettier --write"
+        ],
+        "*.{json,md}": [
+            "prettier --write"
+        ]
+    },
+    "keywords": [
+        "monorepo",
+        "react",
+        "nodejs",
+        "postgresql",
+        "typescript"
+    ],
+    "author": "",
+    "license": "ISC"
+}
