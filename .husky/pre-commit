@@ -1,4 +1,3 @@
-#!/usr/bin/env sh
 
 echo "Running type check..."
 npm run type-check || exit 1

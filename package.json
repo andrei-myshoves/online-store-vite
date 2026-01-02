@@ -44,7 +44,11 @@
         "stylelint-order": "^7.0.0"
     },
     "lint-staged": {
-        "*.{ts,tsx}": [
+        "client/**/*.{ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "server/**/*.ts": [
             "eslint --fix",
             "prettier --write"
         ],
