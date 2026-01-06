@@ -1,10 +1,10 @@
-import { User } from '../types/index.js'
+import UserModel from '../models/User.js'  // <-- это Sequelize модель
 import { PublicUser } from '../types/user.types.js'
 
-export const sanitizeUser = (user: User): PublicUser => ({
-    id: user.id,
-    email: user.email,
-    username: user.username,
-    created_at: user.created_at,
-    updated_at: user.updated_at,
+export const sanitizeUser = (user: UserModel): PublicUser => ({
+  id: user.id.toString(),       // number -> string
+  email: user.email,
+  username: user.username,
+  createdAt: user.createdAt,    // теперь TS видит поле
+  updatedAt: user.updatedAt,
 })

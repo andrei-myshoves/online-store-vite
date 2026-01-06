@@ -6,6 +6,7 @@ import compression from 'compression'
 import morgan from 'morgan'
 import pool, { testConnection } from './config/database.js'
 import authRoutes from './routes/auth.routes.js'
+import { errorMiddleware } from './middleware/error.middleware.js'
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static('uploads'))
+app.use(errorMiddleware)
 
 app.get('/health', (_req: Request, res: Response) => {
     res.status(200).json({

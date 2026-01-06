@@ -1,9 +1,13 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { JWTPayload } from '../types/index.js'
 
-const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET || 'your_secret_key'
+const JWT_SECRET = process.env.JWT_SECRET
 
-const JWT_EXPIRE: SignOptions['expiresIn'] = (process.env.JWT_EXPIRE as SignOptions['expiresIn']) || '7d'
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in environment variables')
+}
+
+const JWT_EXPIRE: SignOptions['expiresIn'] = (process.env.JWT_EXPIRE as SignOptions['expiresIn']) ?? '7d'
 
 export const generateToken = (payload: JWTPayload): string => {
     return jwt.sign(payload, JWT_SECRET, {

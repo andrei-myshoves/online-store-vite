@@ -8,8 +8,8 @@ export interface User {
     city?: string
     phone?: string
     avatar?: string
-    created_at: Date
-    updated_at: Date
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export interface RegisterInput {
