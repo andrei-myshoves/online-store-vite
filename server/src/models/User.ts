@@ -1,26 +1,15 @@
-import { DataTypes, Model, Optional } from 'sequelize'
-import  sequelize  from '../db'
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize'
+import sequelize from '../db.js'
 
-interface UserAttributes {
-    id: number
-    email: string
-    password: string
-    username: string
-    role: string
-    createdAt?: Date
-    updatedAt?: Date 
-}
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+    declare id: CreationOptional<number>
+    declare email: string
+    declare password: string
+    declare username: string
+    declare role: CreationOptional<string>
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id' | 'role' | 'createdAt' | 'updatedAt'> {}
-
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: number
-  public email!: string
-  public password!: string
-  public username!: string
-  public role!: string
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+    declare createdAt: CreationOptional<Date>
+    declare updatedAt: CreationOptional<Date>
 }
 
 User.init(
@@ -32,8 +21,8 @@ User.init(
         },
         email: {
             type: DataTypes.STRING,
-            unique: true,
             allowNull: false,
+            unique: true,
         },
         password: {
             type: DataTypes.STRING,
@@ -47,11 +36,20 @@ User.init(
             type: DataTypes.STRING,
             defaultValue: 'USER',
         },
+
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
     },
     {
         sequelize,
         tableName: 'users',
+        timestamps: true,
     }
 )
-
 export default User
