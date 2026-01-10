@@ -46,12 +46,12 @@
     },
     "lint-staged": {
         "client/**/*.{ts,tsx}": [
-            "eslint --fix",
-            "prettier --write"
+            "cd client && npx eslint --fix .",
+            "cd client && prettier --write ."
         ],
         "server/**/*.ts": [
-            "eslint --fix",
-            "prettier --write"
+            "cd server && npx eslint --fix .",
+            "cd server && prettier --write ."
         ],
         "client/**/*.{css,scss}": [
             "stylelint --fix",
