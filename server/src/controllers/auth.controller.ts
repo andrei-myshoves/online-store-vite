@@ -7,80 +7,80 @@ import { sanitizeUser } from '../utils/sanitizeUser.js'
 import { ApiError } from '../error/ApiError.js'
 
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { email, password, username }: RegisterInput = req.body
+    const { email, password, username }: RegisterInput = req.body
 
-  if (!email || !password || !username) {
-    throw ApiError.badRequest('Please provide email, password and username')
-  }
+    if (!email || !password || !username) {
+        throw ApiError.badRequest('Please provide email, password and username')
+    }
 
-  const existingUser = await User.findOne({ where: { email } })
-  if (existingUser) {
-    throw ApiError.badRequest('User with this email already exists')
-  }
+    const existingUser = await User.findOne({ where: { email } })
+    if (existingUser) {
+        throw ApiError.badRequest('User with this email already exists')
+    }
 
-  const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-  const user = await User.create({
-    email,
-    password: hashedPassword,
-    username,
-  })
+    const user = await User.create({
+        email,
+        password: hashedPassword,
+        username,
+    })
 
-  const token = generateToken({
-    userId: user.id.toString(),
-    email: user.email,
-  })
+    const token = generateToken({
+        userId: user.id.toString(),
+        email: user.email,
+    })
 
-  res.status(201).json({
-    success: true,
-    message: 'User registered successfully',
-    token,
-    user: sanitizeUser(user),
-  })
+    res.status(201).json({
+        success: true,
+        message: 'User registered successfully',
+        token,
+        user: sanitizeUser(user),
+    })
 }
 
 export const login = async (req: Request, res: Response): Promise<void> => {
-  const { email, password }: LoginInput = req.body
+    const { email, password }: LoginInput = req.body
 
-  if (!email || !password) {
-    throw ApiError.badRequest('Please provide email and password')
-  }
+    if (!email || !password) {
+        throw ApiError.badRequest('Please provide email and password')
+    }
 
-  const user = await User.findOne({ where: { email } })
-  if (!user) {
-    throw ApiError.unauthorized('Invalid email or password')
-  }
+    const user = await User.findOne({ where: { email } })
+    if (!user) {
+        throw ApiError.unauthorized('Invalid email or password')
+    }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password)
-  if (!isPasswordValid) {
-    throw ApiError.unauthorized('Invalid email or password')
-  }
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+    if (!isPasswordValid) {
+        throw ApiError.unauthorized('Invalid email or password')
+    }
 
-  const token = generateToken({
-    userId: user.id.toString(),
-    email: user.email,
-  })
+    const token = generateToken({
+        userId: user.id.toString(),
+        email: user.email,
+    })
 
-  res.status(200).json({
-    success: true,
-    message: 'Login successful',
-    token,
-    user: sanitizeUser(user),
-  })
+    res.status(200).json({
+        success: true,
+        message: 'Login successful',
+        token,
+        user: sanitizeUser(user),
+    })
 }
 
 export const getMe = async (req: Request, res: Response): Promise<void> => {
-  if (!req.user) {
-    throw ApiError.unauthorized()
-  }
+    if (!req.user) {
+        throw ApiError.unauthorized()
+    }
 
-  const user = await User.findOne({ where: { email: req.user.email } })
-  if (!user) {
-    throw ApiError.badRequest('User not found')
-  }
+    const user = await User.findOne({ where: { email: req.user.email } })
+    if (!user) {
+        throw ApiError.badRequest('User not found')
+    }
 
-  res.status(200).json({
-    success: true,
-    user: sanitizeUser(user),
-  })
+    res.status(200).json({
+        success: true,
+        user: sanitizeUser(user),
+    })
 }
