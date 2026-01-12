@@ -1,0 +1,54 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.primary {
+    background-color: #0099ff;
+    color: white;
+}
+
+.primary:hover:not(:disabled) {
+    background-color: #0086e0;
+}
+
+.outline {
+    background: transparent;
+    color: #0099ff;
+    border: 1px solid #0099ff;
+}
+
+.outline:hover:not(:disabled) {
+    background-color: rgba(0, 153, 255, 0.1);
+}
+
+.outlineReverse {
+    background: #0099ff;
+    color: white;
+    border: 1px solid white;
+}
+
+.wrapper {
+    background: transparent;
+    color: #0099ff;
+
+    padding: 0;
+    border-radius: 0;
+}
+
+.disabled,
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
