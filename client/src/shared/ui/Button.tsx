@@ -1,22 +1,19 @@
 import clsx from 'clsx'
 import styles from './Button.module.css'
+import type React from 'react'
 
-import type { ButtonProps } from './types'
+export type ButtonVariant = 'primary' | 'outline' | 'outlineReverse' | 'wrapper'
 
-export const Button = ({
-    children,
-    variant = 'primary',
-    onClick,
-    disabled = false,
-    type = 'button',
-    className,
-}: ButtonProps) => {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: ButtonVariant
+}
+
+export const Button = ({ children, variant = 'primary', className, disabled, ...rest }: ButtonProps) => {
     return (
         <button
-            type={type}
-            disabled={disabled}
-            onClick={disabled ? undefined : onClick}
             className={clsx(styles.button, styles[variant], disabled && styles.disabled, className)}
+            disabled={disabled}
+            {...rest}
         >
             {children}
         </button>
