@@ -1,0 +1,38 @@
+.input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+    border-radius: 8px;
+
+    color: var(--color-text);
+    background-color: var(--background-input);
+
+    border: 1px solid var(--border-input);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.outline {
+    background: transparent;
+}
+
+.error {
+    border-color: var(--color-error);
+}
+
+.error:focus {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.15);
+}
+
+.disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}
