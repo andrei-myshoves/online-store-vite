@@ -9,15 +9,16 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     error?: boolean
 }
 
-export const Input = ({ error, className, ...props }: InputProps) => {
+export const Input = ({ variant = 'default', error = false, className, disabled, ...rest }: InputProps) => {
     return (
         <input
-            {...props}
+            {...rest}
+            disabled={disabled}
             className={clsx(
                 styles.input,
-                props.variant && styles[props.variant],
+                styles[variant],
                 error && styles.error,
-                props.disabled && styles.disabled,
+                disabled && styles.disabled,
                 className
             )}
         />
