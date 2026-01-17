@@ -21,18 +21,10 @@
     color: var(--color-white);
 }
 
-.primary:hover:not(:disabled) {
-    background-color: var(--color-primary-hover);
-}
-
 .outline {
     background: var(--color-transparent);
     color: var(--color-primary);
     border: var(--border-primary);
-}
-
-.outline:hover:not(:disabled) {
-    background-color: rgba(0, 153, 255, 0.1);
 }
 
 .outlineReverse {
@@ -44,9 +36,18 @@
 .wrapper {
     background: var(--color-transparent);
     color: var(--color-primary);
-
     padding: 0;
     border-radius: 0;
+}
+
+@media (hover: hover) {
+    .primary:hover:not(:disabled) {
+        background-color: var(--color-primary-hover);
+    }
+
+    .outline:hover:not(:disabled) {
+        background-color: rgba(0, 153, 255, 0.1);
+    }
 }
 
 .disabled,

@@ -1,18 +1,23 @@
-import { Button } from './shared/ui/Button'
+import { Button } from './shared/ui/button/Button'
 import './style.css'
+import { useState } from 'react'
+import { Modal } from './shared/ui/modal/Modal'
 
 function App() {
+    const [open, setOpen] = useState(false)
+
     return (
-        <div style={{ padding: 24 }}>
-            <Button>Primary</Button>
+        <div style={{ padding: 40 }}>
+            <Button onClick={() => setOpen(true)}>Open modal</Button>
 
-            <Button variant="outline">Outline</Button>
+            <Modal isOpen={open} onClose={() => setOpen(false)}>
+                <div style={{ padding: 24 }}>
+                    <h2>Modal title</h2>
+                    <p>Modal content</p>
 
-            <Button variant="outlineReverse">Outline reverse</Button>
-
-            <Button variant="wrapper">Wrapper</Button>
-
-            <Button disabled>Disabled</Button>
+                    <Button onClick={() => setOpen(false)}>Close</Button>
+                </div>
+            </Modal>
         </div>
     )
 }

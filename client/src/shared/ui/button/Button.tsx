@@ -11,9 +11,9 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = ({ children, variant = 'primary', className, disabled, ...rest }: ButtonProps) => {
     return (
         <button
-            className={clsx(styles.button, styles[variant], disabled && styles.disabled, className)}
-            disabled={disabled}
             {...rest}
+            disabled={disabled}
+            className={clsx(styles.button, styles[variant], disabled && styles.disabled, className)}
         >
             {children}
         </button>

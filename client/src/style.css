@@ -93,4 +93,5 @@ h6 {
     --border-white: 1px solid var(--color-white);
     --opacity-disabled: 0.5;
     --background-accent: var(--color-primary);
+    --background-main: #ffffff;
 }
