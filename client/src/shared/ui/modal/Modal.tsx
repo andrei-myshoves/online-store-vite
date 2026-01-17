@@ -12,7 +12,9 @@ export interface ModalProps {
 
 export const Modal = ({ isOpen, onClose, children, className }: ModalProps) => {
     useEffect(() => {
-        if (!isOpen) return
+        if (!isOpen) {
+            return
+        }
 
         const onKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
