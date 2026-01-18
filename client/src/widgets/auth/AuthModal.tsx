@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { Modal } from '../../shared/ui/modal'
-import { LoginForm } from './LoginForm'
-import { RegisterForm } from './RegisterForm'
+import { AuthForm } from './AuthForm'
 import Logo from '../../assets/Logo.svg'
 import styles from './AuthForms.module.css'
-
-type AuthMode = 'login' | 'register'
 
 type AuthModalProps = {
     isOpen: boolean
@@ -13,7 +10,7 @@ type AuthModalProps = {
 }
 
 export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
-    const [mode, setMode] = useState<AuthMode>('login')
+    const [mode, setMode] = useState<'login' | 'register'>('login')
 
     const handleClose = () => {
         setMode('login')
@@ -27,9 +24,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     <img src={Logo} alt="Logo" />
                 </div>
 
-                {mode === 'login' && <LoginForm onRegisterClick={() => setMode('register')} />}
-
-                {mode === 'register' && <RegisterForm />}
+                <AuthForm mode={mode} onModeChange={setMode} />
             </div>
         </Modal>
     )
