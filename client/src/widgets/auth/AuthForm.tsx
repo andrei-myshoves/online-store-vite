@@ -2,11 +2,9 @@ import { Input } from '../../shared/ui/input/Input'
 import { Button } from '../../shared/ui/button/Button'
 import styles from './AuthForms.module.css'
 
-type AuthMode = 'login' | 'register'
-
 interface AuthFormProps {
-    mode: AuthMode
-    onModeChange: (mode: AuthMode) => void
+    mode: 'login' | 'register'
+    onModeChange: () => void
 }
 
 export const AuthForm = ({ mode, onModeChange }: AuthFormProps) => {
@@ -31,17 +29,9 @@ export const AuthForm = ({ mode, onModeChange }: AuthFormProps) => {
                     {mode === 'login' ? 'Войти' : 'Зарегистрироваться'}
                 </Button>
 
-                {mode === 'login' && (
-                    <Button type="button" variant="outline" onClick={() => onModeChange('register')}>
-                        Зарегистрироваться
-                    </Button>
-                )}
-
-                {mode === 'register' && (
-                    <Button type="button" variant="outline" onClick={() => onModeChange('login')}>
-                        Войти
-                    </Button>
-                )}
+                <Button type="button" variant="outline" onClick={onModeChange}>
+                    {mode === 'login' ? 'Зарегистрироваться' : 'Войти'}
+                </Button>
             </div>
         </form>
     )

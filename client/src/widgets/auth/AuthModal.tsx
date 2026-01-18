@@ -17,6 +17,10 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         onClose()
     }
 
+    const handleModeChange = () => {
+        setMode(prev => (prev === 'login' ? 'register' : 'login'))
+    }
+
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
             <div className={styles.container}>
@@ -24,7 +28,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
                     <img src={Logo} alt="Logo" />
                 </div>
 
-                <AuthForm mode={mode} onModeChange={setMode} />
+                <AuthForm mode={mode} onModeChange={handleModeChange} />
             </div>
         </Modal>
     )
