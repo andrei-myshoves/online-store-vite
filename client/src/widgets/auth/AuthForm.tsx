@@ -1,13 +1,15 @@
 import { Input } from '../../shared/ui/input/Input'
 import { Button } from '../../shared/ui/button/Button'
 import styles from './AuthForms.module.css'
+import { useState } from 'react'
 
-interface AuthFormProps {
-    mode: 'login' | 'register'
-    onModeChange: () => void
-}
+export const AuthForm = () => {
+    const [mode, setMode] = useState<'login' | 'register'>('login')
 
-export const AuthForm = ({ mode, onModeChange }: AuthFormProps) => {
+    const handleModeChange = () => {
+        setMode(prev => (prev === 'login' ? 'register' : 'login'))
+    }
+
     return (
         <form className={styles.form}>
             <div className={styles.fields}>
@@ -29,7 +31,7 @@ export const AuthForm = ({ mode, onModeChange }: AuthFormProps) => {
                     {mode === 'login' ? 'Войти' : 'Зарегистрироваться'}
                 </Button>
 
-                <Button type="button" variant="outline" onClick={onModeChange}>
+                <Button type="button" variant="outline" onClick={handleModeChange}>
                     {mode === 'login' ? 'Зарегистрироваться' : 'Войти'}
                 </Button>
             </div>
