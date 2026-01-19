@@ -7,7 +7,7 @@ export const AuthForm = () => {
     const [mode, setMode] = useState<'login' | 'register'>('login')
 
     const handleModeChange = () => {
-        setMode(prev => (prev === 'login' ? 'register' : 'login'))
+        setMode(mode === 'login' ? 'register' : 'login')
     }
 
     return (
