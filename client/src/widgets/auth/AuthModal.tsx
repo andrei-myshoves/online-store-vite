@@ -1,6 +1,6 @@
-import { Modal } from '../../shared/ui/modal'
+import { Modal } from '@/shared/ui/modal'
 import { AuthForm } from './AuthForm'
-import { Logo } from '../../shared/ui/logo/Logo'
+import { Logo } from '@/shared/ui/logo/Logo'
 import styles from './AuthForms.module.css'
 
 type AuthModalProps = {
