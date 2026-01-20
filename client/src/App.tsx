@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { AuthModal } from '../src/widgets/auth/AuthModal'
-import { Button } from '../src/shared/ui/button/Button'
+import { AuthModal } from '@/widgets/auth/AuthModal'
+import { Button } from '@/shared/ui/button/Button'
 import './style.css'
 
 function App() {

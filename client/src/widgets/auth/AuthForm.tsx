@@ -1,5 +1,5 @@
-import { Input } from '../../shared/ui/input/Input'
-import { Button } from '../../shared/ui/button/Button'
+import { Input } from '@/shared/ui/input/Input'
+import { Button } from '@/shared/ui/button/Button'
 import styles from './AuthForms.module.css'
 import { useState } from 'react'
 
