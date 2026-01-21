@@ -1,6 +1,6 @@
 import { Modal } from '@/shared/ui/modal'
 import { AuthForm } from './AuthForm'
-import { Logo } from '@/shared/ui/logo/Logo'
+import { LogoIcon } from '@/shared/ui/icons'
 import styles from './AuthForms.module.css'
 
 type AuthModalProps = {
@@ -13,7 +13,7 @@ export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className={styles.container}>
                 <div className={styles.logo}>
-                    <Logo />
+                    <LogoIcon />
                 </div>
 
                 <AuthForm />
