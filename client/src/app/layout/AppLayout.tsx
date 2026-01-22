@@ -1,14 +1,12 @@
-import type { ReactNode } from 'react'
+import { Outlet } from '@tanstack/react-router'
 import styles from './AppLayout.module.css'
 
-type AppLayoutProps = {
-    children: ReactNode
-}
-
-export const AppLayout = ({ children }: AppLayoutProps) => {
+export const AppLayout = () => {
     return (
         <div className={styles.root}>
-            <main className={styles.container}>{children}</main>
+            <main className={styles.container}>
+                <Outlet />
+            </main>
         </div>
     )
 }

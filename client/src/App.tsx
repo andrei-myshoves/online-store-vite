@@ -1,12 +1,6 @@
-import './style.css'
-import { AppLayout } from '@/app/layout/AppLayout'
+import { RouterProvider } from '@tanstack/react-router'
+import { router } from '@/app/router/router'
 
-function App() {
-    return (
-        <AppLayout>
-            <h1>Hello</h1>
-        </AppLayout>
-    )
+export const App = () => {
+    return <RouterProvider router={router} />
 }
-
-export default App
