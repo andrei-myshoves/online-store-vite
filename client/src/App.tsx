@@ -1,17 +1,11 @@
-import { useState } from 'react'
-import { AuthModal } from '@/widgets/auth/AuthModal'
-import { Button } from '@/shared/ui/button/Button'
 import './style.css'
+import { AppLayout } from '@/app/layout/AppLayout'
 
 function App() {
-    const [isOpen, setIsOpen] = useState(false)
-
     return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Открыть авторизацию</Button>
-
-            <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-        </>
+        <AppLayout>
+            <h1>Hello</h1>
+        </AppLayout>
     )
 }
 

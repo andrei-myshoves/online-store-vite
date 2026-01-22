@@ -1,14 +1,14 @@
 .root {
     min-height: 100svh;
     display: flex;
-    justify-content: center;
-    background-color: #f5f5f5;
+    background-color: var(--color-bg-app);
 }
 
 .container {
     width: 100%;
     min-height: 100svh;
-    background-color: #ffffff;
+    padding: 0 18px;
+    background-color: var(--color-bg-surface);
 }
 
 @media (width >= 1248px) {
