@@ -8,7 +8,6 @@ type LogoIconProps = {
 export const LogoIcon: React.FC<LogoIconProps> = ({ width = 140, height = 21 }) => {
     return (
         <svg width={width} height={height} viewBox="0 0 140 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* triangles */}
             <path
                 d="M3.87267 20.431C1.61897 21.7328 0 20.6479 0 18.7183C0 16.6642 0 10.5008 0 10.5008C0 10.5008 0 4.33736 0 2.28322C0 0.353629 1.61796 -0.731199 3.87267 0.570594C7.38278 2.59761 17.9121 8.68068 17.9121 8.68068C19.3121 9.48928 19.3121 11.5113 17.9121 12.3199C17.9121 12.3209 7.38278 18.4039 3.87267 20.431Z"
                 fill="#00C1FF"
