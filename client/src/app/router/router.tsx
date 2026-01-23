@@ -1,19 +1,26 @@
-import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
-import { App } from '@/App'
-import { HomePage } from '@/pages/HomePage'
+import { createRouter, createRoute } from '@tanstack/react-router'
+import { rootRoute } from './rootRoute'
+import { CatalogPage } from '@/pages/CatalogPage'
+import { AboutPage } from '@/pages/AboutPage'
 
-const rootRoute = createRootRoute({
-    component: App,
-})
-
-const homeRoute = createRoute({
+const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: HomePage,
+    component: CatalogPage,
 })
 
-const routeTree = rootRoute.addChildren([homeRoute])
-
-export const router = createRouter({
-    routeTree,
+const aboutRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/about',
+    component: AboutPage,
 })
+
+const routeTree = rootRoute.addChildren([indexRoute, aboutRoute])
+
+export const router = createRouter({ routeTree })
+
+declare module '@tanstack/react-router' {
+    interface Register {
+        router: typeof router
+    }
+}
