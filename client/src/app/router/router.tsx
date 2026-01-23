@@ -1,9 +1,9 @@
 import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
-import { AppLayout } from '@/app/layout/AppLayout'
+import { App } from '@/App'
 import { HomePage } from '@/pages/HomePage'
 
 const rootRoute = createRootRoute({
-    component: AppLayout,
+    component: App,
 })
 
 const homeRoute = createRoute({

@@ -1,6 +1,10 @@
-import { RouterProvider } from '@tanstack/react-router'
-import { router } from '@/app/router/router'
+import { Outlet } from '@tanstack/react-router'
+import { AppLayout } from '@/app/layout/AppLayout'
 
 export const App = () => {
-    return <RouterProvider router={router} />
+    return (
+        <AppLayout>
+            <Outlet />
+        </AppLayout>
+    )
 }
