@@ -1,16 +1,21 @@
 import { createRootRoute, Outlet, Link } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { AppLayout } from '@/app/layout/AppLayout'
+import styles from './RootLayout.module.css'
 
 export const rootRoute = createRootRoute({
     component: () => (
-        <AppLayout>
-            <header style={{ padding: 12 }}>
+        <>
+            <header>
                 <Link to="/">Catalog</Link> <Link to="/about">About</Link>
             </header>
 
-            <Outlet />
+            <div className={styles.root}>
+                <main className={styles.container}>
+                    <Outlet />
+                </main>
+            </div>
+
             <TanStackRouterDevtools />
-        </AppLayout>
+        </>
     ),
 })
