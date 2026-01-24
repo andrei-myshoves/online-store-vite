@@ -1,11 +1,10 @@
 .root {
     min-height: 100svh;
-    display: flex;
     background-color: var(--color-bg-app);
+    overflow-x: hidden;
 }
 
 .container {
-    width: 100%;
     min-height: 100svh;
     padding: 0 18px;
     background-color: var(--color-bg-surface);
