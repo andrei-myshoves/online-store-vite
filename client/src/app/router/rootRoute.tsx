@@ -1,14 +1,12 @@
-import { createRootRoute, Outlet, Link } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import styles from './RootLayout.module.css'
+import { Header } from '@/widgets/header/Header'
 
 export const rootRoute = createRootRoute({
     component: () => (
         <div className={styles.root}>
-            <header className={styles.header}>
-                <Link to="/">Catalog</Link>
-                <Link to="/about">About</Link>
-            </header>
+            <Header />
 
             <main className={styles.container}>
                 <Outlet />
