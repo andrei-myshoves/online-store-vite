@@ -1,18 +1,6 @@
-import { useState } from 'react'
-import { AuthModal } from '@/widgets/auth/AuthModal'
-import { Button } from '@/shared/ui/button/Button'
-import './style.css'
+import { RouterProvider } from '@tanstack/react-router'
+import { router } from '@/app/router/router'
 
-function App() {
-    const [isOpen, setIsOpen] = useState(false)
-
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Открыть авторизацию</Button>
-
-            <AuthModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-        </>
-    )
+export const App = () => {
+    return <RouterProvider router={router} />
 }
-
-export default App
