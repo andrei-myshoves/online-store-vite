@@ -1,0 +1,51 @@
+.footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 64px;
+    background-color: var(--color-white);
+    border-top: var(--border-top-footer);
+}
+
+.footerButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border-radius: 50%;
+
+    flex: 0 0 auto;
+}
+
+.footerButton.default {
+    width: 32px;
+    height: 32px;
+}
+
+.footerButton.default svg {
+    width: 24px;
+    height: 24px;
+}
+
+.footerButton.plus {
+    width: 48px;
+    height: 48px;
+}
+
+.footerButton.plus svg {
+    width: 42px;
+    height: 42px;
+}
+
+.footerButton.active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+@media (width >= 768px) {
+    .footer {
+        display: none;
+    }
+}

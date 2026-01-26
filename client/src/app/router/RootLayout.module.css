@@ -1,6 +1,23 @@
 .root {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+
     background-color: var(--color-bg-app);
     overflow-x: hidden;
+}
+
+header {
+    flex: 0 0 auto;
+}
+
+main {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+footer {
+    flex: 0 0 auto;
 }
 
 header,
@@ -8,6 +25,17 @@ main,
 footer {
     padding: 0 18px;
     background-color: var(--color-bg-surface);
+}
+
+@media (width >= 768px) {
+    .root {
+        display: block;
+        min-height: auto;
+    }
+
+    main {
+        overflow: visible;
+    }
 }
 
 @media (width >= 1248px) {
