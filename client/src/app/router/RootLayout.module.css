@@ -1,6 +1,22 @@
 .root {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+
     background-color: var(--color-bg-app);
     overflow-x: hidden;
+}
+
+header {
+    flex: 0 0 var(--header-height-mobile);
+}
+
+main {
+    flex: 1 1 auto;
+}
+
+footer {
+    flex: 0 0 var(--footer-height);
 }
 
 header,
@@ -10,10 +26,25 @@ footer {
     background-color: var(--color-bg-surface);
 }
 
+@media (width >= 768px) {
+    .root {
+        display: block;
+        min-height: auto;
+    }
+
+    main {
+        overflow: visible;
+    }
+}
+
 @media (width >= 1248px) {
     header,
     main,
     footer {
         padding: 0 calc(50% - 600px);
+    }
+
+    header {
+        flex: 0 0 var(--header-height-desktop);
     }
 }

@@ -1,0 +1,16 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 55px;
+
+    height: var(--footer-height);
+    background-color: var(--color-white);
+    border-top: var(--border-top-footer);
+}
+
+@media (width >= 768px) {
+    .footer {
+        display: none;
+    }
+}
