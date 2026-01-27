@@ -8,16 +8,15 @@
 }
 
 header {
-    flex: 0 0 auto;
+    flex: 0 0 var(--header-height-mobile);
 }
 
 main {
     flex: 1 1 auto;
-    overflow-y: auto;
 }
 
 footer {
-    flex: 0 0 auto;
+    flex: 0 0 var(--footer-height);
 }
 
 header,
@@ -43,5 +42,9 @@ footer {
     main,
     footer {
         padding: 0 calc(50% - 600px);
+    }
+
+    header {
+        flex: 0 0 var(--header-height-desktop);
     }
 }
