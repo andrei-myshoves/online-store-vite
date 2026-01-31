@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { ApiError } from '../error/ApiError.js'
 import Advertisement from '@/models/Advertisement.js'
 
@@ -21,4 +21,34 @@ export const createAdvertisement = async (req: Request, res: Response) => {
     })
 
     res.status(201).json(advertisement)
+}
+
+export const getAdvertisements = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const limit = Number(req.query.limit) || 10
+        const offset = Number(req.query.offset) || 0
+
+        const { count, rows } = await Advertisement.findAndCountAll({
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+            attributes: ['id', 'name', 'price', 'images', 'userId'],
+        })
+
+        return res.json({
+            count,
+            limit,
+            offset,
+            items: rows.map(ad => ({
+                id: ad.id,
+                title: ad.name,
+                price: ad.price,
+                images: ad.images || [],
+                userId: ad.userId,
+            })),
+        })
+    } catch (err) {
+        next(err)
+        return
+    }
 }
