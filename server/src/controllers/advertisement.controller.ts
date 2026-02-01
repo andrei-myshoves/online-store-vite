@@ -57,6 +57,10 @@ export const updateAdvertisement = async (req: Request, res: Response, next: Nex
     try {
         const { id } = req.params
         const userId = Number(req.user?.userId)
+
+        if (!id || !userId) {
+            return next(ApiError.badRequest('id and userId are required'))
+        }
         const { name, description, price } = req.body
         const advertisement = await Advertisement.findByPk(id)
 
