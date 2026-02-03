@@ -53,38 +53,27 @@ export const getAdvertisements = async (req: Request, res: Response, next: NextF
     }
 }
 
-export const updateAdvertisement = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { id } = req.params
-        const userId = Number(req.user?.userId)
+export const updateAdvertisement = async (req: Request, res: Response) => {
+    const { id } = req.params
 
-        if (!id || !userId) {
-            return next(ApiError.badRequest('id and userId are required'))
-        }
-        const { name, description, price } = req.body
-        const advertisement = await Advertisement.findByPk(id)
-
-        if (!advertisement) {
-            return next(ApiError.notFound('Advertisement not found'))
-        }
-        if (advertisement.userId !== userId) {
-            return next(ApiError.forbidden('You have no access to this advertisement'))
-        }
-        if (name !== undefined) advertisement.name = name
-        if (description !== undefined) advertisement.description = description
-        if (price !== undefined) advertisement.price = price
-        await advertisement.save()
-
-        return res.json({
-            success: true,
-            item: {
-                id: advertisement.id,
-                name: advertisement.name,
-                description: advertisement.description,
-                price: advertisement.price,
-            },
-        })
-    } catch (err) {
-        next(err)
+    if (!req.user) {
+        throw ApiError.unauthorized()
     }
+
+    const advertisement = await Advertisement.findByPk(id)
+
+    if (!advertisement) {
+        throw ApiError.notFound('Advertisement not found')
+    }
+
+    if (String(advertisement.userId) !== String(req.user.userId)) {
+        throw ApiError.forbidden('You are not the owner of this advertisement')
+    }
+
+    await advertisement.update(req.body)
+
+    res.status(200).json({
+        success: true,
+        advertisement,
+    })
 }
