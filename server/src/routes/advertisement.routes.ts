@@ -8,12 +8,13 @@ import {
     updateAdvertisementSchema,
     getAdvertisementsQuerySchema,
 } from '../schemas/advertisement.schema.js'
+import { checkAdvertisementOwner } from '@/middleware/checkAdvertisementOwner.js'
 
 const router = Router()
 
 router.post('/', authMiddleware, validate(createAdvertisementSchema), createAdvertisement)
 
-router.patch('/:id', authMiddleware, validate(updateAdvertisementSchema), updateAdvertisement)
+router.patch('/:id', authMiddleware, validate(updateAdvertisementSchema), checkAdvertisementOwner, updateAdvertisement)
 
 router.get('/', validateQuery(getAdvertisementsQuerySchema), getAdvertisements)
 

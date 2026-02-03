@@ -50,7 +50,6 @@ User.init(
         sequelize,
         tableName: 'users',
         timestamps: true,
-        underscored: true,
     }
 )
 export default User

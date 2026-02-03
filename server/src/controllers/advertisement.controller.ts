@@ -53,27 +53,21 @@ export const getAdvertisements = async (req: Request, res: Response, next: NextF
     }
 }
 
-export const updateAdvertisement = async (req: Request, res: Response) => {
-    const { id } = req.params
+export const updateAdvertisement = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const advertisement = await Advertisement.findByPk(req.params.id)
 
-    if (!req.user) {
-        throw ApiError.unauthorized()
+        if (!advertisement) {
+            throw ApiError.notFound('Advertisement not found')
+        }
+
+        await advertisement.update(req.body)
+
+        res.status(200).json({
+            success: true,
+            advertisement,
+        })
+    } catch (error) {
+        next(error)
     }
-
-    const advertisement = await Advertisement.findByPk(id)
-
-    if (!advertisement) {
-        throw ApiError.notFound('Advertisement not found')
-    }
-
-    if (String(advertisement.userId) !== String(req.user.userId)) {
-        throw ApiError.forbidden('You are not the owner of this advertisement')
-    }
-
-    await advertisement.update(req.body)
-
-    res.status(200).json({
-        success: true,
-        advertisement,
-    })
 }
