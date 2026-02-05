@@ -72,5 +72,5 @@ export const getAdvertisementsQuerySchema = z.object({
 })
 
 export const advertisementIdParamSchema = z.object({
-    id: z.coerce.number().int().positive('id must be a positive integer'),
+    id: z.string().regex(/^\d+$/, 'id must be a number'),
 })

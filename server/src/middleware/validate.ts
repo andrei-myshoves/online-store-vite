@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { z, ZodError } from 'zod'
 import { ApiError } from '../error/ApiError.js'
+import { ParamsDictionary } from 'express-serve-static-core'
 
 function zodErrorToMessage(err: ZodError) {
     return err.issues.map(e => `${e.path.join('.')}: ${e.message}`).join('; ')
@@ -49,10 +50,10 @@ export function validateBodyAndQuery<TBody, TQuery>(bodySchema: z.ZodType<TBody>
     }
 }
 
-export function validateParams<T>(schema: z.ZodType<T>) {
+export function validateParams<T extends ParamsDictionary>(schema: z.ZodType<T>) {
     return (req: Request, _res: Response, next: NextFunction) => {
         try {
-            req.params = schema.parse(req.params) as typeof req.params
+            req.params = schema.parse(req.params)
             next()
         } catch (err) {
             if (err instanceof ZodError) {
