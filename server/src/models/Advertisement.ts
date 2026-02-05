@@ -7,7 +7,7 @@ interface AdvertisementAttributes {
     description: string
     price: number
     images?: string[]
-    userId: number
+    userId: string
     createdAt?: Date
     updatedAt?: Date
 }
@@ -26,7 +26,7 @@ class Advertisement
     declare description: string
     declare price: number
     declare images?: string[]
-    declare userId: number
+    declare userId: string
     declare createdAt?: Date
     declare updatedAt?: Date
 }
@@ -55,7 +55,7 @@ Advertisement.init(
             allowNull: true,
         },
         userId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
         },
     },
