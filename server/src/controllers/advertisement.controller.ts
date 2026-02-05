@@ -64,3 +64,21 @@ export const updateAdvertisement = async (req: Request, res: Response, next: Nex
         next(error)
     }
 }
+
+export const deleteAdvertisement = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params.id)
+
+        const advertisement = await Advertisement.findByPk(id)
+
+        if (!advertisement) {
+            throw ApiError.notFound('Advertisement not found')
+        }
+
+        await advertisement.destroy()
+
+        res.status(204).send()
+    } catch (error) {
+        next(error)
+    }
+}

@@ -48,3 +48,17 @@ export function validateBodyAndQuery<TBody, TQuery>(bodySchema: z.ZodType<TBody>
         }
     }
 }
+
+export function validateParams<T>(schema: z.ZodType<T>) {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        try {
+            req.params = schema.parse(req.params) as typeof req.params
+            next()
+        } catch (err) {
+            if (err instanceof ZodError) {
+                return next(ApiError.badRequest(zodErrorToMessage(err)))
+            }
+            next(err)
+        }
+    }
+}

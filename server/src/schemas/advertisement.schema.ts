@@ -70,3 +70,7 @@ export const getAdvertisementsQuerySchema = z.object({
         .min(0, 'Offset must be at least 0')
         .default(0),
 })
+
+export const advertisementIdParamSchema = z.object({
+    id: z.coerce.number().int().positive('id must be a positive integer'),
+})
