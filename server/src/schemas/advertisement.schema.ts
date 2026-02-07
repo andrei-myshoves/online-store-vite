@@ -70,3 +70,7 @@ export const getAdvertisementsQuerySchema = z.object({
         .min(0, 'Offset must be at least 0')
         .default(0),
 })
+
+export const advertisementIdParamSchema = z.object({
+    id: z.string().regex(/^\d+$/, 'id must be a number'),
+})
