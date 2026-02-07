@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './CatalogPage.module.css'
 import { api } from '@/shared/api/api'
 import { AdvList } from '@/widgets/adv-list/AdvList'
 import type { Advertisement } from '@/entities/advertisement/models/types'
+import { Button } from '@/shared/ui/button'
 
 const LIMIT = 10
 
@@ -13,13 +14,10 @@ export const CatalogPage = () => {
     const [error, setError] = useState<string | null>(null)
     const [hasMore, setHasMore] = useState(true)
 
-    const loadingRef = useRef(false)
-
     const loadAdvertisements = async () => {
-        if (loadingRef.current || !hasMore) return
+        if (loading || !hasMore) return
 
         try {
-            loadingRef.current = true
             setLoading(true)
             setError(null)
 
@@ -42,7 +40,6 @@ export const CatalogPage = () => {
         } catch {
             setError('Ошибка загрузки объявлений')
         } finally {
-            loadingRef.current = false
             setLoading(false)
         }
     }
@@ -56,9 +53,11 @@ export const CatalogPage = () => {
             <AdvList items={items} loading={loading} error={error} />
 
             {hasMore && (
-                <button className={styles.loadMore} onClick={loadAdvertisements} disabled={loading}>
-                    {loading ? 'Загрузка…' : 'Показать ещё'}
-                </button>
+                <div className={styles.pagination}>
+                    <Button onClick={loadAdvertisements} disabled={loading} variant="outline">
+                        {loading ? 'Загрузка…' : 'Показать ещё'}
+                    </Button>
+                </div>
             )}
         </div>
     )
