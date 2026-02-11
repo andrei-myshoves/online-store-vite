@@ -89,6 +89,8 @@ h6 {
     --color-primary-hover: #0080c1;
     --color-white: #ffffff;
     --color-transparent: transparent;
+    --color-text-main: #000000;
+    --color-text-secondary: #5f5f5f;
     --border-primary: 1px solid var(--color-primary);
     --border-white: 1px solid var(--color-white);
     --border-top-footer: 1px solid #eaeaea;
@@ -97,6 +99,8 @@ h6 {
     --background-main: #ffffff;
     --color-bg-app: #f5f5f5;
     --color-bg-surface: #ffffff;
+    --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.1);
+    --radius-sm: 6px;
     --header-height-mobile: 55px;
     --header-height-desktop: 79px;
     --footer-height: 54px;
