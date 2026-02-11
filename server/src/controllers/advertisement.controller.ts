@@ -82,3 +82,24 @@ export const deleteAdvertisement = async (req: Request, res: Response, next: Nex
         next(error)
     }
 }
+
+export const getAdvertisementById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        if (!id || typeof id !== 'string') {
+            throw ApiError.badRequest('Invalid advertisement id')
+        }
+
+        const advertisement = await Advertisement.findByPk(id)
+
+        if (!advertisement) {
+            throw ApiError.notFound('Advertisement not found')
+        }
+
+        return res.status(200).json(advertisement)
+    } catch (error) {
+        next(error)
+        return
+    }
+}

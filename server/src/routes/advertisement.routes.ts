@@ -10,6 +10,7 @@ import {
     advertisementIdParamSchema,
 } from '../schemas/advertisement.schema.js'
 import { checkAdvertisementOwner } from '@/middleware/checkAdvertisementOwner.js'
+import { getAdvertisementById } from '../controllers/advertisement.controller'
 
 const router = Router()
 
@@ -18,6 +19,8 @@ router.post('/', authMiddleware, validate(createAdvertisementSchema), createAdve
 router.patch('/:id', authMiddleware, validate(updateAdvertisementSchema), checkAdvertisementOwner, updateAdvertisement)
 
 router.get('/', validateQuery(getAdvertisementsQuerySchema), getAdvertisements)
+
+router.get('/:id', validateParams(advertisementIdParamSchema), getAdvertisementById)
 
 router.delete(
     '/:id',
