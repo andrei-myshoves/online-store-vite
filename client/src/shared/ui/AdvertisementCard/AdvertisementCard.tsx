@@ -1,5 +1,6 @@
 import styles from './AdvertisementCard.module.css'
 import type { Advertisement } from '@/entities/advertisement/models/types'
+import { Link } from '@tanstack/react-router'
 
 interface Props {
     item: Advertisement
@@ -7,7 +8,7 @@ interface Props {
 
 export const AdvertisementCard = ({ item }: Props) => {
     return (
-        <article className={styles.card}>
+        <Link to="/advertisement/$id" params={{ id: item.id.toString() }} className={styles.card}>
             <div className={styles.imageWrapper}>
                 <img src={item.images?.[0] ?? '/placeholder.png'} alt={item.name} />
             </div>
@@ -22,6 +23,6 @@ export const AdvertisementCard = ({ item }: Props) => {
                     <div className={styles.meta}>Сегодня</div>
                 </div>
             </div>
-        </article>
+        </Link>
     )
 }

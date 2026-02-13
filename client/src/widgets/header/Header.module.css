@@ -31,7 +31,12 @@
     display: none;
 }
 
-@media (width >= 768px) {
+.desktopActions {
+    display: none;
+    gap: 10px;
+}
+
+@media (width >= 1248px) {
     .header {
         justify-content: flex-end;
     }
@@ -52,5 +57,16 @@
 
     .search {
         display: none;
+    }
+
+    .desktopActions {
+        display: flex;
+        margin-left: auto;
+    }
+
+    .desktopAction {
+        padding: 8px 24px;
+        border: var(--border-white);
+        color: var(--color-white);
     }
 }

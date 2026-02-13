@@ -1,6 +1,10 @@
 export type Advertisement = {
     id: number
     name: string
+    description: string
     price: number
-    images?: string[]
+    images: string[] | null
+    userId: string
+    createdAt: string
+    updatedAt: string
 }
