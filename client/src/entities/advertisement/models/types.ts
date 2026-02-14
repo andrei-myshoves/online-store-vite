@@ -7,4 +7,5 @@ export type Advertisement = {
     userId: string
     createdAt: string
     updatedAt: string
+    reviewsCount?: number
 }

@@ -1,14 +1,21 @@
 .page {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 30px;
     padding-top: 16px;
+}
+
+.top {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .gallery {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: var(--color-bg-app);
+    background: #eee;
+    border-radius: 8px;
     overflow: hidden;
 }
 
@@ -18,35 +25,114 @@
     object-fit: cover;
 }
 
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #666;
+    gap: 4px;
+}
+
+.reviews {
+    color: #009ee4;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.reviewsButton {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    height: auto;
+
+    font-weight: 500;
+
+    color: var(--color-primary);
+    background: transparent;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.phoneButton {
+    width: 278px;
+    height: 58px;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.seller {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #ddd;
+    border-radius: 50%;
+}
+
+.sellerName {
+    font-size: 18px;
+    color: var(--color-primary);
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+
+.sellerMeta {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.descriptionBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.descriptionTitle {
     font-size: 18px;
     font-weight: 600;
 }
 
-.price {
-    font-size: 20px;
-    font-weight: 700;
-}
-
 .description {
-    margin-top: 16px;
     line-height: 1.5;
+    color: var(--color-text-main);
 }
 
 @media (width >= 1248px) {
-    .page {
+    .top {
         flex-direction: row;
-        gap: 40px;
-        margin: 40px 0;
+        gap: 59px;
+        align-items: flex-start;
     }
 
     .gallery {
-        width: 600px;
-        flex-shrink: 0;
+        flex: 0 0 600px;
+        height: 500px;
+        aspect-ratio: auto;
     }
 
     .info {
         flex: 1;
+        max-width: 500px;
     }
 
     .title {
@@ -54,6 +140,22 @@
     }
 
     .price {
-        font-size: 28px;
+        font-size: 26px;
+        margin-top: 24px;
+    }
+    .phoneButton {
+        width: 214px;
+        height: 62px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .seller {
+        margin-top: 24px;
+    }
+}
+
+@media (hover: hover) {
+    .reviewsButton {
+        text-decoration: underline;
     }
 }
