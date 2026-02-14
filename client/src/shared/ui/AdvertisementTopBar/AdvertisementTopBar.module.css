@@ -1,0 +1,15 @@
+.wrapper {
+    display: none;
+}
+
+@media (width >= 1248px) {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+    }
+
+    .backButton {
+        padding: 13px 36px;
+    }
+}
