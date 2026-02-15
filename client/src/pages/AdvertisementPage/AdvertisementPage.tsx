@@ -107,7 +107,6 @@ export const AdvertisementPage = () => {
                             {formatReviewsCount(data.reviewsCount)}
                         </Button>
                     </div>
-                    <div ref={reviewsRef} id="reviews"></div>
 
                     <div className={styles.price}>{data.price.toLocaleString()} ₽</div>
 
