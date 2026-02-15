@@ -1,25 +1,54 @@
-import { Link } from '@tanstack/react-router'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import styles from './Header.module.css'
+import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 
 export const Header = () => {
+    const navigate = useNavigate()
+    const matchRoute = useMatchRoute()
+
+    const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
+
     return (
         <header className={styles.header}>
-            <div className={styles.mobileLogo}>
-                <div className={styles.mobileLogoWrapper}>
-                    <BrandIcon width={20} height={14} />
+            <div className={styles.mobileBlock}>
+                <div className={styles.mobileLogo}>
+                    <div className={styles.mobileLogoWrapper}>
+                        <BrandIcon width={20} height={14} />
+                    </div>
                 </div>
+
+                {!isAdvertisementPage && <Input className={styles.search} placeholder="Поиск" />}
             </div>
 
-            <Input className={styles.search} placeholder="Поиск" />
+            <div className={styles.desktopBlock}>
+                {!isAdvertisementPage && (
+                    <Button variant="outline" onClick={() => navigate({ to: '/' })} className={styles.loginButton}>
+                        Вход в личный кабинет
+                    </Button>
+                )}
 
-            <Link to="/" className={styles.loginLink}>
-                <Button type="button" variant="outline" className={styles.loginButton}>
-                    Вход в личный кабинет
-                </Button>
-            </Link>
+                {isAdvertisementPage && (
+                    <div className={styles.desktopActions}>
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate({ to: '/' })}
+                            className={styles.desktopAction}
+                        >
+                            Разместить объявление
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate({ to: '/' })}
+                            className={styles.desktopAction}
+                        >
+                            Личный кабинет
+                        </Button>
+                    </div>
+                )}
+            </div>
         </header>
     )
 }
