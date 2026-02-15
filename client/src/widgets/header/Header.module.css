@@ -1,10 +1,11 @@
 .header {
     background-color: var(--background-accent);
-    display: flex;
     padding: 12px 16px;
+}
+.mobileBlock {
+    display: flex;
     gap: 10px;
 }
-
 .mobileLogo {
     display: flex;
     align-items: center;
@@ -35,13 +36,17 @@
     display: none;
     gap: 10px;
 }
+.desktopBlock {
+    display: none;
+}
 
 @media (width >= 1248px) {
-    .header {
-        justify-content: flex-end;
-    }
-    .mobileLogo {
+    .mobileBlock {
         display: none;
+    }
+    .desktopBlock {
+        display: flex;
+        justify-content: flex-end;
     }
 
     .loginLink {

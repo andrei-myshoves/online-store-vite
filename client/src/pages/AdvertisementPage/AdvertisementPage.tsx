@@ -1,10 +1,31 @@
 import { useParams } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { api } from '@/shared/api/api'
 import { Button } from '@/shared/ui/button'
 import styles from './AdvertisementPage.module.css'
 import type { Advertisement } from '@/entities/advertisement/models/types'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
+import clsx from 'clsx'
+
+const mockImages = [
+    'https://picsum.photos/800/800?1',
+    'https://picsum.photos/800/800?2',
+    'https://picsum.photos/800/800?3',
+    'https://picsum.photos/800/800?4',
+    'https://picsum.photos/800/800?5',
+]
+
+const formatReviewsCount = (count = 0) => {
+    if (count % 10 === 1 && count % 100 !== 11) {
+        return `${count} отзыв`
+    }
+
+    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
+        return `${count} отзыва`
+    }
+
+    return `${count} отзывов`
+}
 
 export const AdvertisementPage = () => {
     const { id } = useParams({ from: '/advertisement/$id' })
@@ -13,6 +34,11 @@ export const AdvertisementPage = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
+    const reviewsRef = useRef<HTMLDivElement | null>(null)
+
+    const handleScrollToReviews = () => {
+        reviewsRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
 
     useEffect(() => {
         const load = async () => {
@@ -33,16 +59,17 @@ export const AdvertisementPage = () => {
         setActiveIndex(0)
     }, [id])
 
-    if (loading) return <div className={styles.loader}>Загрузка...</div>
-    if (error || !data) return <div className={styles.error}>{error}</div>
+    if (loading) {
+        return <div className={styles.loader}>Загрузка...</div>
+    }
 
-    const mockImages = [
-        'https://picsum.photos/800/800?1',
-        'https://picsum.photos/800/800?2',
-        'https://picsum.photos/800/800?3',
-        'https://picsum.photos/800/800?4',
-        'https://picsum.photos/800/800?5',
-    ]
+    if (error) {
+        return <div className={styles.error}>{error}</div>
+    }
+
+    if (!data) {
+        return <div className={styles.error}>Объявление не найдено</div>
+    }
 
     const images = data.images && data.images.length > 0 ? data.images : mockImages
 
@@ -60,7 +87,7 @@ export const AdvertisementPage = () => {
                             {images.map((img, index) => (
                                 <button
                                     key={index}
-                                    className={`${styles.thumb} ${index === activeIndex ? styles.active : ''}`}
+                                    className={clsx(styles.thumb, index === activeIndex && styles.active)}
                                     onClick={() => setActiveIndex(index)}
                                 >
                                     <img src={img} alt="" />
@@ -76,14 +103,11 @@ export const AdvertisementPage = () => {
                     <div className={styles.meta}>
                         <span>Сегодня в 10:45</span>
                         <span>Санкт-Петербург</span>
-                        <Button
-                            variant="wrapper"
-                            className={styles.reviewsButton}
-                            onClick={() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' })}
-                        >
-                            {data.reviewsCount ?? 0} отзыва
+                        <Button variant="wrapper" className={styles.reviewsButton} onClick={handleScrollToReviews}>
+                            {formatReviewsCount(data.reviewsCount)}
                         </Button>
                     </div>
+                    <div ref={reviewsRef} id="reviews"></div>
 
                     <div className={styles.price}>{data.price.toLocaleString()} ₽</div>
 

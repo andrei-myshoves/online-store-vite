@@ -1,62 +1,54 @@
-import { Link, useMatchRoute } from '@tanstack/react-router'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import styles from './Header.module.css'
-import { useEffect, useState } from 'react'
+import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 
 export const Header = () => {
+    const navigate = useNavigate()
     const matchRoute = useMatchRoute()
 
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
-    const [isDesktop, setIsDesktop] = useState(false)
-
-    useEffect(() => {
-        const media = window.matchMedia('(min-width: 1248px)')
-        const listener = () => setIsDesktop(media.matches)
-
-        listener()
-        media.addEventListener('change', listener)
-
-        return () => media.removeEventListener('change', listener)
-    }, [])
-
     return (
         <header className={styles.header}>
-            {(!isDesktop || isAdvertisementPage) && (
+            <div className={styles.mobileBlock}>
                 <div className={styles.mobileLogo}>
                     <div className={styles.mobileLogoWrapper}>
                         <BrandIcon width={20} height={14} />
                     </div>
                 </div>
-            )}
 
-            {!isDesktop && !isAdvertisementPage && <Input className={styles.search} placeholder="Поиск" />}
+                {!isAdvertisementPage && <Input className={styles.search} placeholder="Поиск" />}
+            </div>
 
-            {isDesktop && !isAdvertisementPage && (
-                <Link to="/" className={styles.loginLink}>
-                    <Button variant="outline" className={styles.loginButton}>
+            <div className={styles.desktopBlock}>
+                {!isAdvertisementPage && (
+                    <Button variant="outline" onClick={() => navigate({ to: '/' })} className={styles.loginButton}>
                         Вход в личный кабинет
                     </Button>
-                </Link>
-            )}
+                )}
 
-            {isDesktop && isAdvertisementPage && (
-                <div className={styles.desktopActions}>
-                    <Link to="/">
-                        <Button variant="outline" className={styles.desktopAction}>
+                {isAdvertisementPage && (
+                    <div className={styles.desktopActions}>
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate({ to: '/' })}
+                            className={styles.desktopAction}
+                        >
                             Разместить объявление
                         </Button>
-                    </Link>
 
-                    <Link to="/">
-                        <Button variant="outline" className={styles.desktopAction}>
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate({ to: '/' })}
+                            className={styles.desktopAction}
+                        >
                             Личный кабинет
                         </Button>
-                    </Link>
-                </div>
-            )}
+                    </div>
+                )}
+            </div>
         </header>
     )
 }
