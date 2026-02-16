@@ -8,13 +8,14 @@ interface AdvertisementAttributes {
     price: number
     images?: string[]
     userId: string
+    reviewsCount: number
     createdAt?: Date
     updatedAt?: Date
 }
 
 interface AdvertisementCreationAttributes extends Optional<
     AdvertisementAttributes,
-    'id' | 'images' | 'createdAt' | 'updatedAt'
+    'id' | 'images' | 'reviewsCount' | 'createdAt' | 'updatedAt'
 > {}
 
 class Advertisement
@@ -27,6 +28,7 @@ class Advertisement
     declare price: number
     declare images?: string[]
     declare userId: string
+    declare reviewsCount: number
     declare createdAt?: Date
     declare updatedAt?: Date
 }
@@ -58,7 +60,13 @@ Advertisement.init(
             type: DataTypes.UUID,
             allowNull: false,
         },
+        reviewsCount: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
     },
+
     {
         sequelize,
         tableName: 'advertisements',
