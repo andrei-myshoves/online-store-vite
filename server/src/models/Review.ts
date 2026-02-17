@@ -25,12 +25,15 @@ Review.init(
             allowNull: false,
         },
         userId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
+            field: 'user_id',
         },
+
         advertisementId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            field: 'advertisement_id',
         },
     },
     {
@@ -40,7 +43,7 @@ Review.init(
         indexes: [
             {
                 unique: true,
-                fields: ['userId', 'advertisementId'],
+                fields: ['user_id', 'advertisement_id'],
             },
         ],
     }
