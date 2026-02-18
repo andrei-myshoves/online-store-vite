@@ -1,6 +1,7 @@
 import sequelize from '../db'
 import { seedUsers } from './user.seed'
 import { seedAdvertisements } from './advertisement.seed'
+import { seedReviews } from './review.seed'
 
 async function seed() {
     try {
@@ -8,6 +9,7 @@ async function seed() {
 
         const users = await seedUsers(50)
         await seedAdvertisements(users)
+        await seedReviews(users)
 
         console.log('DB seeded successfully')
         process.exit(0)
