@@ -25,7 +25,7 @@ Review.init(
             allowNull: false,
         },
         userId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
             field: 'user_id',
         },

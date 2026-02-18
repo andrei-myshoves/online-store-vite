@@ -6,6 +6,7 @@ import { seedReviews } from './review.seed'
 async function seed() {
     try {
         await sequelize.authenticate()
+        await sequelize.sync({ force: true })
 
         const users = await seedUsers(50)
         await seedAdvertisements(users)

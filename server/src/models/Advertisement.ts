@@ -9,13 +9,14 @@ interface AdvertisementAttributes {
     images?: string[]
     userId: string
     reviewsCount: number
+    slug: string
     createdAt?: Date
     updatedAt?: Date
 }
 
 interface AdvertisementCreationAttributes extends Optional<
     AdvertisementAttributes,
-    'id' | 'images' | 'reviewsCount' | 'createdAt' | 'updatedAt'
+    'id' | 'images' | 'reviewsCount' | 'slug' | 'createdAt' | 'updatedAt'
 > {}
 
 class Advertisement
@@ -29,6 +30,7 @@ class Advertisement
     declare images?: string[]
     declare userId: string
     declare reviewsCount: number
+    declare slug: string
     declare createdAt?: Date
     declare updatedAt?: Date
 }
@@ -57,13 +59,18 @@ Advertisement.init(
             allowNull: true,
         },
         userId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         reviewsCount: {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0,
+        },
+        slug: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
         },
     },
 

@@ -11,6 +11,7 @@ export async function seedAdvertisements(users: User[]) {
         for (let i = 0; i < adsCount; i++) {
             advertisements.push({
                 name: faker.commerce.productName(),
+                slug: faker.helpers.slugify(faker.commerce.productName()) + '-' + faker.string.uuid(),
                 description: faker.commerce.productDescription(),
                 price: faker.number.int({ min: 100, max: 100_000 }),
                 images: [faker.image.url()],
