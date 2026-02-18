@@ -7,7 +7,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare password: string
     declare username: string
     declare role: CreationOptional<string>
-
+    declare avatar: CreationOptional<string>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -44,6 +44,10 @@ User.init(
         updatedAt: {
             type: DataTypes.DATE,
             allowNull: false,
+        },
+        avatar: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
     },
     {
