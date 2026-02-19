@@ -1,7 +1,9 @@
-import { useParams } from '@tanstack/react-router'
-import { useEffect, useState, useRef } from 'react'
+import { useParams, useNavigate } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import { api } from '@/shared/api/api'
 import { Button } from '@/shared/ui/button'
+import { ReviewsBlock } from '@/widgets/reviews/ReviewsBlock'
+import { Modal } from '@/shared/ui/modal/Modal'
 import styles from './AdvertisementPage.module.css'
 import type { Advertisement } from '@/entities/advertisement/models/types'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
@@ -29,15 +31,27 @@ const formatReviewsCount = (count = 0) => {
 
 export const AdvertisementPage = () => {
     const { id } = useParams({ from: '/advertisement/$id' })
+    const navigate = useNavigate()
 
     const [data, setData] = useState<Advertisement | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
-    const reviewsRef = useRef<HTMLDivElement | null>(null)
+    const [isReviewsOpen, setIsReviewsOpen] = useState(false)
 
-    const handleScrollToReviews = () => {
-        reviewsRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const isMobile = window.innerWidth < 768
+
+    const handleOpenReviews = () => {
+        if (!data) return
+
+        if (isMobile) {
+            navigate({
+                to: '/reviews/$slug',
+                params: { slug: data.slug },
+            })
+        } else {
+            setIsReviewsOpen(true)
+        }
     }
 
     useEffect(() => {
@@ -55,6 +69,7 @@ export const AdvertisementPage = () => {
 
         load()
     }, [id])
+
     useEffect(() => {
         setActiveIndex(0)
     }, [id])
@@ -63,19 +78,16 @@ export const AdvertisementPage = () => {
         return <div className={styles.loader}>Загрузка...</div>
     }
 
-    if (error) {
-        return <div className={styles.error}>{error}</div>
-    }
-
-    if (!data) {
+    if (error || !data) {
         return <div className={styles.error}>Объявление не найдено</div>
     }
 
-    const images = data.images && data.images.length > 0 ? data.images : mockImages
+    const images = mockImages
 
     return (
         <div className={styles.page}>
             <AdvertisementTopBar />
+
             <div className={styles.top}>
                 <div className={styles.gallery}>
                     <div className={styles.mainImage}>
@@ -103,7 +115,8 @@ export const AdvertisementPage = () => {
                     <div className={styles.meta}>
                         <span>Сегодня в 10:45</span>
                         <span>Санкт-Петербург</span>
-                        <Button variant="wrapper" className={styles.reviewsButton} onClick={handleScrollToReviews}>
+
+                        <Button variant="wrapper" className={styles.reviewsButton} onClick={handleOpenReviews}>
                             {formatReviewsCount(data.reviewsCount)}
                         </Button>
                     </div>
@@ -126,6 +139,12 @@ export const AdvertisementPage = () => {
                 <h2 className={styles.descriptionTitle}>Описание товара</h2>
                 <p className={styles.description}>{data.description || 'Описание отсутствует'}</p>
             </div>
+
+            {!isMobile && isReviewsOpen && (
+                <Modal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)}>
+                    <ReviewsBlock slug={data.slug} initialCount={data.reviewsCount} />
+                </Modal>
+            )}
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { rootRoute } from './rootRoute'
 import { CatalogPage } from '@/pages/CatalogPage/CatalogPage'
 import { AboutPage } from '@/pages/AboutPage'
 import { AdvertisementPage } from '@/pages/AdvertisementPage/AdvertisementPage'
+import { ReviewsPage } from '@/pages/ReviewsPage/ReviewsPage'
 
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -22,7 +23,13 @@ const advertisementRoute = createRoute({
     component: AdvertisementPage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, aboutRoute, advertisementRoute])
+const reviewsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/reviews/$slug',
+    component: ReviewsPage,
+})
+
+const routeTree = rootRoute.addChildren([indexRoute, aboutRoute, advertisementRoute, reviewsRoute])
 
 export const router = createRouter({ routeTree })
 
