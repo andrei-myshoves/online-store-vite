@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import sequelize from './db.js'
+import './models/associations.js'
 import cors from 'cors'
 import { errorMiddleware } from './middleware/error.middleware.js'
 
