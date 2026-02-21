@@ -63,12 +63,18 @@
     color: var(--color-text-secondary);
     gap: 4px;
 }
+.mobileOnly {
+    display: inline-flex;
+}
 
 .reviewsButton {
     display: flex;
     justify-content: flex-start;
 }
 
+.desktopOnly {
+    display: none;
+}
 .price {
     font-size: 22px;
     font-weight: 700;
@@ -155,6 +161,13 @@
     .price {
         font-size: 26px;
         margin-top: 24px;
+    }
+    .mobileOnly {
+        display: none;
+    }
+
+    .desktopOnly {
+        display: inline-flex;
     }
 
     .phoneButton {

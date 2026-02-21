@@ -39,19 +39,17 @@ export const AdvertisementPage = () => {
     const [activeIndex, setActiveIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
 
-    const isMobile = window.innerWidth < 768
+    const handleOpenModal = () => {
+        setIsReviewsOpen(true)
+    }
 
-    const handleOpenReviews = () => {
+    const handleNavigateToReviews = () => {
         if (!data) return
 
-        if (isMobile) {
-            navigate({
-                to: '/reviews/$id',
-                params: { id: data.id.toString() },
-            })
-        } else {
-            setIsReviewsOpen(true)
-        }
+        navigate({
+            to: '/reviews/$id',
+            params: { id: data.id.toString() },
+        })
     }
 
     useEffect(() => {
@@ -120,7 +118,18 @@ export const AdvertisementPage = () => {
                         <span>Сегодня в 10:45</span>
                         <span>Санкт-Петербург</span>
 
-                        <Button variant="wrapper" className={styles.reviewsButton} onClick={handleOpenReviews}>
+                        <Button
+                            variant="wrapper"
+                            className={clsx(styles.reviewsButton, styles.mobileOnly)}
+                            onClick={handleNavigateToReviews}
+                        >
+                            {formatReviewsCount(data.reviewsCount)}
+                        </Button>
+                        <Button
+                            variant="wrapper"
+                            className={clsx(styles.reviewsButton, styles.desktopOnly)}
+                            onClick={handleOpenModal}
+                        >
                             {formatReviewsCount(data.reviewsCount)}
                         </Button>
                     </div>
@@ -144,7 +153,7 @@ export const AdvertisementPage = () => {
                 <p className={styles.description}>{data.description || 'Описание отсутствует'}</p>
             </div>
 
-            {!isMobile && isReviewsOpen && (
+            {isReviewsOpen && (
                 <Modal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)}>
                     <ReviewsBlock id={data.id} initialCount={data.reviewsCount} />
                 </Modal>
