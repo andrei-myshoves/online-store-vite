@@ -3,7 +3,6 @@ import { ApiError } from '@/error/ApiError.js'
 import Review from '@/models/Review.js'
 import Advertisement from '@/models/Advertisement.js'
 import User from '@/models/User.js'
-import type { Order } from 'sequelize'
 
 export const createReview = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -46,44 +45,33 @@ export const createReview = async (req: Request, res: Response, next: NextFuncti
     }
 }
 
-export const getReviewsBySlug = async (req: Request, res: Response, next: NextFunction) => {
+export const getReviewsById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { slug } = req.params
-
+        const { id } = req.params
         const { page = 1, limit = 10 } = req.query as any
 
-        const advertisement = await Advertisement.findOne({
-            where: { slug },
-        })
-
-        if (!advertisement) {
-            throw ApiError.notFound('Advertisement not found')
-        }
-
-        const offset = (Number(page) - 1) * Number(limit)
-
-        const order: Order = [['createdAt', 'DESC']]
+        const numericLimit = Number(limit)
+        const numericPage = Number(page)
+        const offset = (numericPage - 1) * numericLimit
 
         const { rows, count } = await Review.findAndCountAll({
-            where: {
-                advertisementId: advertisement.id,
-            },
+            where: { advertisementId: id },
             include: [
                 {
                     model: User,
                     attributes: ['username', 'avatar'],
                 },
             ],
-            limit: Number(limit),
+            limit: numericLimit,
             offset,
-            order,
+            order: [['createdAt', 'DESC']],
         })
 
         return res.status(200).json({
             items: rows,
             total: count,
-            page: Number(page),
-            limit: Number(limit),
+            page: numericPage,
+            limit: numericLimit,
         })
     } catch (error) {
         next(error)
