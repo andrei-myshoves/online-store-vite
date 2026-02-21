@@ -104,4 +104,7 @@ h6 {
     --header-height-mobile: 55px;
     --header-height-desktop: 79px;
     --footer-height: 54px;
+    --color-border-light: #eaeaea;
+    --color-bg-muted: #f1f1f1;
+    --color-text-muted: #888888;
 }
