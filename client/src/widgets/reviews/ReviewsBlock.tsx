@@ -2,19 +2,10 @@ import { useEffect, useState } from 'react'
 import { api } from '@/shared/api/api'
 import { Button } from '@/shared/ui/button'
 import styles from './ReviewsBlock.module.css'
-
-type Review = {
-    id: number
-    text: string
-    createdAt: string
-    User: {
-        username: string
-        avatar: string | null
-    }
-}
+import type { Review } from '@/entities/advertisement/models/types'
 
 type Props = {
-    slug: string
+    id: number
     initialCount?: number
 }
 
@@ -28,7 +19,7 @@ const formatDate = (date: string) => {
     })
 }
 
-export const ReviewsBlock = ({ slug, initialCount = 0 }: Props) => {
+export const ReviewsBlock = ({ id, initialCount = 0 }: Props) => {
     const [reviews, setReviews] = useState<Review[]>([])
     const [page, setPage] = useState(1)
     const [total, setTotal] = useState(initialCount)
@@ -38,7 +29,7 @@ export const ReviewsBlock = ({ slug, initialCount = 0 }: Props) => {
         try {
             setLoading(true)
 
-            const res = await api.get(`/reviews/comment/${slug}?page=${pageToLoad}&limit=${PAGE_LIMIT}`)
+            const res = await api.get(`/reviews/comment/${id}?page=${pageToLoad}&limit=${PAGE_LIMIT}`)
 
             if (pageToLoad === 1) {
                 setReviews(res.data.items)
@@ -57,7 +48,7 @@ export const ReviewsBlock = ({ slug, initialCount = 0 }: Props) => {
     useEffect(() => {
         setPage(1)
         loadReviews(1)
-    }, [slug])
+    }, [id])
 
     const handleLoadMore = () => {
         const nextPage = page + 1
@@ -78,15 +69,15 @@ export const ReviewsBlock = ({ slug, initialCount = 0 }: Props) => {
                     <div key={review.id} className={styles.review}>
                         <div className={styles.header}>
                             <div className={styles.avatar}>
-                                {review.User?.avatar ? (
-                                    <img src={review.User.avatar} alt={review.User.username} />
+                                {review.user?.avatar ? (
+                                    <img src={review.user.avatar} alt={review.user.username} />
                                 ) : (
-                                    <div className={styles.placeholder}>{review.User?.username?.[0] || '?'}</div>
+                                    <div className={styles.placeholder}>{review.user?.username?.[0] || '?'}</div>
                                 )}
                             </div>
 
                             <div>
-                                <div className={styles.username}>{review.User?.username}</div>
+                                <div className={styles.username}>{review.user?.username}</div>
                                 <div className={styles.date}>{formatDate(review.createdAt)}</div>
                             </div>
                         </div>

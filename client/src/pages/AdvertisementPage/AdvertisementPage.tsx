@@ -46,8 +46,8 @@ export const AdvertisementPage = () => {
 
         if (isMobile) {
             navigate({
-                to: '/reviews/$slug',
-                params: { slug: data.slug },
+                to: '/reviews/$id',
+                params: { id: data.id.toString() },
             })
         } else {
             setIsReviewsOpen(true)
@@ -78,7 +78,11 @@ export const AdvertisementPage = () => {
         return <div className={styles.loader}>Загрузка...</div>
     }
 
-    if (error || !data) {
+    if (error) {
+        return <div className={styles.error}>{error}</div>
+    }
+
+    if (!data) {
         return <div className={styles.error}>Объявление не найдено</div>
     }
 
@@ -142,7 +146,7 @@ export const AdvertisementPage = () => {
 
             {!isMobile && isReviewsOpen && (
                 <Modal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)}>
-                    <ReviewsBlock slug={data.slug} initialCount={data.reviewsCount} />
+                    <ReviewsBlock id={data.id} initialCount={data.reviewsCount} />
                 </Modal>
             )}
         </div>

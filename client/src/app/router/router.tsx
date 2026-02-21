@@ -25,7 +25,7 @@ const advertisementRoute = createRoute({
 
 const reviewsRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/reviews/$slug',
+    path: '/reviews/$id',
     component: ReviewsPage,
 })
 

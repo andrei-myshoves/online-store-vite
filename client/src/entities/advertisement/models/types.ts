@@ -7,7 +7,6 @@ export type Advertisement = {
     userId: string
     createdAt: string
     updatedAt: string
-    slug: string
     reviewsCount?: number
 }
 
