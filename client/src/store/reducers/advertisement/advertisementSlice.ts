@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { Advertisement } from '../../entities/advertisement/models/types'
+import type { Advertisement } from '../../../entities/advertisement/models/types'
 import { fetchAdvertisementById } from './advertisementThunks'
 
 interface AdvertisementState {
