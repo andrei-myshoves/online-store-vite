@@ -29,7 +29,12 @@ export const ReviewsBlock = ({ id, initialCount = 0 }: Props) => {
         try {
             setLoading(true)
 
-            const res = await api.get(`/reviews/comment/${id}?page=${pageToLoad}&limit=${PAGE_LIMIT}`)
+            const res = await api.get(`/reviews/comment/${id}`, {
+                params: {
+                    page: pageToLoad,
+                    limit: PAGE_LIMIT,
+                },
+            })
 
             if (pageToLoad === 1) {
                 setReviews(res.data.items)
