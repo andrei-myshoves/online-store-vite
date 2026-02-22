@@ -9,3 +9,14 @@ export type Advertisement = {
     updatedAt: string
     reviewsCount?: number
 }
+
+export type Review = {
+    id: number
+    text: string
+    rating: number
+    createdAt: string
+    user: {
+        username: string
+        avatar: string | null
+    }
+}
