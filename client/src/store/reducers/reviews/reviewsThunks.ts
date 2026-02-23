@@ -13,6 +13,12 @@ interface ReviewsResponse {
     total: number
 }
 
+interface CreateReviewPayload {
+    advertisementId: number
+    text: string
+    rating?: number
+}
+
 export const fetchReviews = createAsyncThunk<ReviewsResponse, FetchReviewsArgs, { rejectValue: string }>(
     'reviews/fetchReviews',
     async ({ advertisementId, page, limit }, thunkAPI) => {
@@ -24,6 +30,26 @@ export const fetchReviews = createAsyncThunk<ReviewsResponse, FetchReviewsArgs, 
             return response.data
         } catch {
             return thunkAPI.rejectWithValue('Ошибка загрузки отзывов')
+        }
+    }
+)
+
+export const createReview = createAsyncThunk<Review, CreateReviewPayload, { rejectValue: string }>(
+    'reviews/createReview',
+    async (payload, thunkAPI) => {
+        try {
+            const { data } = await api.post('/reviews', payload)
+            return data
+        } catch (e: any) {
+            if (e.response?.status === 401) {
+                return thunkAPI.rejectWithValue('Пользователь не авторизован')
+            }
+
+            if (e.response?.status === 400) {
+                return thunkAPI.rejectWithValue('Вы уже оставляли отзыв')
+            }
+
+            return thunkAPI.rejectWithValue('Ошибка создания отзыва')
         }
     }
 )
