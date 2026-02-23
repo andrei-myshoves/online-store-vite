@@ -1,48 +1,27 @@
-import { useEffect, useState } from 'react'
 import styles from './CatalogPage.module.css'
-import { api } from '@/shared/api/api'
 import { AdvList } from '@/widgets/adv-list/AdvList'
-import type { Advertisement } from '@/entities/advertisement/models/types'
 import { Pagination } from '@/widgets/pagination/Pagination'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
+import { setPage } from '@/store/reducers/catalog/catalogSlice'
+import { selectCatalogData } from '@/store/reducers/selectors/catalogSelectors'
 
 const LIMIT = 10
 
 export const CatalogPage = () => {
-    const [items, setItems] = useState<Advertisement[]>([])
-    const [page, setPage] = useState(1)
-    const [total, setTotal] = useState(0)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
+    const dispatch = useAppDispatch()
+    const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
 
     useEffect(() => {
-        const loadAdvertisements = async () => {
-            try {
-                setLoading(true)
-                setError(null)
-
-                const offset = (page - 1) * LIMIT
-
-                const { data } = await api.get('/advertisement', {
-                    params: { limit: LIMIT, offset },
-                })
-
-                setItems(data.items)
-                setTotal(data.total)
-            } catch {
-                setError('Ошибка загрузки объявлений')
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        loadAdvertisements()
-    }, [page])
+        dispatch(fetchCatalog({ page, limit: LIMIT }))
+    }, [dispatch, page])
 
     return (
         <div className={styles.page}>
-            <AdvList items={items} loading={loading} error={error} />
+            <AdvList items={items} loading={isLoading} error={error} />
 
-            <Pagination page={page} limit={LIMIT} total={total} onChange={setPage} />
+            <Pagination page={page} limit={LIMIT} total={total} onChange={p => dispatch(setPage(p))} />
         </div>
     )
 }

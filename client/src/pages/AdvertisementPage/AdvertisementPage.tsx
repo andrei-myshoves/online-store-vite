@@ -1,13 +1,14 @@
 import { useParams, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { api } from '@/shared/api/api'
 import { Button } from '@/shared/ui/button'
 import { ReviewsBlock } from '@/widgets/reviews/ReviewsBlock'
 import { Modal } from '@/shared/ui/modal/Modal'
 import styles from './AdvertisementPage.module.css'
-import type { Advertisement } from '@/entities/advertisement/models/types'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import clsx from 'clsx'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
+import { selectAdvertisementData } from '@/store/reducers/selectors/advertisementSelectors'
 
 const mockImages = [
     'https://picsum.photos/800/800?1',
@@ -33,9 +34,9 @@ export const AdvertisementPage = () => {
     const { id } = useParams({ from: '/advertisement/$id' })
     const navigate = useNavigate()
 
-    const [data, setData] = useState<Advertisement | null>(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    const dispatch = useAppDispatch()
+    const { data, isLoading, error } = useAppSelector(selectAdvertisementData)
+
     const [activeIndex, setActiveIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
 
@@ -53,26 +54,14 @@ export const AdvertisementPage = () => {
     }
 
     useEffect(() => {
-        const load = async () => {
-            try {
-                setLoading(true)
-                const res = await api.get(`/advertisement/${id}`)
-                setData(res.data)
-            } catch {
-                setError('Объявление не найдено')
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        load()
-    }, [id])
+        dispatch(fetchAdvertisementById(id))
+    }, [dispatch, id])
 
     useEffect(() => {
         setActiveIndex(0)
     }, [id])
 
-    if (loading) {
+    if (isLoading) {
         return <div className={styles.loader}>Загрузка...</div>
     }
 
@@ -125,6 +114,7 @@ export const AdvertisementPage = () => {
                         >
                             {formatReviewsCount(data.reviewsCount)}
                         </Button>
+
                         <Button
                             variant="wrapper"
                             className={clsx(styles.reviewsButton, styles.desktopOnly)}
