@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@/shared/ui/button'
 import styles from './ReviewsBlock.module.css'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { selectReviewsViewModel } from '@/store/reducers/selectors/reviewsSelectors'
 import { fetchReviews, createReview } from '@/store/reducers/reviews/reviewsThunks'
 import { setPage, resetReviews } from '@/store/reducers/reviews/reviewsSlice'
+import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
+import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
 
 type Props = {
     id: number
     initialCount?: number
+    onClose?: () => void
 }
 
 const PAGE_LIMIT = 5
@@ -21,8 +25,9 @@ const formatDate = (date: string) => {
     })
 }
 
-export const ReviewsBlock = ({ id }: Props) => {
+export const ReviewsBlock = ({ id, onClose }: Props) => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const { items, page, total, isLoading, createLoading, createError, hasMore } =
         useAppSelector(selectReviewsViewModel)
@@ -58,8 +63,26 @@ export const ReviewsBlock = ({ id }: Props) => {
 
     return (
         <div className={styles.wrapper}>
-            <h2 className={styles.title}>Отзывы о товаре ({total})</h2>
+            <div className={styles.headerTop}>
+                <Button
+                    variant="wrapper"
+                    className={styles.backButton}
+                    onClick={() =>
+                        navigate({
+                            to: '/advertisement/$id',
+                            params: { id: id.toString() },
+                        })
+                    }
+                >
+                    <LeftArrow width={12} height={20} />
+                </Button>
 
+                <h2 className={styles.title}>Отзывы о товаре ({total})</h2>
+
+                <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>
+                    <CloseIcon width={30} height={30} />
+                </Button>
+            </div>
             <div className={styles.form}>
                 <div className={styles.formTitle}>Добавить отзыв</div>
 
@@ -96,12 +119,11 @@ export const ReviewsBlock = ({ id }: Props) => {
                                 <div className={styles.date}>{formatDate(review.createdAt)}</div>
                             </div>
                         </div>
-
+                        <div className={styles.commentLabel}>Комментарий</div>
                         <div className={styles.text}>{review.text}</div>
                     </div>
                 ))}
             </div>
-
             {hasMore && (
                 <Button className={styles.loadMore} onClick={handleLoadMore} disabled={isLoading}>
                     {isLoading ? 'Загрузка...' : 'Показать ещё'}

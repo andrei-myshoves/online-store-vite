@@ -145,7 +145,7 @@ export const AdvertisementPage = () => {
 
             {isReviewsOpen && (
                 <Modal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)}>
-                    <ReviewsBlock id={data.id} initialCount={data.reviewsCount} />
+                    <ReviewsBlock id={data.id} onClose={() => setIsReviewsOpen(false)} />
                 </Modal>
             )}
         </div>
