@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@/shared/ui/button'
 import styles from './ReviewsBlock.module.css'
@@ -8,10 +8,10 @@ import { fetchReviews, createReview } from '@/store/reducers/reviews/reviewsThun
 import { setPage, resetReviews } from '@/store/reducers/reviews/reviewsSlice'
 import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
+import { ReviewForm } from './ReviewForm/ReviewForm'
 
 type Props = {
     id: number
-    initialCount?: number
     onClose?: () => void
 }
 
@@ -32,13 +32,22 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
     const { items, page, total, isLoading, createLoading, createError, hasMore } =
         useAppSelector(selectReviewsViewModel)
 
-    const [text, setText] = useState('')
-
     useEffect(() => {
         dispatch(resetReviews())
-        dispatch(fetchReviews({ advertisementId: id, page: 1, limit: PAGE_LIMIT }))
         dispatch(setPage(1))
+        dispatch(fetchReviews({ advertisementId: id, page: 1, limit: PAGE_LIMIT }))
     }, [dispatch, id])
+
+    const handleBack = () => {
+        if (onClose) {
+            onClose()
+        } else {
+            navigate({
+                to: '/advertisement/$id',
+                params: { id: id.toString() },
+            })
+        }
+    }
 
     const handleLoadMore = () => {
         const nextPage = page + 1
@@ -46,60 +55,33 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
         dispatch(fetchReviews({ advertisementId: id, page: nextPage, limit: PAGE_LIMIT }))
     }
 
-    const handleSubmit = async () => {
-        if (!text.trim()) return
-
-        const result = await dispatch(
+    const handleSubmit = async (text: string) => {
+        await dispatch(
             createReview({
                 advertisementId: id,
                 text,
             })
         )
-
-        if (createReview.fulfilled.match(result)) {
-            setText('')
-        }
     }
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.headerTop}>
-                <Button
-                    variant="wrapper"
-                    className={styles.backButton}
-                    onClick={() =>
-                        navigate({
-                            to: '/advertisement/$id',
-                            params: { id: id.toString() },
-                        })
-                    }
-                >
+                <Button variant="wrapper" className={styles.backButton} onClick={handleBack}>
                     <LeftArrow width={12} height={20} />
                 </Button>
 
                 <h2 className={styles.title}>Отзывы о товаре ({total})</h2>
 
-                <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>
-                    <CloseIcon width={30} height={30} />
-                </Button>
+                {onClose && (
+                    <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>
+                        <CloseIcon width={24} height={24} />
+                    </Button>
+                )}
             </div>
-            <div className={styles.form}>
-                <div className={styles.formTitle}>Добавить отзыв</div>
 
-                <textarea
-                    className={styles.textarea}
-                    value={text}
-                    onChange={e => setText(e.target.value)}
-                    placeholder="Введите отзыв"
-                    disabled={createLoading}
-                />
+            <ReviewForm loading={createLoading} error={createError} onSubmit={handleSubmit} />
 
-                {createError && <div className={styles.error}>{createError}</div>}
-
-                <Button className={styles.formButton} onClick={handleSubmit} disabled={!text.trim() || createLoading}>
-                    {createLoading ? 'Публикация...' : 'Опубликовать'}
-                </Button>
-            </div>
             {items.length === 0 && !isLoading && <div className={styles.empty}>Пока нет отзывов</div>}
 
             <div className={styles.list}>
@@ -119,11 +101,13 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
                                 <div className={styles.date}>{formatDate(review.createdAt)}</div>
                             </div>
                         </div>
+
                         <div className={styles.commentLabel}>Комментарий</div>
                         <div className={styles.text}>{review.text}</div>
                     </div>
                 ))}
             </div>
+
             {hasMore && (
                 <Button className={styles.loadMore} onClick={handleLoadMore} disabled={isLoading}>
                     {isLoading ? 'Загрузка...' : 'Показать ещё'}
