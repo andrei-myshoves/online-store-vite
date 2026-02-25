@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { Review } from '@/entities/advertisement/models/types'
-import { fetchReviews } from './reviewsThunks'
+import { fetchReviews, createReview } from './reviewsThunks'
 
 interface ReviewsState {
     items: Review[]
     page: number
     total: number
     isLoading: boolean
+    createLoading: boolean
     error: string | null
+    createError: string | null
 }
 
 const initialState: ReviewsState = {
@@ -16,6 +18,8 @@ const initialState: ReviewsState = {
     total: 0,
     isLoading: false,
     error: null,
+    createLoading: false,
+    createError: null,
 }
 
 export const reviewsSlice = createSlice({
@@ -51,6 +55,20 @@ export const reviewsSlice = createSlice({
             .addCase(fetchReviews.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload ?? 'Ошибка'
+            })
+            .addCase(createReview.pending, state => {
+                state.createLoading = true
+                state.createError = null
+            })
+            .addCase(createReview.fulfilled, (state, action) => {
+                state.createLoading = false
+
+                state.items.unshift(action.payload)
+                state.total += 1
+            })
+            .addCase(createReview.rejected, (state, action) => {
+                state.createLoading = false
+                state.createError = action.payload ?? 'Ошибка'
             })
     },
 })
