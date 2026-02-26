@@ -7,10 +7,6 @@ export const getSellerProfile = async (req: Request, res: Response, next: NextFu
     try {
         const sellerId = Number(req.params.sellerId)
 
-        if (isNaN(sellerId)) {
-            throw ApiError.badRequest('Invalid seller id')
-        }
-
         const seller = await User.findByPk(sellerId, {
             attributes: ['id', 'username', 'city', 'createdAt', 'avatar'],
         })
@@ -23,7 +19,7 @@ export const getSellerProfile = async (req: Request, res: Response, next: NextFu
             where: { userId: sellerId },
         })
 
-        return res.status(200).json({
+        return res.json({
             id: seller.id,
             name: seller.username,
             city: seller.city,
