@@ -32,3 +32,42 @@ export const getSellerProfile = async (req: Request, res: Response, next: NextFu
         return
     }
 }
+
+export const getSellerAdvertisements = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const sellerId = Number(req.params.sellerId)
+        const limit = Math.min(Number(req.query.limit ?? 10), 50)
+        const offset = Number(req.query.offset ?? 0)
+
+        const seller = await User.findByPk(sellerId)
+
+        if (!seller) {
+            throw ApiError.notFound('Seller not found')
+        }
+
+        const { rows, count } = await Advertisement.findAndCountAll({
+            where: { userId: sellerId },
+            attributes: ['id', 'name', 'price', 'images', 'createdAt'],
+            order: [['createdAt', 'DESC']],
+            limit,
+            offset,
+        })
+
+        const items = rows.map(ad => ({
+            id: ad.id,
+            title: ad.name,
+            price: ad.price,
+            city: seller.city,
+            createdAt: ad.createdAt,
+            image: ad.images?.[0] ?? null,
+        }))
+
+        return res.json({
+            items,
+            total: count,
+        })
+    } catch (error) {
+        next(error)
+        return
+    }
+}
