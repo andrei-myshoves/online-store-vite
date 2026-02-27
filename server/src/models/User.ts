@@ -4,6 +4,7 @@ import sequelize from '../db.js'
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>
     declare email: string
+    declare city: CreationOptional<string>
     declare password: string
     declare username: string
     declare role: CreationOptional<string>
@@ -23,6 +24,10 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
         password: {
             type: DataTypes.STRING,
