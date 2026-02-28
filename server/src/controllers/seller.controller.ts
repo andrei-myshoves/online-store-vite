@@ -48,7 +48,10 @@ export const getSellerAdvertisements = async (req: Request, res: Response, next:
         const { rows, count } = await Advertisement.findAndCountAll({
             where: { userId: sellerId },
             attributes: ['id', 'name', 'price', 'images', 'createdAt'],
-            order: [['createdAt', 'DESC']],
+            order: [
+                ['createdAt', 'DESC'],
+                ['id', 'DESC'],
+            ],
             limit,
             offset,
         })
