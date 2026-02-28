@@ -1,10 +1,17 @@
 import { Router } from 'express'
-import { getSellerProfile } from '@/controllers/seller.controller.js'
-import { validateParams } from '@/middleware/validate'
-import { sellerParamsSchema } from '@/schemas/seller.schemas'
+import { getSellerProfile, getSellerAdvertisements } from '@/controllers/seller.controller.js'
+import { validateParams, validateQuery } from '@/middleware/validate'
+import { sellerParamsSchema, sellerAdvertisementsQuerySchema } from '@/schemas/seller.schemas'
 
 const router = Router()
 
 router.get('/:sellerId', validateParams(sellerParamsSchema), getSellerProfile)
+
+router.get(
+    '/:sellerId/advertisements',
+    validateParams(sellerParamsSchema),
+    validateQuery(sellerAdvertisementsQuerySchema),
+    getSellerAdvertisements
+)
 
 export default router
