@@ -53,6 +53,15 @@ export const AdvertisementPage = () => {
         })
     }
 
+    const handleNavigateToSeller = () => {
+        if (!data) return
+
+        navigate({
+            to: '/seller/$id',
+            params: { id: data.userId.toString() },
+        })
+    }
+
     useEffect(() => {
         dispatch(fetchAdvertisementById(id))
     }, [dispatch, id])
@@ -131,7 +140,9 @@ export const AdvertisementPage = () => {
                     <div className={styles.seller}>
                         <div className={styles.avatar} />
                         <div>
-                            <div className={styles.sellerName}>Кирилл</div>
+                            <Button variant="wrapper" className={styles.sellerButton} onClick={handleNavigateToSeller}>
+                                <div className={styles.sellerName}>Кирилл</div>
+                            </Button>
                             <div className={styles.sellerMeta}>Продаёт товары с августа 2021</div>
                         </div>
                     </div>
