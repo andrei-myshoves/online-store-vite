@@ -1,4 +1,4 @@
-import { useParams } from '@tanstack/react-router'
+import { useParams, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
@@ -7,9 +7,11 @@ import styles from './SellerProfilePage.module.css'
 import { fetchSellerAdvertisements } from '@/store/reducers/seller/sellerThunks'
 import { fetchSellerProfile } from '@/store/reducers/seller/sellerThunks'
 import { AdvertisementCard } from '@/shared/ui/AdvertisementCard/AdvertisementCard'
+import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 
 export const SellerProfilePage = () => {
     const { id } = useParams({ from: '/seller/$id' })
+    const navigate = useNavigate()
 
     const dispatch = useAppDispatch()
 
@@ -35,7 +37,17 @@ export const SellerProfilePage = () => {
 
     return (
         <div className={styles.page}>
-            <AdvertisementTopBar />
+            <div className={styles.desktopTopBar}>
+                <AdvertisementTopBar />
+            </div>
+
+            <div className={styles.mobileHeader}>
+                <Button variant="wrapper" className={styles.backButton} onClick={() => navigate({ to: '/' })}>
+                    <LeftArrow width={12} height={20} />
+                </Button>
+
+                <div className={styles.mobileHeaderTitle}>Профиль продавца</div>
+            </div>
 
             <div className={styles.container}>
                 <h1 className={styles.title}>Профиль продавца</h1>
