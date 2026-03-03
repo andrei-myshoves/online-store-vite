@@ -14,6 +14,7 @@ export async function seedAdvertisements(users: User[]) {
                 slug: faker.helpers.slugify(faker.commerce.productName()) + '-' + faker.string.uuid(),
                 description: faker.commerce.productDescription(),
                 price: faker.number.int({ min: 100, max: 100_000 }),
+                city: faker.location.city(),
                 images: [faker.image.url()],
                 userId: String(user.id),
             })

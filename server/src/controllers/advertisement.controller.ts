@@ -7,12 +7,13 @@ export const createAdvertisement = async (req: Request, res: Response) => {
         throw ApiError.unauthorized()
     }
 
-    const { name, description, price } = req.body
+    const { name, description, price, city } = req.body
 
     const advertisement = await Advertisement.create({
         name,
         description,
         price,
+        city,
         userId: req.user.userId,
     })
 

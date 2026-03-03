@@ -6,6 +6,7 @@ interface AdvertisementAttributes {
     name: string
     description: string
     price: number
+    city: string
     images?: string[]
     userId: string
     reviewsCount: number
@@ -27,6 +28,7 @@ class Advertisement
     declare name: string
     declare description: string
     declare price: number
+    declare city: string
     declare images?: string[]
     declare userId: string
     declare reviewsCount: number
@@ -52,6 +54,10 @@ Advertisement.init(
         },
         price: {
             type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        city: {
+            type: DataTypes.STRING,
             allowNull: false,
         },
         images: {
