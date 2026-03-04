@@ -76,6 +76,20 @@
     font-weight: 500;
     margin-top: 32px;
 }
+.pageLoader {
+    width: 100%;
+    min-height: 60svh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loaderWrapper {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+}
 
 .productsGrid {
     display: grid;

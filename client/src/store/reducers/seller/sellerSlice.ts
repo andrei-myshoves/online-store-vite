@@ -6,7 +6,8 @@ interface SellerState {
     advertisements: any[]
     total: number
     page: number
-    isLoading: boolean
+    isProfileLoading: boolean
+    isAdvertisementsLoading: boolean
     error: string | null
 }
 
@@ -15,7 +16,8 @@ const initialState: SellerState = {
     advertisements: [],
     total: 0,
     page: 1,
-    isLoading: false,
+    isProfileLoading: false,
+    isAdvertisementsLoading: false,
     error: null,
 }
 
@@ -38,30 +40,30 @@ const sellerSlice = createSlice({
         builder
 
             .addCase(fetchSellerProfile.pending, state => {
-                state.isLoading = true
+                state.isProfileLoading = true
                 state.error = null
             })
             .addCase(fetchSellerProfile.fulfilled, (state, action) => {
                 state.profile = action.payload
-                state.isLoading = false
+                state.isProfileLoading = false
             })
             .addCase(fetchSellerProfile.rejected, (state, action) => {
-                state.isLoading = false
+                state.isProfileLoading = false
                 state.error = action.payload as string
             })
 
             .addCase(fetchSellerAdvertisements.pending, state => {
-                state.isLoading = true
+                state.isAdvertisementsLoading = true
                 state.error = null
             })
             .addCase(fetchSellerAdvertisements.fulfilled, (state, action) => {
                 state.advertisements = action.payload.items
                 state.total = action.payload.total
                 state.page = action.payload.page
-                state.isLoading = false
+                state.isAdvertisementsLoading = false
             })
             .addCase(fetchSellerAdvertisements.rejected, (state, action) => {
-                state.isLoading = false
+                state.isAdvertisementsLoading = false
                 state.error = action.payload as string
             })
     },

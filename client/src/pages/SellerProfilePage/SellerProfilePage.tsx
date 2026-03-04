@@ -4,26 +4,47 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import { Button } from '@/shared/ui/button'
 import styles from './SellerProfilePage.module.css'
-import { fetchSellerAdvertisements } from '@/store/reducers/seller/sellerThunks'
-import { fetchSellerProfile } from '@/store/reducers/seller/sellerThunks'
+import { fetchSellerAdvertisements, fetchSellerProfile } from '@/store/reducers/seller/sellerThunks'
 import { AdvertisementCard } from '@/shared/ui/AdvertisementCard/AdvertisementCard'
 import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
+import {
+    selectSellerProfile,
+    selectSellerAdvertisements,
+    selectSellerPage,
+    selectSellerProfileLoading,
+    selectSellerAdvertisementsLoading,
+    selectSellerError,
+} from '@/store/reducers/selectors/sellerSelectors'
+import { Loader } from '@/shared/ui/loader/Loader'
 
 export const SellerProfilePage = () => {
-    const { id } = useParams({ from: '/seller/$id' })
+    const params = useParams({ from: '/seller/$id' })
+    const id = params?.id ?? '1'
     const navigate = useNavigate()
-
     const dispatch = useAppDispatch()
 
-    const { profile, advertisements, page, isLoading, error } = useAppSelector(state => state.seller)
+    const profile = useAppSelector(selectSellerProfile)
+    const advertisements = useAppSelector(selectSellerAdvertisements)
+    const page = useAppSelector(selectSellerPage)
+    const isProfileLoading = useAppSelector(selectSellerProfileLoading)
+    const isAdvertisementsLoading = useAppSelector(selectSellerAdvertisementsLoading)
+    const error = useAppSelector(selectSellerError)
 
     useEffect(() => {
         dispatch(fetchSellerProfile(id))
-        dispatch(fetchSellerAdvertisements({ sellerId: id, page }))
     }, [dispatch, id])
 
-    if (isLoading) {
-        return <div className={styles.loader}>Загрузка...</div>
+    useEffect(() => {
+        dispatch(fetchSellerAdvertisements({ sellerId: id, page }))
+    }, [dispatch, id, page])
+
+    const isPageLoading = isProfileLoading || isAdvertisementsLoading
+    if (isPageLoading) {
+        return (
+            <div className={styles.pageLoader}>
+                <Loader />
+            </div>
+        )
     }
 
     if (error) {
@@ -33,7 +54,6 @@ export const SellerProfilePage = () => {
     if (!profile) {
         return <div className={styles.error}>Продавец не найден</div>
     }
-    console.log(advertisements)
 
     return (
         <div className={styles.page}>
@@ -66,9 +86,15 @@ export const SellerProfilePage = () => {
                 <h2 className={styles.productsTitle}>Товары продавца</h2>
 
                 <div className={styles.productsGrid}>
-                    {advertisements.map(item => (
-                        <AdvertisementCard key={item.id} item={item} />
-                    ))}
+                    {isAdvertisementsLoading ? (
+                        <div className={styles.loaderWrapper}>
+                            <Loader />
+                        </div>
+                    ) : advertisements.length > 0 ? (
+                        advertisements.map(item => <AdvertisementCard key={item.id} item={item} />)
+                    ) : (
+                        <div className={styles.empty}>У продавца пока нет товаров</div>
+                    )}{' '}
                 </div>
             </div>
         </div>
