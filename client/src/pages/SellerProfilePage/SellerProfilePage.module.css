@@ -5,13 +5,12 @@
 
 .mobileHeader {
     display: flex;
-    align-items: center;
     gap: 16px;
-    padding: 16px;
+    margin-top: 30px;
 }
 
 .mobileHeaderTitle {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 500;
 }
 .title {
@@ -21,6 +20,7 @@
 .backButton {
     display: flex;
     align-items: center;
+    color: var(--color-text-main);
 }
 
 .desktopTopBar {
@@ -30,53 +30,58 @@
 .profileBlock {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 16px;
-    margin-bottom: 32px;
+    gap: 10px;
+    margin-top: 30px;
 }
 
 .profileInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: contents;
 }
 .avatar {
+    margin-top: 30px;
     width: 96px;
     height: 96px;
     border-radius: 50%;
     background: #e5e5e5;
+    order: 4;
+    align-self: center;
 }
 
 .name {
     font-size: 16px;
     font-weight: 600;
+    order: 1;
 }
 
 .city {
     font-size: 14px;
     color: #666;
+    order: 2;
 }
 
 .meta {
     font-size: 12px;
     color: #999;
+    order: 3;
 }
 
 .phoneButton {
-    margin-top: 8px;
+    margin-top: 30px;
+    order: 5;
+    align-self: center;
 }
 
 .productsTitle {
     font-size: 18px;
     font-weight: 500;
-    margin-bottom: 16px;
+    margin-top: 32px;
 }
 
 .productsGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    margin-top: 16px;
 }
 
 @media (width >= 1248px) {
@@ -87,25 +92,33 @@
     .desktopTopBar {
         display: block;
     }
-    .name {
-        padding-top: 6px;
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .city {
-        font-size: 16px;
-    }
-
-    .meta {
-        font-size: 16px;
-    }
-
     .profileBlock {
         flex-direction: row;
         align-items: flex-start;
         text-align: left;
         gap: 24px;
+    }
+
+    .profileInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .name {
+        padding-top: 6px;
+        font-size: 20px;
+        font-weight: 600;
+        order: 0;
+    }
+
+    .city {
+        font-size: 16px;
+        order: 0;
+    }
+
+    .meta {
+        font-size: 16px;
+        order: 0;
     }
 
     .title {
@@ -115,6 +128,7 @@
     .avatar {
         width: 170px;
         height: 170px;
+        order: 0;
     }
 
     .productsTitle {
@@ -123,7 +137,9 @@
     }
 
     .phoneButton {
+        padding: 10px 37px;
         margin-top: 30px;
+        order: 0;
     }
 
     .productsGrid {
