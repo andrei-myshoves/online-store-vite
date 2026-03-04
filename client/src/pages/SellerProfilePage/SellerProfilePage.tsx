@@ -59,11 +59,10 @@ export const SellerProfilePage = () => {
                         <div className={styles.name}>{profile.username}</div>
                         <div className={styles.city}>{profile.city}</div>
                         <div className={styles.meta}>Продаёт товары с августа 2021</div>
-
-                        <Button className={styles.phoneButton}>Показать телефон</Button>
                     </div>
-                </div>
 
+                    <Button className={styles.phoneButton}>Показать телефон</Button>
+                </div>
                 <h2 className={styles.productsTitle}>Товары продавца</h2>
 
                 <div className={styles.productsGrid}>
