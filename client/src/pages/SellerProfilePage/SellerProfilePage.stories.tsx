@@ -3,16 +3,14 @@ import { Provider } from 'react-redux'
 import { setupStore } from '@/store/store'
 import { SellerProfilePage } from './SellerProfilePage'
 
-import { createRoute, createRouter, RouterProvider, createMemoryHistory } from '@tanstack/react-router'
-
-import { rootRoute } from '@/app/router/rootRoute'
-
 const store = setupStore({
     seller: {
         profile: {
             id: '1',
             username: 'Bert',
             city: 'West Rosina',
+            avatar: null,
+            createdAt: '2021-08-01',
         },
         advertisements: [
             {
@@ -57,33 +55,19 @@ const store = setupStore({
 })
 
 const originalDispatch = store.dispatch
+
 store.dispatch = (action: any) => {
     if (typeof action === 'function') return null
     return originalDispatch(action)
 }
 
-const sellerRoute = createRoute({
-    getParentRoute: () => rootRoute,
-    path: '/seller/$id',
-    component: SellerProfilePage,
-})
-
-const routeTree = rootRoute.addChildren([sellerRoute])
-
-const router = createRouter({
-    routeTree,
-    history: createMemoryHistory({
-        initialEntries: ['/seller/1'],
-    }),
-})
-
 const meta: Meta<typeof SellerProfilePage> = {
     title: 'Pages/SellerProfilePage',
     component: SellerProfilePage,
     decorators: [
-        () => (
+        Story => (
             <Provider store={store}>
-                <RouterProvider router={router} />
+                <Story />
             </Provider>
         ),
     ],
