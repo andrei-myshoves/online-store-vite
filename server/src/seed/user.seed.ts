@@ -9,6 +9,7 @@ export async function seedUsers(count = 50) {
             email: faker.internet.email(),
             password: faker.internet.password(),
             username: faker.person.firstName(),
+            city: faker.location.city(),
             role: 'USER',
         })
     }

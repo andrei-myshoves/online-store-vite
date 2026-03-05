@@ -23,6 +23,13 @@ export const createAdvertisementSchema = z.object({
             error: issue => (typeof issue.input === 'number' ? undefined : 'Price must be a number'),
         })
         .positive('Price must be greater than 0'),
+    city: z
+        .string({
+            error: issue => (issue.input === undefined ? 'City is required' : 'City must be a string'),
+        })
+        .trim()
+        .min(2, 'City must be at least 2 characters')
+        .max(100, 'City must be at most 100 characters'),
 })
 
 // PATCH /api/advertisement/:id
@@ -50,6 +57,14 @@ export const updateAdvertisementSchema = z.object({
             error: () => 'Price must be a number',
         })
         .positive('Price must be greater than 0')
+        .optional(),
+    city: z
+        .string({
+            error: () => 'City must be a string',
+        })
+        .trim()
+        .min(2, 'City must be at least 2 characters')
+        .max(100, 'City must be at most 100 characters')
         .optional(),
 })
 

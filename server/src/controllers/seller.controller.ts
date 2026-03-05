@@ -21,7 +21,7 @@ export const getSellerProfile = async (req: Request, res: Response, next: NextFu
 
         return res.json({
             id: seller.id,
-            name: seller.username,
+            username: seller.username,
             city: seller.city,
             registeredAt: seller.createdAt,
             avatar: seller.avatar,
@@ -58,11 +58,11 @@ export const getSellerAdvertisements = async (req: Request, res: Response, next:
 
         const items = rows.map(ad => ({
             id: ad.id,
-            title: ad.name,
+            name: ad.name,
             price: ad.price,
-            city: seller.city,
+            city: ad.city,
             createdAt: ad.createdAt,
-            image: ad.images?.[0] ?? null,
+            images: ad.images ?? [],
         }))
 
         return res.json({
