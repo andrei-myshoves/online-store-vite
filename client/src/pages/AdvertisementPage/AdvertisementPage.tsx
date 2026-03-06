@@ -31,7 +31,8 @@ const formatReviewsCount = (count = 0) => {
 }
 
 export const AdvertisementPage = () => {
-    const { id } = useParams({ from: '/advertisement/$id' })
+    const params = useParams({ from: '/advertisement/$id' })
+    const id = params?.id ?? '1'
     const navigate = useNavigate()
 
     const dispatch = useAppDispatch()
