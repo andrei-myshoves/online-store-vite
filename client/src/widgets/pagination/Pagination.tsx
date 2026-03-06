@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import styles from './Pagination.module.css'
 import { Button } from '@/shared/ui/button/Button'
 
@@ -8,21 +9,21 @@ type Props = {
     onChange: (page: number) => void
 }
 
+const VISIBLE_PAGES = 5
+
 export const Pagination = ({ page, total, limit, onChange }: Props) => {
     const totalPages = Math.ceil(total / limit)
 
+    const pages = useMemo(() => {
+        if (totalPages <= 1) return []
+
+        const start = Math.max(1, page - 2)
+        const end = Math.min(totalPages, start + VISIBLE_PAGES - 1)
+
+        return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+    }, [page, totalPages])
+
     if (totalPages <= 1) return null
-
-    const visiblePages = 5
-
-    const start = Math.max(1, page - 2)
-    const end = Math.min(totalPages, start + visiblePages - 1)
-
-    const pages = []
-
-    for (let i = start; i <= end; i++) {
-        pages.push(i)
-    }
 
     return (
         <div className={styles.pagination}>
@@ -36,7 +37,7 @@ export const Pagination = ({ page, total, limit, onChange }: Props) => {
                 <Button
                     key={p}
                     className={styles.pageButton}
-                    variant={p === page ? 'primary' : 'outline'}
+                    variant={page === p ? 'primary' : 'outline'}
                     onClick={() => onChange(p)}
                 >
                     {p}
