@@ -13,21 +13,41 @@ export const Pagination = ({ page, total, limit, onChange }: Props) => {
 
     if (totalPages <= 1) return null
 
+    const visiblePages = 5
+
+    const start = Math.max(1, page - 2)
+    const end = Math.min(totalPages, start + visiblePages - 1)
+
+    const pages = []
+
+    for (let i = start; i <= end; i++) {
+        pages.push(i)
+    }
+
     return (
         <div className={styles.pagination}>
-            {Array.from({ length: totalPages }, (_, i) => {
-                const pageNumber = i + 1
+            {page > 1 && (
+                <Button className={styles.pageButton} variant="outline" onClick={() => onChange(page - 1)}>
+                    ←
+                </Button>
+            )}
 
-                return (
-                    <Button
-                        key={pageNumber}
-                        variant={page === pageNumber ? 'primary' : 'outline'}
-                        onClick={() => onChange(pageNumber)}
-                    >
-                        {pageNumber}
-                    </Button>
-                )
-            })}
+            {pages.map(p => (
+                <Button
+                    key={p}
+                    className={styles.pageButton}
+                    variant={p === page ? 'primary' : 'outline'}
+                    onClick={() => onChange(p)}
+                >
+                    {p}
+                </Button>
+            ))}
+
+            {page < totalPages && (
+                <Button className={styles.pageButton} variant="outline" onClick={() => onChange(page + 1)}>
+                    →
+                </Button>
+            )}
         </div>
     )
 }
