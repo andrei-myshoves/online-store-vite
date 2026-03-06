@@ -1,0 +1,159 @@
+.page {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobileHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 30px;
+    padding-left: 0;
+}
+
+.mobileHeaderTitle {
+    font-size: 24px;
+    font-weight: 500;
+}
+.title {
+    display: none;
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-main);
+}
+
+.desktopTopBar {
+    display: none;
+}
+
+.profileBlock {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    margin-top: 30px;
+}
+
+.profileInfo {
+    display: grid;
+    grid-row: 1;
+    gap: 5px;
+}
+.avatar {
+    margin-top: 30px;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--color-bg-app);
+    justify-self: center;
+}
+
+.name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.city {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.meta {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.phoneButton {
+    margin-top: 30px;
+    justify-self: center;
+    padding: 10px 78px;
+}
+
+.productsTitle {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 32px;
+}
+.pageLoader {
+    width: 100%;
+    min-height: 60svh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loaderWrapper {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+}
+
+.productsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+@media (width >= 1248px) {
+    .mobileHeader {
+        display: none;
+    }
+
+    .desktopTopBar {
+        display: block;
+    }
+    .profileBlock {
+        grid-template-columns: auto 1fr;
+        column-gap: 50px;
+        align-items: start;
+    }
+
+    .profileInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .name {
+        padding-top: 6px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .city {
+        font-size: 16px;
+    }
+
+    .meta {
+        font-size: 16px;
+    }
+
+    .title {
+        font-size: 40px;
+    }
+
+    .avatar {
+        margin-top: 0;
+        width: 170px;
+        height: 170px;
+        grid-row: 1 / 4;
+    }
+
+    .productsTitle {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    .phoneButton {
+        padding: 10px 37px;
+        justify-self: start;
+    }
+
+    .productsGrid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+}
