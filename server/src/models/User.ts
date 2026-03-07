@@ -7,6 +7,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare city: CreationOptional<string>
     declare password: string
     declare username: string
+    declare lastName: CreationOptional<string>
+    declare phone: CreationOptional<string>
     declare role: CreationOptional<string>
     declare avatar: CreationOptional<string>
     declare createdAt: CreationOptional<Date>
@@ -51,6 +53,15 @@ User.init(
             allowNull: false,
         },
         avatar: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        phone: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+
+        lastName: {
             type: DataTypes.STRING,
             allowNull: true,
         },
