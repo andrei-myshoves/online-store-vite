@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 const nameRegex = /^[A-Za-zА-Яа-яЁё\s-]+$/
 
-export const updateUserSchema = z.object({
+export const updateProfileSchema = z.object({
     username: z
         .string()
         .trim()
