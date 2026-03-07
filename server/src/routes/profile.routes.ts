@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { authMiddleware } from '@/middleware/authMiddleware.js'
-import { getCurrentUser } from '../controllers/user.controller.js'
-
+import { getProfile } from '../controllers/profile.controller'
 const router = Router()
 
-router.get('/me', authMiddleware, getCurrentUser)
+router.get('/:id', authMiddleware, getProfile)
 
 export default router
