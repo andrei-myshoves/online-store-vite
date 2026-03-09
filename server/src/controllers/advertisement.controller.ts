@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import { ApiError } from '../error/ApiError.js'
 import Advertisement from '@/models/Advertisement.js'
+import { TypedQueryRequest } from '@/middleware/withTypedQuery.js'
+import User from '@/models/User'
+import { GetAdvertisementsQuery } from '@/schemas/advertisement.schema.js'
 
 export const createAdvertisement = async (req: Request, res: Response) => {
     if (!req.user) {
@@ -20,20 +23,30 @@ export const createAdvertisement = async (req: Request, res: Response) => {
     res.status(201).json(advertisement)
 }
 
-export const getAdvertisements = async (req: Request, res: Response, next: NextFunction) => {
+export const getAdvertisements = async (
+    req: TypedQueryRequest<GetAdvertisementsQuery>,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        const { limit, offset } = req.query as unknown as {
-            limit: number
-            offset: number
+        const { limit, offset, userId } = req.query
+
+        let where = undefined
+
+        if (userId) {
+            const user = await User.findByPk(userId)
+
+            if (user) {
+                where = { userId }
+            }
         }
 
-        const items = await Advertisement.findAll({
+        const { rows: items, count: total } = await Advertisement.findAndCountAll({
+            where,
             limit,
             offset,
             order: [['createdAt', 'DESC']],
         })
-
-        const total = await Advertisement.count()
 
         res.status(200).json({
             items,
@@ -43,7 +56,6 @@ export const getAdvertisements = async (req: Request, res: Response, next: NextF
         })
     } catch (err) {
         next(err)
-        return
     }
 }
 
