@@ -84,7 +84,17 @@ export const getAdvertisementsQuerySchema = z.object({
         })
         .min(0, 'Offset must be at least 0')
         .default(0),
+
+    userId: z.coerce
+        .number({
+            error: () => 'UserId must be a number',
+        })
+        .int()
+        .positive('UserId must be a positive number')
+        .optional(),
 })
+
+export type GetAdvertisementsQuery = z.infer<typeof getAdvertisementsQuerySchema>
 
 export const advertisementIdParamSchema = z.object({
     id: z.string().regex(/^\d+$/, 'id must be a number'),
