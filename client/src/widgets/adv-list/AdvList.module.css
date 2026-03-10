@@ -1,14 +1,36 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text-main);
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+}
 
-    align-items: start;
+.empty {
+    color: var(--color-text-secondary);
+    font-size: 14px;
 }
 
 @media (width >= 1024px) {
     .grid {
         grid-template-columns: repeat(auto-fill, 240px);
         gap: 26px;
+    }
+    .title {
+        font-size: 32px;
+    }
+    .empty {
+        font-size: 28px;
     }
 }

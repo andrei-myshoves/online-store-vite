@@ -3,12 +3,13 @@ import { AdvertisementCard } from '@/shared/ui/AdvertisementCard/AdvertisementCa
 import type { Advertisement } from '@/entities/advertisement/models/types'
 
 type Props = {
+    title?: string
     items: Advertisement[]
     loading: boolean
     error?: string | null
 }
 
-export const AdvList = ({ items, loading, error }: Props) => {
+export const AdvList = ({ title, items, loading, error }: Props) => {
     if (loading && items.length === 0) {
         return <div>Загрузка...</div>
     }
@@ -18,14 +19,23 @@ export const AdvList = ({ items, loading, error }: Props) => {
     }
 
     if (!items.length) {
-        return <div>Ничего не найдено</div>
+        return (
+            <section className={styles.wrapper}>
+                {title && <h3 className={styles.title}>{title}</h3>}
+                <div className={styles.empty}>Ничего не найдено</div>
+            </section>
+        )
     }
 
     return (
-        <section className={styles.grid}>
-            {items.map(item => (
-                <AdvertisementCard key={item.id} item={item} />
-            ))}
+        <section className={styles.wrapper}>
+            {title && <h3 className={styles.title}>{title}</h3>}
+
+            <div className={styles.grid}>
+                {items.map(item => (
+                    <AdvertisementCard key={item.id} item={item} />
+                ))}
+            </div>
         </section>
     )
 }
