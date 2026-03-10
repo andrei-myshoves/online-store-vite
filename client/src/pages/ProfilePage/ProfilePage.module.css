@@ -1,0 +1,11 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media (width >= 1248px) {
+    .page {
+        align-items: flex-start;
+    }
+}
