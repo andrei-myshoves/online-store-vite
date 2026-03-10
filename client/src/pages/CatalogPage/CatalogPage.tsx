@@ -1,5 +1,5 @@
 import styles from './CatalogPage.module.css'
-import { AdvList } from '@/widgets/adv-list/AdvList'
+import { AdvertisementsList } from '@/widgets/AdvertisementsList/AdvertisementsList'
 import { Pagination } from '@/widgets/pagination/Pagination'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
@@ -19,7 +19,7 @@ export const CatalogPage = () => {
 
     return (
         <div className={styles.page}>
-            <AdvList items={items} loading={isLoading} error={error} />
+            <AdvertisementsList items={items} loading={isLoading} error={error} />
 
             <Pagination page={page} limit={LIMIT} total={total} onChange={p => dispatch(setPage(p))} />
         </div>
