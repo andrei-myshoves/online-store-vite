@@ -1,0 +1,78 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.greeting {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.profileBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.avatarBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #e5e5e5;
+}
+
+.changeAvatar {
+    font-size: 14px;
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.saveButton {
+    margin-top: 6px;
+    width: 180px;
+}
+
+@media (width >= 1248px) {
+    .profileBlock {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 32px;
+    }
+
+    .avatarBlock {
+        align-items: center;
+    }
+
+    .form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .city {
+        grid-column: span 2;
+    }
+
+    .phone {
+        grid-column: span 2;
+    }
+}

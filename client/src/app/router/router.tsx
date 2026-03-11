@@ -4,11 +4,18 @@ import { CatalogPage } from '@/pages/CatalogPage/CatalogPage'
 import { AdvertisementPage } from '@/pages/AdvertisementPage/AdvertisementPage'
 import { ReviewsPage } from '@/pages/ReviewsPage/ReviewsPage'
 import { SellerProfilePage } from '@/pages/SellerProfilePage/SellerProfilePage'
+import { ProfilePage } from '@/pages/ProfilePage/ProfilePage'
 
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
     component: CatalogPage,
+})
+
+const profilePage = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/profile',
+    component: ProfilePage,
 })
 
 const advertisementRoute = createRoute({
@@ -29,7 +36,7 @@ const sellerRoute = createRoute({
     component: SellerProfilePage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, advertisementRoute, reviewsRoute, sellerRoute])
+const routeTree = rootRoute.addChildren([indexRoute, profilePage, advertisementRoute, reviewsRoute, sellerRoute])
 
 export const router = createRouter({ routeTree })
 
