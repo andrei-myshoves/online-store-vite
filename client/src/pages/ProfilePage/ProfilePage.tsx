@@ -25,16 +25,13 @@ export const ProfilePage = () => {
     if (error) {
         return <div>{error}</div>
     }
-    if (!profile) {
-        return null
-    }
 
     return (
         <div className={styles.wrapper}>
             <AdvertisementTopBar />
 
             <div className={styles.page}>
-                <ProfileSettings profile={profile} />
+                {profile && <ProfileSettings profile={profile} />}
 
                 <AdvertisementsList title="Мои товары" items={[]} loading={false} error={null} />
             </div>

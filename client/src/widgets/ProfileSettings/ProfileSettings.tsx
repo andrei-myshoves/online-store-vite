@@ -8,7 +8,7 @@ import {
     changePhone,
     enableProfileEditing,
 } from '@/store/reducers/profile/profileSlice'
-
+import { selectIsEditingProfile } from '@/store/reducers/selectors/profileSelectors'
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
 
@@ -19,7 +19,7 @@ type Props = {
 export const ProfileSettings = ({ profile }: Props) => {
     const dispatch = useAppDispatch()
 
-    const isEditingProfile = useAppSelector(state => state.profile.isEditingProfile)
+    const isEditingProfile = useAppSelector(selectIsEditingProfile)
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(changeUsername(e.target.value))
