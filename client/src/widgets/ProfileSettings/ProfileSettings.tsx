@@ -1,31 +1,49 @@
-import { useState, useEffect } from 'react'
-import { Input } from '@/shared/ui/input'
-import { Button } from '@/shared/ui/button'
+import { Input } from '@/shared/ui/input/Input'
+import { Button } from '@/shared/ui/button/Button'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import {
+    changeUsername,
+    changeLastName,
+    changeCity,
+    changePhone,
+    enableProfileEditing,
+} from '@/store/reducers/profile/profileSlice'
+
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
 
 type Props = {
-    profile: Profile | null
+    profile: Profile
 }
 
 export const ProfileSettings = ({ profile }: Props) => {
-    const [username, setUsername] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [city, setCity] = useState('')
-    const [phone, setPhone] = useState('')
+    const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        if (profile) {
-            setUsername(profile.username ?? '')
-            setLastName(profile.lastName ?? '')
-            setCity(profile.city ?? '')
-            setPhone(profile.phone ?? '')
-        }
-    }, [profile])
+    const isEditingProfile = useAppSelector(state => state.profile.isEditingProfile)
+
+    const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(changeUsername(e.target.value))
+    }
+
+    const onChangeLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(changeLastName(e.target.value))
+    }
+
+    const onChangeCity = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(changeCity(e.target.value))
+    }
+
+    const onChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(changePhone(e.target.value))
+    }
+
+    const handleEnableEdit = () => {
+        dispatch(enableProfileEditing())
+    }
 
     return (
         <section className={styles.wrapper}>
-            <h1 className={styles.greeting}>Здравствуйте, {username}!</h1>
+            <h1 className={styles.greeting}>Здравствуйте, {profile.username}!</h1>
 
             <h2 className={styles.title}>Настройки профиля</h2>
 
@@ -36,25 +54,43 @@ export const ProfileSettings = ({ profile }: Props) => {
                 </div>
 
                 <div className={styles.form}>
-                    <Input placeholder="Имя" value={username} onChange={e => setUsername(e.target.value)} />
+                    <Input
+                        placeholder="Имя"
+                        value={profile.username}
+                        onChange={onChangeUsername}
+                        disabled={!isEditingProfile}
+                    />
 
-                    <Input placeholder="Фамилия" value={lastName} onChange={e => setLastName(e.target.value)} />
+                    <Input
+                        placeholder="Фамилия"
+                        value={profile.lastName ?? ''}
+                        onChange={onChangeLastName}
+                        disabled={!isEditingProfile}
+                    />
 
                     <Input
                         className={styles.city}
                         placeholder="Город"
-                        value={city}
-                        onChange={e => setCity(e.target.value)}
+                        value={profile.city ?? ''}
+                        onChange={onChangeCity}
+                        disabled={!isEditingProfile}
                     />
 
                     <Input
                         className={styles.phone}
                         placeholder="Телефон"
-                        value={phone}
-                        onChange={e => setPhone(e.target.value)}
+                        value={profile.phone ?? ''}
+                        onChange={onChangePhone}
+                        disabled={!isEditingProfile}
                     />
 
-                    <Button className={styles.saveButton}>Сохранить</Button>
+                    {!isEditingProfile ? (
+                        <Button className={styles.saveButton} onClick={handleEnableEdit}>
+                            Изменить данные
+                        </Button>
+                    ) : (
+                        <Button className={styles.saveButton}>Сохранить</Button>
+                    )}
                 </div>
             </div>
         </section>

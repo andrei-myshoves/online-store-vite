@@ -25,6 +25,9 @@ export const ProfilePage = () => {
     if (error) {
         return <div>{error}</div>
     }
+    if (!profile) {
+        return null
+    }
 
     return (
         <div className={styles.wrapper}>
