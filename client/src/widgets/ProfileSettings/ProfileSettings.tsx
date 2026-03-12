@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
+import { useAppDispatch } from '@/hooks/redux'
+import { updateProfile } from '@/store/reducers/profile/profileThunks'
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
 
@@ -9,6 +11,7 @@ type Props = {
 }
 
 export const ProfileSettings = ({ profile }: Props) => {
+    const dispatch = useAppDispatch()
     const [username, setUsername] = useState('')
     const [lastName, setLastName] = useState('')
     const [city, setCity] = useState('')
@@ -22,6 +25,17 @@ export const ProfileSettings = ({ profile }: Props) => {
             setPhone(profile.phone ?? '')
         }
     }, [profile])
+
+    const handleSubmit = () => {
+        dispatch(
+            updateProfile({
+                username,
+                lastName,
+                city,
+                phone,
+            })
+        )
+    }
 
     return (
         <section className={styles.wrapper}>
@@ -54,7 +68,9 @@ export const ProfileSettings = ({ profile }: Props) => {
                         onChange={e => setPhone(e.target.value)}
                     />
 
-                    <Button className={styles.saveButton}>Сохранить</Button>
+                    <Button className={styles.saveButton} onClick={handleSubmit}>
+                        Сохранить
+                    </Button>
                 </div>
             </div>
         </section>
