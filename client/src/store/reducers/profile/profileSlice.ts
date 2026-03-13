@@ -6,18 +6,44 @@ interface ProfileState {
     data: Profile | null
     isLoading: boolean
     error: string | null
+    isEditingProfile: boolean
 }
 
 const initialState: ProfileState = {
     data: null,
     isLoading: false,
     error: null,
+    isEditingProfile: false,
 }
 
 export const profileSlice = createSlice({
     name: 'profile',
     initialState,
-    reducers: {},
+    reducers: {
+        changeUsername: (state, action) => {
+            if (state.isEditingProfile && state.data) {
+                state.data.username = action.payload
+            }
+        },
+        changeLastName: (state, action) => {
+            if (state.isEditingProfile && state.data) {
+                state.data.lastName = action.payload
+            }
+        },
+        changeCity: (state, action) => {
+            if (state.isEditingProfile && state.data) {
+                state.data.city = action.payload
+            }
+        },
+        changePhone: (state, action) => {
+            if (state.isEditingProfile && state.data) {
+                state.data.phone = action.payload
+            }
+        },
+        enableProfileEditing: state => {
+            state.isEditingProfile = true
+        },
+    },
     extraReducers: builder => {
         builder
             .addCase(fetchProfile.pending, state => {
@@ -46,5 +72,7 @@ export const profileSlice = createSlice({
             })
     },
 })
+
+export const { changeUsername, changeLastName, changeCity, changePhone, enableProfileEditing } = profileSlice.actions
 
 export default profileSlice.reducer
