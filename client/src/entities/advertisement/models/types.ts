@@ -20,3 +20,14 @@ export type Review = {
         avatar: string | null
     }
 }
+
+export type Profile = {
+    id: number
+    username: string
+    lastName: string | null
+    email: string
+    city: string | null
+    phone: string | null
+    avatar: string | null
+    createdAt: string
+}
