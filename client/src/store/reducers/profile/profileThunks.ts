@@ -14,14 +14,21 @@ export const fetchProfile = createAsyncThunk<Profile, void, { rejectValue: strin
     }
 )
 
-export const updateProfile = createAsyncThunk<Profile, Partial<Profile>, { rejectValue: string }>(
-    'profile/updateProfile',
-    async (payload, { rejectWithValue }) => {
-        try {
-            const { data } = await api.patch('/profile/1', payload)
-            return data
-        } catch {
-            return rejectWithValue('Ошибка обновления профиля')
-        }
+export const updateProfile = createAsyncThunk<
+    Profile,
+    {
+        username: string
+        lastName: string | null
+        city: string | null
+        phone: string | null
+        avatar: string | null
+    },
+    { rejectValue: string }
+>('profile/updateProfile', async (payload, { rejectWithValue }) => {
+    try {
+        const { data } = await api.patch('/profile/1', payload)
+        return data
+    } catch {
+        return rejectWithValue('Ошибка обновления профиля')
     }
-)
+})

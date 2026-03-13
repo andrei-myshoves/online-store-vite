@@ -65,6 +65,7 @@ export const profileSlice = createSlice({
             .addCase(updateProfile.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.data = action.payload
+                state.isEditingProfile = false
             })
             .addCase(updateProfile.rejected, (state, action) => {
                 state.isLoading = false
