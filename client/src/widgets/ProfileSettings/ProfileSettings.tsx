@@ -21,16 +21,7 @@ export const ProfileSettings = ({ profile }: Props) => {
     const dispatch = useAppDispatch()
 
     const handleSave = () => {
-        console.log(profile)
-        dispatch(
-            updateProfile({
-                username: profile.username,
-                lastName: profile.lastName,
-                city: profile.city,
-                phone: profile.phone,
-                avatar: profile.avatar,
-            })
-        )
+        dispatch(updateProfile(profile))
     }
 
     const isEditingProfile = useAppSelector(selectIsEditingProfile)

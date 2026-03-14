@@ -4,13 +4,17 @@ import styles from './AuthForms.module.css'
 import { useState } from 'react'
 import { api } from '@/shared/api/api'
 import { useNavigate } from '@tanstack/react-router'
+import Cookies from 'js-cookie'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { setEmail, setPassword, setUsername } from '@/store/reducers/auth/authSlice'
 
 export const AuthForm = () => {
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const navigate = useNavigate()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
+    const dispatch = useAppDispatch()
+    const email = useAppSelector(state => state.auth.email)
+    const password = useAppSelector(state => state.auth.password)
+    const username = useAppSelector(state => state.auth.username)
 
     const handleModeChange = () => {
         setMode(mode === 'login' ? 'register' : 'login')
@@ -26,7 +30,7 @@ export const AuthForm = () => {
                     password,
                 })
 
-                localStorage.setItem('token', data.token)
+                Cookies.set('token', data.token)
 
                 navigate({ to: '/profile' })
             } else {
@@ -46,13 +50,18 @@ export const AuthForm = () => {
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.fields}>
-                <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                <Input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => dispatch(setEmail(e.target.value))}
+                />
 
                 <Input
                     type="password"
                     placeholder="Пароль"
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => dispatch(setPassword(e.target.value))}
                 />
 
                 {mode === 'register' && (
@@ -62,7 +71,7 @@ export const AuthForm = () => {
                             type="text"
                             placeholder="Username"
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={e => dispatch(setUsername(e.target.value))}
                         />
                         <Input type="text" placeholder="Фамилия (необязательно)" />
                         <Input type="text" placeholder="Город (необязательно)" />
