@@ -15,8 +15,10 @@ export const ProfilePage = () => {
     const error = useAppSelector(selectProfileError)
 
     useEffect(() => {
-        dispatch(fetchProfile())
-    }, [dispatch])
+        if (profile?.id) {
+            dispatch(fetchProfile(profile.id))
+        }
+    }, [dispatch, profile?.id])
 
     if (isLoading) {
         return <div>Загрузка профиля...</div>
