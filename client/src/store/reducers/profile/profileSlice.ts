@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { Profile } from '@/entities/advertisement/models/types'
-import { fetchProfile } from './profileThunks'
+import { fetchProfile, updateProfile } from './profileThunks'
 
 interface ProfileState {
     data: Profile | null
@@ -57,6 +57,19 @@ export const profileSlice = createSlice({
             .addCase(fetchProfile.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = (action.payload as string) ?? 'Ошибка'
+            })
+            .addCase(updateProfile.pending, state => {
+                state.isLoading = true
+                state.error = null
+            })
+            .addCase(updateProfile.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.data = action.payload
+                state.isEditingProfile = false
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.payload ?? 'Ошибка'
             })
     },
 })

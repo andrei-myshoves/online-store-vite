@@ -4,6 +4,7 @@ import advertisementReducer from '@/store/reducers/advertisement/advertisementSl
 import reviewsReducer from '@/store/reducers/reviews/reviewsSlice'
 import sellerReducer from '@/store/reducers/seller/sellerSlice'
 import profileReducer from '@/store/reducers/profile/profileSlice'
+import authReducer from './reducers/auth/authSlice'
 
 const rootReducer = combineReducers({
     catalog: catalogReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     reviews: reviewsReducer,
     seller: sellerReducer,
     profile: profileReducer,
+    auth: authReducer,
 })
 
 export const setupStore = (preloadedState?: Partial<RootState>) =>

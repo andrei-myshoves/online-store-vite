@@ -31,3 +31,11 @@ export type Profile = {
     avatar: string | null
     createdAt: string
 }
+
+export type UpdateProfileDto = {
+    username: string
+    lastName: string | null
+    city: string | null
+    phone: string | null
+    avatar: string | null
+}

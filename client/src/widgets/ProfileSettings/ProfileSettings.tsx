@@ -8,6 +8,7 @@ import {
     changePhone,
     enableProfileEditing,
 } from '@/store/reducers/profile/profileSlice'
+import { updateProfile } from '@/store/reducers/profile/profileThunks'
 import { selectIsEditingProfile } from '@/store/reducers/selectors/profileSelectors'
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
@@ -18,6 +19,10 @@ type Props = {
 
 export const ProfileSettings = ({ profile }: Props) => {
     const dispatch = useAppDispatch()
+
+    const handleSave = () => {
+        dispatch(updateProfile(profile))
+    }
 
     const isEditingProfile = useAppSelector(selectIsEditingProfile)
 
@@ -89,7 +94,9 @@ export const ProfileSettings = ({ profile }: Props) => {
                             Изменить данные
                         </Button>
                     ) : (
-                        <Button className={styles.saveButton}>Сохранить</Button>
+                        <Button className={styles.saveButton} onClick={handleSave}>
+                            Сохранить
+                        </Button>
                     )}
                 </div>
             </div>
