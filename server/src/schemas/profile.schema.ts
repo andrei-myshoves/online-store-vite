@@ -10,15 +10,23 @@ export const updateProfileSchema = z.object({
         .max(50)
         .regex(nameRegex, 'Username can contain only letters'),
 
-    lastName: z.string().trim().min(2).max(50).regex(nameRegex, 'Last name can contain only letters').optional(),
+    lastName: z
+        .string()
+        .trim()
+        .min(2)
+        .max(50)
+        .regex(nameRegex, 'Last name can contain only letters')
+        .nullable()
+        .optional(),
 
-    city: z.string().trim().min(2).max(100).regex(nameRegex, 'City can contain only letters').optional(),
+    city: z.string().trim().min(2).max(100).regex(nameRegex, 'City can contain only letters').nullable().optional(),
 
     phone: z
         .string()
         .trim()
         .regex(/^\+?[1-9]\d{7,14}$/, 'Invalid phone number')
+        .nullable()
         .optional(),
 
-    avatar: z.string().url().optional(),
+    avatar: z.string().url().nullable().optional(),
 })

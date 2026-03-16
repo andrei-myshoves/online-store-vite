@@ -7,7 +7,7 @@ import { sanitizeUser } from '../utils/sanitizeUser.js'
 import { ApiError } from '../error/ApiError.js'
 
 export const register = async (req: Request, res: Response): Promise<void> => {
-    const { email, password, username }: RegisterInput = req.body
+    const { email, password, username, lastName, city, phone }: RegisterInput = req.body
 
     if (!email || !password || !username) {
         throw ApiError.badRequest('Please provide email, password and username')
@@ -24,6 +24,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         email,
         password: hashedPassword,
         username,
+        lastName,
+        city,
+        phone,
     })
 
     const token = generateToken({

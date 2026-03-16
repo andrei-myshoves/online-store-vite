@@ -16,6 +16,9 @@ export interface RegisterInput {
     email: string
     password: string
     username: string
+    lastName?: string
+    city?: string
+    phone?: string
 }
 
 export interface LoginInput {
