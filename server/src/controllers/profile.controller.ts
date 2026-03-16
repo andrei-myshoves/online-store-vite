@@ -1,11 +1,18 @@
 import { Request, Response, NextFunction } from 'express'
 import User from '../models/User.js'
 
-export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const user = await User.findByPk(req.user!.userId, {
+        const id = Number(req.user!.userId)
+
+        const user = await User.findByPk(id, {
             attributes: ['id', 'username', 'lastName', 'email', 'city', 'phone', 'avatar', 'createdAt'],
         })
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found' })
+            return
+        }
 
         res.json(user)
     } catch (e) {
@@ -13,11 +20,18 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const user = await User.findByPk(req.user!.userId)
+        const id = Number(req.user!.userId)
 
-        await user!.update({
+        const user = await User.findByPk(id)
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found' })
+            return
+        }
+
+        await user.update({
             username: req.body.username,
             lastName: req.body.lastName,
             city: req.body.city,
@@ -26,14 +40,14 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
         })
 
         res.json({
-            id: user!.id,
-            username: user!.username,
-            lastName: user!.lastName,
-            email: user!.email,
-            city: user!.city,
-            phone: user!.phone,
-            avatar: user!.avatar,
-            createdAt: user!.createdAt,
+            id: user.id,
+            username: user.username,
+            lastName: user.lastName,
+            email: user.email,
+            city: user.city,
+            phone: user.phone,
+            avatar: user.avatar,
+            createdAt: user.createdAt,
         })
     } catch (e) {
         next(e)
