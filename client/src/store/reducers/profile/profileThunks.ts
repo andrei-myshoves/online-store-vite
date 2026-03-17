@@ -2,11 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '@/shared/api/api'
 import type { Profile } from '@/entities/advertisement/models/types'
 
-export const fetchProfile = createAsyncThunk<Profile, number, { rejectValue: string }>(
+export const fetchProfile = createAsyncThunk<Profile, void, { rejectValue: string }>(
     'profile/fetchProfile',
-    async (id, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            const { data } = await api.get(`/profile/${id}`)
+            const user = JSON.parse(localStorage.getItem('user') || '{}')
+            const userId = user.id
+
+            const { data } = await api.get(`/profile/${userId}`)
             return data
         } catch {
             return rejectWithValue('Ошибка загрузки профиля')

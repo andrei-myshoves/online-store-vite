@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import { ProfileSettings } from '@/widgets/ProfileSettings/ProfileSettings'
-import { AdvertisementsList } from '@/widgets/AdvertisementsList/AdvertisementsList'
 import { fetchProfile } from '@/store/reducers/profile/profileThunks'
 import { selectProfile, selectProfileLoading, selectProfileError } from '@/store/reducers/selectors/profileSelectors'
 import styles from './ProfilePage.module.css'
+import { ProfileAdvertisements } from '@/widgets/ProfileAdvertisements/ProfileAdvertisements'
 
 export const ProfilePage = () => {
     const dispatch = useAppDispatch()
@@ -15,10 +15,8 @@ export const ProfilePage = () => {
     const error = useAppSelector(selectProfileError)
 
     useEffect(() => {
-        if (!profile) {
-            dispatch(fetchProfile(1))
-        }
-    }, [dispatch, profile])
+        dispatch(fetchProfile())
+    }, [dispatch])
 
     if (isLoading) {
         return <div>Загрузка профиля...</div>
@@ -35,7 +33,7 @@ export const ProfilePage = () => {
             <div className={styles.page}>
                 {profile && <ProfileSettings profile={profile} />}
 
-                <AdvertisementsList title="Мои товары" items={[]} loading={false} error={null} />
+                {profile && <ProfileAdvertisements userId={profile.id} />}
             </div>
         </div>
     )

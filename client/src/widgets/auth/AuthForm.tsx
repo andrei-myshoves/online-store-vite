@@ -31,6 +31,7 @@ export const AuthForm = () => {
                 })
 
                 Cookies.set('token', data.token)
+                localStorage.setItem('user', JSON.stringify(data.user))
 
                 navigate({ to: '/profile' })
             } else {
