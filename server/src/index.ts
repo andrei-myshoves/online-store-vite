@@ -8,6 +8,9 @@ import { errorMiddleware } from './middleware/error.middleware.js'
 import path from 'path'
 import router from './routes'
 
+import swaggerUi from 'swagger-ui-express'
+import { swaggerSpec } from './config/swagger.js'
+
 const PORT = process.env.PORT || 5000
 
 const app = express()
@@ -22,6 +25,12 @@ const start = async () => {
         await sequelize.authenticate()
         await sequelize.sync()
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+        app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+        app.get('/api-docs/json', (_, res) => {
+            res.setHeader('Content-Type', 'application/json')
+            res.send(swaggerSpec)
+        })
     } catch (e) {
         console.log(e)
     }
