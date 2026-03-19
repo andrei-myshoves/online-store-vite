@@ -4,6 +4,7 @@ import Advertisement from '@/models/Advertisement.js'
 import { TypedQueryRequest } from '@/middleware/withTypedQuery.js'
 import User from '@/models/User'
 import { GetAdvertisementsQuery } from '@/schemas/advertisement.schema.js'
+import slugify from 'slugify'
 
 export const createAdvertisement = async (req: Request, res: Response) => {
     if (!req.user) {
@@ -12,11 +13,14 @@ export const createAdvertisement = async (req: Request, res: Response) => {
 
     const { name, description, price, city } = req.body
 
+    const slug = slugify(name, { lower: true, strict: true })
+
     const advertisement = await Advertisement.create({
         name,
         description,
         price,
         city,
+        slug,
         userId: req.user.userId,
     })
 
