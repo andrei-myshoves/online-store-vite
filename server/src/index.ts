@@ -24,11 +24,14 @@ const start = async () => {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
-        app.get('/api-docs/json', (_, res) => {
-            res.json(swaggerSpec)
-        })
 
-        app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+        if (process.env.NODE_ENV !== 'production') {
+            app.get('/api-docs/json', (_, res) => {
+                res.json(swaggerSpec)
+            })
+
+            app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+        }
 
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     } catch (e) {
