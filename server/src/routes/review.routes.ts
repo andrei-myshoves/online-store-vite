@@ -29,12 +29,12 @@ const router = Router()
  *               advertisementId:
  *                 type: integer
  *     responses:
- *       201:
+ *       200:
  *         description: Отзыв создан
- *  content:
- *   application/json:
- *    schema:
- *       $ref: '#/components/schemas/Review'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Review'
  *       401:
  *         description: Не авторизован
  */
@@ -59,9 +59,18 @@ router.post('/', authMiddleware, validate(createReviewSchema), createReview)
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Review'
+ *               type: object
+ *               properties:
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Review'
+ *                 total:
+ *                   type: integer
+ *                 page:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
  */
 router.get('/comment/:id', getReviewsById)
 

@@ -62,25 +62,53 @@ export const swaggerSpec = swaggerJSDoc({
                 },
                 Review: {
                     type: 'object',
+                    required: ['id', 'text', 'rating', 'advertisementId', 'userId', 'createdAt'],
                     properties: {
                         id: { type: 'integer' },
                         text: { type: 'string' },
                         rating: { type: 'number' },
                         advertisementId: { type: 'integer' },
-                        userId: { type: 'string' },
+                        userId: { type: 'integer' },
                         createdAt: { type: 'string', format: 'date-time' },
+
+                        user: {
+                            type: 'object',
+                            properties: {
+                                username: { type: 'string' },
+                                avatar: { type: 'string', nullable: true },
+                            },
+                        },
                     },
                 },
                 Advertisement: {
                     type: 'object',
+                    required: ['id', 'name', 'description', 'price', 'city', 'images', 'userId', 'createdAt'],
                     properties: {
                         id: { type: 'integer' },
                         name: { type: 'string' },
                         description: { type: 'string' },
                         price: { type: 'number' },
                         city: { type: 'string' },
-                        userId: { type: 'integer' },
-                        createdAt: { type: 'string', format: 'date-time' },
+                        images: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                        userId: {
+                            type: 'integer',
+                        },
+                        reviewsCount: {
+                            type: 'integer',
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                        },
                     },
                 },
             },

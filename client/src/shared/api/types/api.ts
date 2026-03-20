@@ -57,6 +57,7 @@ export interface paths {
                         description: string
                         price: number
                         city: string
+                        images: string[]
                     }
                 }
             }
@@ -412,6 +413,57 @@ export interface paths {
         }
         trace?: never
     }
+    '/reviews': {
+        parameters: {
+            query?: never
+            header?: never
+            path?: never
+            cookie?: never
+        }
+        get?: never
+        put?: never
+        /** Создать отзыв */
+        post: {
+            parameters: {
+                query?: never
+                header?: never
+                path?: never
+                cookie?: never
+            }
+            requestBody: {
+                content: {
+                    'application/json': {
+                        text: string
+                        rating: number
+                        advertisementId: number
+                    }
+                }
+            }
+            responses: {
+                /** @description Отзыв создан */
+                200: {
+                    headers: {
+                        [name: string]: unknown
+                    }
+                    content: {
+                        'application/json': components['schemas']['Review']
+                    }
+                }
+                /** @description Не авторизован */
+                401: {
+                    headers: {
+                        [name: string]: unknown
+                    }
+                    content?: never
+                }
+            }
+        }
+        delete?: never
+        options?: never
+        head?: never
+        patch?: never
+        trace?: never
+    }
     '/reviews/comment/{id}': {
         parameters: {
             query?: never
@@ -438,7 +490,12 @@ export interface paths {
                         [name: string]: unknown
                     }
                     content: {
-                        'application/json': components['schemas']['Review'][]
+                        'application/json': {
+                            items?: components['schemas']['Review'][]
+                            total?: number
+                            page?: number
+                            limit?: number
+                        }
                     }
                 }
             }
@@ -582,23 +639,31 @@ export interface components {
             createdAt?: string
         }
         Review: {
-            id?: number
-            text?: string
-            rating?: number
-            advertisementId?: number
-            userId?: string
+            id: number
+            text: string
+            rating: number
+            advertisementId: number
+            userId: number
             /** Format: date-time */
-            createdAt?: string
+            createdAt: string
+            user?: {
+                username?: string
+                avatar?: string | null
+            }
         }
         Advertisement: {
-            id?: number
-            name?: string
-            description?: string
-            price?: number
-            city?: string
-            userId?: number
+            id: number
+            name: string
+            description: string
+            price: number
+            city: string
+            images: string[]
+            userId: number
+            reviewsCount?: number
             /** Format: date-time */
-            createdAt?: string
+            createdAt: string
+            /** Format: date-time */
+            updatedAt?: string
         }
     }
     responses: never

@@ -30,7 +30,7 @@ const router = Router()
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name, description, price, city]
+ *             required: [name, description, price, city, images]
  *             properties:
  *               name:
  *                 type: string
@@ -40,6 +40,10 @@ const router = Router()
  *                 type: number
  *               city:
  *                 type: string
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       201:
  *         description: Объявление создано
