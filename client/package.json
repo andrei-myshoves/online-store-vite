@@ -10,7 +10,8 @@
         "preview": "vite preview",
         "type-check": "tsc --noEmit",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "generate:api": "openapi-typescript http://localhost:5000/api-docs/json -o ./src/shared/api/types/api.ts"
     },
     "dependencies": {
         "@reduxjs/toolkit": "^2.11.2",
@@ -45,6 +46,7 @@
         "eslint-plugin-react-refresh": "^0.4.24",
         "eslint-plugin-storybook": "^10.2.8",
         "globals": "^16.5.0",
+        "openapi-typescript": "^7.13.0",
         "playwright": "^1.58.2",
         "storybook": "^10.2.8",
         "typescript": "~5.9.3",
