@@ -57,36 +57,37 @@ export const ProfileSettings = ({ profile }: Props) => {
                     <div className={styles.avatar} />
                     <button className={styles.changeAvatar}>Заменить</button>
                 </div>
-
                 <div className={styles.form}>
                     <Input
-                        placeholder="Имя"
+                        label="Имя"
                         value={profile.username}
                         onChange={onChangeUsername}
                         disabled={!isEditingProfile}
+                        wrapperClassName={styles.profileInput}
                     />
 
                     <Input
-                        placeholder="Фамилия"
+                        label="Фамилия"
                         value={profile.lastName ?? ''}
                         onChange={onChangeLastName}
                         disabled={!isEditingProfile}
+                        wrapperClassName={styles.profileInput}
                     />
 
                     <Input
-                        className={styles.city}
-                        placeholder="Город"
+                        label="Город"
                         value={profile.city ?? ''}
                         onChange={onChangeCity}
                         disabled={!isEditingProfile}
+                        wrapperClassName={styles.profileInput}
                     />
 
                     <Input
-                        className={styles.phone}
-                        placeholder="Телефон"
+                        label="Телефон"
                         value={profile.phone ?? ''}
                         onChange={onChangePhone}
                         disabled={!isEditingProfile}
+                        wrapperClassName={`${styles.profileInput} ${styles.fullWidth}`}
                     />
 
                     {!isEditingProfile ? (

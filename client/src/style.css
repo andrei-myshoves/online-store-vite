@@ -94,6 +94,7 @@ h6 {
     --border-primary: 1px solid var(--color-primary);
     --border-white: 1px solid var(--color-white);
     --border-top-footer: 1px solid #eaeaea;
+    --border-bottom-input: 1px solid #d9d9d9;
     --opacity-disabled: 0.5;
     --background-accent: var(--color-primary);
     --background-main: #ffffff;
