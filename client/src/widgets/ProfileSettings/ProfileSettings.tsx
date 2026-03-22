@@ -12,6 +12,7 @@ import { updateProfile } from '@/store/reducers/profile/profileThunks'
 import { selectIsEditingProfile } from '@/store/reducers/selectors/profileSelectors'
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
+import clsx from 'clsx'
 
 type Props = {
     profile: Profile
@@ -63,7 +64,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                         value={profile.username}
                         onChange={onChangeUsername}
                         disabled={!isEditingProfile}
-                        wrapperClassName={styles.profileInput}
+                        className={styles.profileInput}
                     />
 
                     <Input
@@ -71,7 +72,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                         value={profile.lastName ?? ''}
                         onChange={onChangeLastName}
                         disabled={!isEditingProfile}
-                        wrapperClassName={styles.profileInput}
+                        className={styles.profileInput}
                     />
 
                     <Input
@@ -79,7 +80,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                         value={profile.city ?? ''}
                         onChange={onChangeCity}
                         disabled={!isEditingProfile}
-                        wrapperClassName={styles.profileInput}
+                        className={styles.profileInput}
                     />
 
                     <Input
@@ -87,7 +88,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                         value={profile.phone ?? ''}
                         onChange={onChangePhone}
                         disabled={!isEditingProfile}
-                        wrapperClassName={`${styles.profileInput} ${styles.fullWidth}`}
+                        className={clsx(styles.profileInput, styles.fullWidth)}
                     />
 
                     {!isEditingProfile ? (

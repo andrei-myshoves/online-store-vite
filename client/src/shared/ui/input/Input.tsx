@@ -10,7 +10,6 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     error?: boolean
     label?: string
     errorText?: string
-    wrapperClassName?: string
 }
 
 export const Input = ({
@@ -20,35 +19,28 @@ export const Input = ({
     errorText,
     className,
     disabled,
-    wrapperClassName,
-    id,
+    id: externalId,
     type = 'text',
     ...rest
 }: InputProps) => {
-    const generatedId = useId()
-    const inputId = id || generatedId
+    const internalId = useId()
+    const id = externalId || internalId
 
     return (
-        <div className={clsx(styles.wrapper, wrapperClassName)}>
+        <div className={clsx(styles.wrapper, className)}>
             {label && (
-                <label htmlFor={inputId} className={styles.label}>
+                <label htmlFor={id} className={styles.label}>
                     {label}
                 </label>
             )}
 
             <input
                 {...rest}
-                id={inputId}
+                id={id}
                 type={type}
                 disabled={disabled}
                 aria-invalid={error}
-                className={clsx(
-                    styles.input,
-                    styles[variant],
-                    error && styles.error,
-                    disabled && styles.disabled,
-                    className
-                )}
+                className={clsx(styles.input, styles[variant], error && styles.error, disabled && styles.disabled)}
             />
 
             {errorText && <span className={styles.errorText}>{errorText}</span>}
