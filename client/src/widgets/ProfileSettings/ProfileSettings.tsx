@@ -12,6 +12,7 @@ import { updateProfile } from '@/store/reducers/profile/profileThunks'
 import { selectIsEditingProfile } from '@/store/reducers/selectors/profileSelectors'
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
+import clsx from 'clsx'
 
 type Props = {
     profile: Profile
@@ -57,36 +58,37 @@ export const ProfileSettings = ({ profile }: Props) => {
                     <div className={styles.avatar} />
                     <button className={styles.changeAvatar}>Заменить</button>
                 </div>
-
                 <div className={styles.form}>
                     <Input
-                        placeholder="Имя"
+                        label="Имя"
                         value={profile.username}
                         onChange={onChangeUsername}
                         disabled={!isEditingProfile}
+                        className={styles.profileInput}
                     />
 
                     <Input
-                        placeholder="Фамилия"
+                        label="Фамилия"
                         value={profile.lastName ?? ''}
                         onChange={onChangeLastName}
                         disabled={!isEditingProfile}
+                        className={styles.profileInput}
                     />
 
                     <Input
-                        className={styles.city}
-                        placeholder="Город"
+                        label="Город"
                         value={profile.city ?? ''}
                         onChange={onChangeCity}
                         disabled={!isEditingProfile}
+                        className={styles.profileInput}
                     />
 
                     <Input
-                        className={styles.phone}
-                        placeholder="Телефон"
+                        label="Телефон"
                         value={profile.phone ?? ''}
                         onChange={onChangePhone}
                         disabled={!isEditingProfile}
+                        className={clsx(styles.profileInput, styles.fullWidth)}
                     />
 
                     {!isEditingProfile ? (

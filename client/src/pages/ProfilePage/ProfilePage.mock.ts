@@ -1,0 +1,60 @@
+export const profileMockState = {
+    profile: {
+        data: {
+            id: 1,
+            username: 'Андрей',
+            lastName: 'Иванов',
+            email: 'test@mail.com',
+            city: 'Минск',
+            phone: '+48 123 456 789',
+            avatar: null,
+            createdAt: new Date().toISOString(),
+        },
+        isLoading: false,
+        error: null,
+        isEditingProfile: false,
+    },
+
+    profileAdvertisements: {
+        items: [
+            {
+                id: 1,
+                name: 'iPhone 13',
+                price: 2500,
+                city: 'Гданьск',
+                createdAt: new Date().toISOString(),
+                images: ['https://picsum.photos/300/200?1'],
+            },
+            {
+                id: 2,
+                name: 'MacBook Pro',
+                price: 5500,
+                city: 'Гданьск',
+                createdAt: new Date().toISOString(),
+                images: ['https://picsum.photos/300/200?2'],
+            },
+            {
+                id: 3,
+                name: 'Apple Pro',
+                price: 3500,
+                city: 'Гданьск',
+                createdAt: new Date().toISOString(),
+                images: ['https://picsum.photos/300/200?3'],
+            },
+            {
+                id: 4,
+                name: 'MacBook Pro',
+                price: 2300,
+                city: 'Гданьск',
+                createdAt: new Date().toISOString(),
+                images: ['https://picsum.photos/300/200?4'],
+            },
+        ],
+        total: 2,
+        page: 1,
+        limit: 8,
+        offset: 0,
+        isLoading: false,
+        error: null,
+    },
+}

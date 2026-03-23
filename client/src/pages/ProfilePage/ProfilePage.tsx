@@ -32,8 +32,7 @@ export const ProfilePage = () => {
 
             <div className={styles.page}>
                 {profile && <ProfileSettings profile={profile} />}
-
-                {profile && <ProfileAdvertisements userId={profile.id} />}
+                {profile && profile.id !== undefined && <ProfileAdvertisements userId={profile.id} />}{' '}
             </div>
         </div>
     )
