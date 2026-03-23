@@ -1,36 +1,70 @@
 import { z } from 'zod'
 
 // POST /api/advertisement
-export const createAdvertisementSchema = z.object({
-    name: z
-        .string({
-            error: issue => (issue.input === undefined ? 'Name is required' : 'Name must be a string'),
-        })
-        .trim()
-        .min(1, 'Name cannot be empty')
-        .max(100, 'Name must be at most 100 characters'),
+export const createAdvertisementSchema = z
+    .object({
+        name: z
+            .string({
+                error: issue => (issue.input === undefined ? 'Name is required' : 'Name must be a string'),
+            })
+            .trim()
+            .min(1, 'Name cannot be empty')
+            .max(100, 'Name must be at most 100 characters'),
 
-    description: z
-        .string({
-            error: issue => (issue.input === undefined ? 'Description is required' : 'Description must be a string'),
-        })
-        .trim()
-        .min(1, 'Description cannot be empty')
-        .max(500, 'Description must be at most 500 characters'),
+        description: z
+            .string({
+                error: issue =>
+                    issue.input === undefined ? 'Description is required' : 'Description must be a string',
+            })
+            .trim()
+            .min(1, 'Description cannot be empty')
+            .max(500, 'Description must be at most 500 characters'),
 
-    price: z.coerce
-        .number({
-            error: issue => (typeof issue.input === 'number' ? undefined : 'Price must be a number'),
-        })
-        .positive('Price must be greater than 0'),
-    city: z
-        .string({
-            error: issue => (issue.input === undefined ? 'City is required' : 'City must be a string'),
-        })
-        .trim()
-        .min(2, 'City must be at least 2 characters')
-        .max(100, 'City must be at most 100 characters'),
-})
+        type: z.enum(['sale', 'free'], {
+            error: () => 'Type must be either sale or free',
+        }),
+
+        price: z.coerce
+            .number({
+                error: () => 'Price must be a number',
+            })
+            .optional(),
+
+        city: z
+            .string({
+                error: issue => (issue.input === undefined ? 'City is required' : 'City must be a string'),
+            })
+            .trim()
+            .min(2, 'City must be at least 2 characters')
+            .max(100, 'City must be at most 100 characters'),
+    })
+    .superRefine((data, ctx) => {
+        if (data.type === 'sale') {
+            if (data.price === undefined) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ['price'],
+                    message: 'Price is required for sale',
+                })
+            } else if (data.price <= 0) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ['price'],
+                    message: 'Price must be greater than 0',
+                })
+            }
+        }
+
+        if (data.type === 'free') {
+            if (data.price !== undefined && data.price !== 0) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ['price'],
+                    message: 'Price must be 0 or not provided for free items',
+                })
+            }
+        }
+    })
 
 // PATCH /api/advertisement/:id
 export const updateAdvertisementSchema = z.object({
