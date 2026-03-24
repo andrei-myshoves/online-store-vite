@@ -5,10 +5,13 @@ import styles from './Header.module.css'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AuthModal } from '@/widgets/auth/AuthModal'
+import { useDispatch } from 'react-redux'
+import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
+    const dispatch = useDispatch()
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
 
@@ -28,31 +31,23 @@ export const Header = () => {
                 </div>
 
                 <div className={styles.desktopBlock}>
-                    {!isAdvertisementPage && (
-                        <Button variant="outline" onClick={() => setIsAuthOpen(true)} className={styles.loginButton}>
-                            Вход в личный кабинет
+                    <div className={styles.desktopActions}>
+                        <Button
+                            variant="outline"
+                            onClick={() => dispatch(openModal())}
+                            className={styles.desktopAction}
+                        >
+                            Разместить объявление
                         </Button>
-                    )}
 
-                    {isAdvertisementPage && (
-                        <div className={styles.desktopActions}>
-                            <Button
-                                variant="outline"
-                                onClick={() => navigate({ to: '/profile' })}
-                                className={styles.desktopAction}
-                            >
-                                Разместить объявление
-                            </Button>
-
-                            <Button
-                                variant="outline"
-                                onClick={() => setIsAuthOpen(true)}
-                                className={styles.desktopAction}
-                            >
-                                Личный кабинет
-                            </Button>
-                        </div>
-                    )}
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate({ to: '/profile' })}
+                            className={styles.desktopAction}
+                        >
+                            Личный кабинет
+                        </Button>
+                    </div>
                 </div>
             </header>
 

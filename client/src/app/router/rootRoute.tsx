@@ -2,6 +2,7 @@ import { createRootRoute, Outlet } from '@tanstack/react-router'
 import styles from './RootLayout.module.css'
 import { Header } from '@/widgets/header/Header'
 import { Footer } from '@/widgets/footer/Footer'
+import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal'
 
 export const rootRoute = createRootRoute({
     component: () => (
@@ -12,6 +13,7 @@ export const rootRoute = createRootRoute({
                 <Outlet />
             </main>
             <Footer />
+            <CreateAdvertisementModal />
         </div>
     ),
 })
