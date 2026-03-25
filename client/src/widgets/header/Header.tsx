@@ -31,23 +31,31 @@ export const Header = () => {
                 </div>
 
                 <div className={styles.desktopBlock}>
-                    <div className={styles.desktopActions}>
-                        <Button
-                            variant="outline"
-                            onClick={() => dispatch(openModal())}
-                            className={styles.desktopAction}
-                        >
-                            Разместить объявление
+                    {!isAdvertisementPage && (
+                        <Button variant="outline" onClick={() => setIsAuthOpen(true)} className={styles.loginButton}>
+                            Вход в личный кабинет
                         </Button>
+                    )}
 
-                        <Button
-                            variant="outline"
-                            onClick={() => navigate({ to: '/profile' })}
-                            className={styles.desktopAction}
-                        >
-                            Личный кабинет
-                        </Button>
-                    </div>
+                    {isAdvertisementPage && (
+                        <div className={styles.desktopActions}>
+                            <Button
+                                variant="outline"
+                                onClick={() => dispatch(openModal())}
+                                className={styles.desktopAction}
+                            >
+                                Разместить объявление
+                            </Button>
+
+                            <Button
+                                variant="outline"
+                                onClick={() => navigate({ to: '/profile' })}
+                                className={styles.desktopAction}
+                            >
+                                Личный кабинет
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </header>
 

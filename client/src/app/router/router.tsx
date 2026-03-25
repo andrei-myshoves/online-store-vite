@@ -5,6 +5,7 @@ import { AdvertisementPage } from '@/pages/AdvertisementPage/AdvertisementPage'
 import { ReviewsPage } from '@/pages/ReviewsPage/ReviewsPage'
 import { SellerProfilePage } from '@/pages/SellerProfilePage/SellerProfilePage'
 import { ProfilePage } from '@/pages/ProfilePage/ProfilePage'
+import { CreateAdvertisementPage } from '@/pages/CreateAdvertisementPage/CreateAdvertisementPage'
 
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -36,7 +37,20 @@ const sellerRoute = createRoute({
     component: SellerProfilePage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, profilePage, advertisementRoute, reviewsRoute, sellerRoute])
+const createAdvertisementRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/create-advertisement',
+    component: CreateAdvertisementPage,
+})
+
+const routeTree = rootRoute.addChildren([
+    indexRoute,
+    profilePage,
+    advertisementRoute,
+    reviewsRoute,
+    createAdvertisementRoute,
+    sellerRoute,
+])
 
 export const router = createRouter({ routeTree })
 

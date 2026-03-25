@@ -6,6 +6,8 @@ import styles from './CreateAdvertisementModal.module.css'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { closeModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { createAdThunk } from '@/store/reducers/createAdvertisement/createAdvertisementThunks'
+import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
+import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 
 export const CreateAdvertisementModal = () => {
     const dispatch = useAppDispatch()
@@ -46,31 +48,55 @@ export const CreateAdvertisementModal = () => {
 
     return (
         <Modal isOpen={isOpen} onClose={() => dispatch(closeModal())}>
-            <div className={styles.container}>
-                <h2 className={styles.title}>Новое объявление</h2>
+            <div className={styles.wrapper}>
+                <div className={styles.header}>
+                    <button className={styles.backButton} onClick={() => dispatch(closeModal())}>
+                        <LeftArrow width={16} height={16} />
+                    </button>
 
-                <Input
-                    placeholder="Название"
-                    value={form.name}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
-                />
+                    <h2 className={styles.title}>Новое объявление</h2>
+                </div>
 
-                <textarea
-                    className={styles.textarea}
-                    placeholder="Описание"
-                    value={form.description}
-                    onChange={e => setForm({ ...form, description: e.target.value })}
-                />
+                <button className={styles.closeButton} onClick={() => dispatch(closeModal())}>
+                    <CloseIcon width={20} height={20} />
+                </button>
 
-                <Input
-                    placeholder="Цена"
-                    value={form.price}
-                    onChange={e => setForm({ ...form, price: e.target.value })}
-                />
+                <div className={styles.field}>
+                    <span className={styles.label}>Название</span>
+                    <Input
+                        placeholder="Введите название"
+                        value={form.name}
+                        onChange={e => setForm({ ...form, name: e.target.value })}
+                    />
+                </div>
 
-                {error && <p className={styles.error}>{error}</p>}
+                <div className={styles.field}>
+                    <span className={styles.label}>Описание</span>
+                    <textarea
+                        className={styles.textarea}
+                        placeholder="Введите описание"
+                        value={form.description}
+                        onChange={e =>
+                            setForm({
+                                ...form,
+                                description: e.target.value,
+                            })
+                        }
+                    />
+                </div>
 
-                <Button onClick={handleSubmit} disabled={loading}>
+                <div className={styles.field}>
+                    <span className={styles.label}>Цена</span>
+                    <Input
+                        placeholder="Введите цену"
+                        value={form.price}
+                        onChange={e => setForm({ ...form, price: e.target.value })}
+                    />
+                </div>
+
+                {error && <div className={styles.error}>{error}</div>}
+
+                <Button onClick={handleSubmit} disabled={loading} className={styles.button}>
                     {loading ? 'Загрузка...' : 'Опубликовать'}
                 </Button>
             </div>
