@@ -13,7 +13,7 @@ export const Footer = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const handleAddClick = () => {
+    const handleOpenCreate = () => {
         const isMobile = window.innerWidth < 768
 
         if (isMobile) {
@@ -25,15 +25,15 @@ export const Footer = () => {
 
     return (
         <footer className={styles.footer}>
-            <Button variant="wrapper" aria-label="Главная">
+            <Button variant="wrapper" aria-label="Главная" onClick={() => navigate({ to: '/' })}>
                 <HomeIcon width={30} height={25} />
             </Button>
 
-            <Button variant="wrapper" aria-label="Добавить" onClick={handleAddClick}>
+            <Button variant="wrapper" aria-label="Добавить" onClick={handleOpenCreate}>
                 <PlusIcon width={42} height={42} />
             </Button>
 
-            <Button variant="wrapper" aria-label="Профиль">
+            <Button variant="wrapper" aria-label="Профиль" onClick={() => navigate({ to: '/profile' })}>
                 <UserIcon width={27} height={27} />
             </Button>
         </footer>

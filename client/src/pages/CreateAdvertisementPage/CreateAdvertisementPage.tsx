@@ -1,5 +1,5 @@
-import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal'
+import { CreateAdvertisementBlock } from '@/widgets/CreateAdvertisement/CreateAdvertisementBlock'
 
 export const CreateAdvertisementPage = () => {
-    return <CreateAdvertisementModal />
+    return <CreateAdvertisementBlock />
 }

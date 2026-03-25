@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { AuthModal } from '@/widgets/auth/AuthModal'
 import { useDispatch } from 'react-redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal'
 
 export const Header = () => {
     const navigate = useNavigate()
@@ -15,7 +16,18 @@ export const Header = () => {
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
 
+    const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
+
+    const handleOpenCreate = () => {
+        const isMobile = window.innerWidth < 768
+
+        if (isMobile) {
+            navigate({ to: '/create-advertisement' })
+        } else {
+            dispatch(openModal())
+        }
+    }
 
     return (
         <>
@@ -31,19 +43,15 @@ export const Header = () => {
                 </div>
 
                 <div className={styles.desktopBlock}>
-                    {!isAdvertisementPage && (
+                    {isCatalogPage && (
                         <Button variant="outline" onClick={() => setIsAuthOpen(true)} className={styles.loginButton}>
                             Вход в личный кабинет
                         </Button>
                     )}
 
-                    {isAdvertisementPage && (
+                    {!isCatalogPage && (
                         <div className={styles.desktopActions}>
-                            <Button
-                                variant="outline"
-                                onClick={() => dispatch(openModal())}
-                                className={styles.desktopAction}
-                            >
+                            <Button variant="outline" onClick={handleOpenCreate} className={styles.desktopAction}>
                                 Разместить объявление
                             </Button>
 
@@ -60,6 +68,8 @@ export const Header = () => {
             </header>
 
             <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+
+            <CreateAdvertisementModal />
         </>
     )
 }
