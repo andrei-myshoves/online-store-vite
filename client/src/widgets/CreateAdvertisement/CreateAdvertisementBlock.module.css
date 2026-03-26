@@ -1,49 +1,54 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-
-    background: #fff;
-    width: 100%;
-    height: 100%;
-
+    gap: 30px;
     padding: 16px;
 }
 
 .headerTop {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .title {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+.backButton {
+    color: var(--color-text-main);
+    position: absolute;
+    left: 0;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.closeButton {
+    color: var(--color-text-main);
+    position: absolute;
+    right: 0;
 }
-
-.textarea {
-    min-height: 100px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
 .error {
-    color: red;
+    color: var(--color-text-error);
     font-size: 14px;
 }
 
 @media (width >= 1248px) {
     .wrapper {
-        max-width: 420px;
         margin: auto;
         border-radius: 12px;
         padding: 20px;
+    }
+
+    .headerTop {
+        justify-content: flex-start;
+    }
+
+    .backButton {
+        display: none;
+    }
+
+    .title {
+        font-size: 32px;
     }
 }

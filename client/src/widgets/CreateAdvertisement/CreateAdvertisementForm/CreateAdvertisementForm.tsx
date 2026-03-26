@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import styles from './CreateAdvertisementForm.module.css'
+import clsx from 'clsx'
 
 type Props = {
     loading?: boolean
@@ -31,27 +32,38 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
 
     return (
         <div className={styles.form}>
-            <Input
-                placeholder="Название"
-                value={form.name}
-                onChange={e => setForm({ ...form, name: e.target.value })}
-                disabled={loading || disabled}
-            />
+            <div className={styles.field}>
+                <label className={styles.label}>Название</label>
+                <Input
+                    placeholder="Введите название"
+                    value={form.name}
+                    inputClassName={styles.createInput}
+                    onChange={e => setForm({ ...form, name: e.target.value })}
+                    disabled={loading || disabled}
+                />
+            </div>
 
-            <textarea
-                className={styles.textarea}
-                placeholder="Описание"
-                value={form.description}
-                onChange={e => setForm({ ...form, description: e.target.value })}
-                disabled={loading || disabled}
-            />
+            <div className={styles.field}>
+                <label className={styles.label}>Описание</label>
+                <textarea
+                    className={styles.textarea}
+                    placeholder="Введите описание"
+                    value={form.description}
+                    onChange={e => setForm({ ...form, description: e.target.value })}
+                    disabled={loading || disabled}
+                />
+            </div>
 
-            <Input
-                placeholder="Цена"
-                value={form.price}
-                onChange={e => setForm({ ...form, price: e.target.value })}
-                disabled={loading || disabled}
-            />
+            <div className={styles.field}>
+                <label className={styles.label}>Цена</label>
+                <Input
+                    placeholder="Введите цену"
+                    value={form.price}
+                    inputClassName={clsx(styles.createInput, styles.smallWidth)}
+                    onChange={e => setForm({ ...form, price: e.target.value })}
+                    disabled={loading || disabled}
+                />
+            </div>
 
             {error && <div className={styles.error}>{error}</div>}
 
@@ -60,6 +72,7 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
                 disabled={
                     !form.name.trim() || !form.description.trim() || Number(form.price) <= 0 || loading || disabled
                 }
+                className={styles.saveButton}
             >
                 {loading ? 'Публикация...' : 'Опубликовать'}
             </Button>

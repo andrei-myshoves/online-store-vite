@@ -92,6 +92,7 @@ h6 {
     --color-text-main: #000000;
     --color-text-secondary: #5f5f5f;
     --border-primary: 1px solid var(--color-primary);
+    --border-secondary: 1px solid #eaeaea;
     --border-white: 1px solid var(--color-white);
     --border-top-footer: 1px solid #eaeaea;
     --border-bottom-input: 1px solid #d9d9d9;
@@ -108,5 +109,5 @@ h6 {
     --color-border-light: #eaeaea;
     --color-bg-muted: #f1f1f1;
     --color-text-muted: #888888;
-    --color-etxt-error: #d32f2f;
+    --color-text-error: #d32f2f;
 }

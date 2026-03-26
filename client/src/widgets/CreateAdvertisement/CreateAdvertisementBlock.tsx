@@ -40,15 +40,15 @@ export const CreateAdvertisementBlock = ({ onClose }: Props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.headerTop}>
-                <Button variant="wrapper" onClick={handleBack}>
+                <Button variant="wrapper" className={styles.backButton} onClick={handleBack}>
                     <LeftArrow width={16} height={16} />
                 </Button>
 
                 <h2 className={styles.title}>Новое объявление</h2>
 
                 {onClose && (
-                    <Button variant="wrapper" onClick={onClose}>
-                        <CloseIcon width={20} height={20} />
+                    <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>
+                        <CloseIcon width={30} height={30} />
                     </Button>
                 )}
             </div>
