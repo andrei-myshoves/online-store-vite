@@ -5,14 +5,14 @@ import styles from './Header.module.css'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AuthModal } from '@/widgets/auth/AuthModal'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal'
 
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
 
@@ -20,13 +20,7 @@ export const Header = () => {
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
     const handleOpenCreate = () => {
-        const isMobile = window.innerWidth < 768
-
-        if (isMobile) {
-            navigate({ to: '/create-advertisement' })
-        } else {
-            dispatch(openModal())
-        }
+        dispatch(openModal())
     }
 
     return (
