@@ -9,9 +9,11 @@
     flex-direction: column;
     gap: 6px;
 }
+
 .label {
     margin-left: 24px;
 }
+
 .textarea {
     min-height: 107px;
     padding: 9px 17px;
@@ -20,14 +22,18 @@
     resize: none;
 }
 
-.createInput {
+.field input {
     border: var(--border-secondary);
     border-radius: 30px;
     padding: 13px;
     font-size: 14px;
 }
 
-.input:focus,
+.smallWidth input {
+    width: 200px;
+}
+
+.field input:focus,
 .textarea:focus {
     outline: none;
 }
@@ -36,7 +42,7 @@
     color: var(--color-primary);
 }
 
-.field:focus-within .input,
+.field:focus-within input,
 .field:focus-within .textarea {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 1px var(--color-primary);
@@ -61,13 +67,9 @@
         font-size: 16px;
     }
 
-    .createInput {
+    .field input {
         border-radius: 6px;
         font-size: 16px;
-    }
-
-    .smallWidth {
-        width: 200px;
     }
 
     .textarea {

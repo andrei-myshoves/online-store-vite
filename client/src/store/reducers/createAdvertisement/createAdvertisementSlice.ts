@@ -5,12 +5,14 @@ type CreateAdvertisementState = {
     isOpen: boolean
     loading: boolean
     error: string | null
+    success: boolean
 }
 
 const initialState: CreateAdvertisementState = {
     isOpen: false,
     loading: false,
     error: null,
+    success: false,
 }
 
 const createAdvertisementSlice = createSlice({
@@ -19,10 +21,12 @@ const createAdvertisementSlice = createSlice({
     reducers: {
         openModal: state => {
             state.isOpen = true
+            state.success = true
         },
         closeModal: state => {
             state.isOpen = false
             state.error = null
+            state.success = false
         },
     },
     extraReducers: builder => {
@@ -30,10 +34,11 @@ const createAdvertisementSlice = createSlice({
             .addCase(createAdThunk.pending, state => {
                 state.loading = true
                 state.error = null
+                state.success = false
             })
             .addCase(createAdThunk.fulfilled, state => {
                 state.loading = false
-                state.isOpen = false
+                state.success = true
             })
             .addCase(createAdThunk.rejected, (state, action) => {
                 state.loading = false
