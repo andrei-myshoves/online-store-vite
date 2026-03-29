@@ -29,10 +29,6 @@
     font-size: 14px;
 }
 
-.smallWidth input {
-    width: 200px;
-}
-
 .field input:focus,
 .textarea:focus {
     outline: none;
@@ -70,6 +66,10 @@
     .field input {
         border-radius: 6px;
         font-size: 16px;
+    }
+
+    .smallWidth input {
+        width: 200px;
     }
 
     .textarea {

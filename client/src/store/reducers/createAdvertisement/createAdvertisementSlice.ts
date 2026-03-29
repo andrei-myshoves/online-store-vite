@@ -21,7 +21,7 @@ const createAdvertisementSlice = createSlice({
     reducers: {
         openModal: state => {
             state.isOpen = true
-            state.success = true
+            state.success = false
         },
         closeModal: state => {
             state.isOpen = false

@@ -17,17 +17,17 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
         price: '',
     })
 
+    const isDisabled = !form.name.trim() || !form.description.trim() || Number(form.price) <= 0 || loading || disabled
+
     const handleSubmit = () => {
-        const price = Number(form.price)
+        if (isDisabled) return
 
         onSubmit?.({
             name: form.name,
             description: form.description,
-            price,
+            price: Number(form.price),
         })
     }
-
-    const isDisabled = !form.name.trim() || !form.description.trim() || Number(form.price) <= 0 || loading || disabled
 
     return (
         <div className={styles.form}>
