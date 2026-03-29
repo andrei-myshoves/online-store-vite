@@ -4,6 +4,4 @@ export const selectCreateAdLoading = (state: RootState) => state.createAdvertise
 
 export const selectCreateAdError = (state: RootState) => state.createAdvertisement.error
 
-export const selectCreateAdSuccess = (state: RootState) => state.createAdvertisement.success
-
 export const selectCreateAdIsModalOpen = (state: RootState) => state.createAdvertisement.isModalOpen
