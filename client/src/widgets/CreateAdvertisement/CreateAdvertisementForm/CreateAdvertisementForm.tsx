@@ -32,8 +32,8 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
     return (
         <div className={styles.form}>
             <div className={styles.field}>
-                <label className={styles.label}>Название</label>
                 <Input
+                    label="Название"
                     placeholder="Введите название"
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
@@ -53,10 +53,9 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
             </div>
 
             <div className={styles.field}>
-                <label className={styles.label}>Цена</label>
-
                 <div className={styles.smallWidth}>
                     <Input
+                        label="Цена"
                         placeholder="Введите цену"
                         value={form.price}
                         onChange={e => setForm({ ...form, price: e.target.value })}

@@ -19,7 +19,7 @@ export const Header = () => {
     const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
-    const handleOpenCreate = () => {
+    const handleOpenCreateAdvertisementModal = () => {
         dispatch(openModal())
     }
 
@@ -45,7 +45,11 @@ export const Header = () => {
 
                     {!isCatalogPage && (
                         <div className={styles.desktopActions}>
-                            <Button variant="outline" onClick={handleOpenCreate} className={styles.desktopAction}>
+                            <Button
+                                variant="outline"
+                                onClick={handleOpenCreateAdvertisementModal}
+                                className={styles.desktopAction}
+                            >
                                 Разместить объявление
                             </Button>
 

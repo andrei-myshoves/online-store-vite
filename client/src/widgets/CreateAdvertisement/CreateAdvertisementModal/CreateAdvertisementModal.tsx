@@ -1,11 +1,10 @@
-import { useEffect } from 'react'
 import { Modal } from '@/shared/ui/modal'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { createAdThunk } from '@/store/reducers/createAdvertisement/createAdvertisementThunks'
 import {
     selectCreateAdLoading,
     selectCreateAdError,
-    selectCreateAdSuccess,
+    selectCreateAdIsModalOpen,
 } from '@/store/reducers/selectors/createAdvertisementSelectors'
 import { closeModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { CreateAdvertisementForm } from '../CreateAdvertisementForm/CreateAdvertisementForm'
@@ -19,8 +18,7 @@ export const CreateAdvertisementModal = () => {
 
     const loading = useAppSelector(selectCreateAdLoading)
     const error = useAppSelector(selectCreateAdError)
-    const success = useAppSelector(selectCreateAdSuccess)
-    const isOpen = useAppSelector(state => state.createAdvertisement.isOpen)
+    const isOpen = useAppSelector(selectCreateAdIsModalOpen)
 
     const handleSubmit = (data: { name: string; description: string; price: number }) => {
         dispatch(
@@ -31,12 +29,6 @@ export const CreateAdvertisementModal = () => {
             })
         )
     }
-
-    useEffect(() => {
-        if (success) {
-            dispatch(closeModal())
-        }
-    }, [success, dispatch])
 
     return (
         <Modal isOpen={isOpen} onClose={() => dispatch(closeModal())}>

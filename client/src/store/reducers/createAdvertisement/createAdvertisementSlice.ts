@@ -2,17 +2,17 @@ import { createSlice } from '@reduxjs/toolkit'
 import { createAdThunk } from './createAdvertisementThunks'
 
 type CreateAdvertisementState = {
-    isOpen: boolean
+    isModalOpen: boolean
     loading: boolean
     error: string | null
-    success: boolean
+    success: boolean | null
 }
 
 const initialState: CreateAdvertisementState = {
-    isOpen: false,
+    isModalOpen: false,
     loading: false,
     error: null,
-    success: false,
+    success: null,
 }
 
 const createAdvertisementSlice = createSlice({
@@ -20,11 +20,11 @@ const createAdvertisementSlice = createSlice({
     initialState,
     reducers: {
         openModal: state => {
-            state.isOpen = true
-            state.success = false
+            state.isModalOpen = true
+            state.success = null
         },
         closeModal: state => {
-            state.isOpen = false
+            state.isModalOpen = false
             state.error = null
             state.success = false
         },
@@ -39,6 +39,7 @@ const createAdvertisementSlice = createSlice({
             .addCase(createAdThunk.fulfilled, state => {
                 state.loading = false
                 state.success = true
+                state.isModalOpen = false
             })
             .addCase(createAdThunk.rejected, (state, action) => {
                 state.loading = false
