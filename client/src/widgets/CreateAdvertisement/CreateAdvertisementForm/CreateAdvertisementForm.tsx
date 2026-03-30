@@ -2,6 +2,11 @@ import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setName, setDescription, setPrice } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import {
+    selectCreateAdName,
+    selectCreateAdDescription,
+    selectCreateAdPrice,
+} from '@/store/reducers/selectors/createAdvertisementSelectors'
 import styles from './CreateAdvertisementForm.module.css'
 
 type Props = {
@@ -13,18 +18,20 @@ type Props = {
 export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Props) => {
     const dispatch = useAppDispatch()
 
-    const form = useAppSelector(state => state.createAdvertisement.form)
+    const name = useAppSelector(selectCreateAdName)
+    const description = useAppSelector(selectCreateAdDescription)
+    const priceValue = useAppSelector(selectCreateAdPrice)
 
-    const price = Number(form.price)
+    const price = Number(priceValue)
 
-    const isDisabled = !form.name.trim() || !form.description.trim() || price <= 0 || loading
+    const isDisabled = !name.trim() || !description.trim() || price <= 0 || loading
 
     const handleSubmit = () => {
         if (isDisabled) return
 
         onSubmit?.({
-            name: form.name,
-            description: form.description,
+            name,
+            description,
             price,
         })
     }
@@ -35,7 +42,7 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
                 <Input
                     label="Название"
                     placeholder="Введите название"
-                    value={form.name}
+                    value={name}
                     onChange={e => dispatch(setName(e.target.value))}
                     disabled={loading}
                 />
@@ -46,7 +53,7 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
                 <textarea
                     className={styles.textarea}
                     placeholder="Введите описание"
-                    value={form.description}
+                    value={description}
                     onChange={e => dispatch(setDescription(e.target.value))}
                     disabled={loading}
                 />
@@ -57,7 +64,7 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
                     <Input
                         label="Цена"
                         placeholder="Введите цену"
-                        value={form.price}
+                        value={priceValue}
                         onChange={e => dispatch(setPrice(e.target.value))}
                         disabled={loading}
                     />
