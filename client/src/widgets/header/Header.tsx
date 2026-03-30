@@ -5,14 +5,23 @@ import styles from './Header.module.css'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AuthModal } from '@/widgets/auth/AuthModal'
+import { useAppDispatch } from '@/hooks/redux'
+import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal'
 
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
+    const dispatch = useAppDispatch()
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
 
+    const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
+
+    const handleOpenCreateAdvertisementModal = () => {
+        dispatch(openModal())
+    }
 
     return (
         <>
@@ -28,17 +37,17 @@ export const Header = () => {
                 </div>
 
                 <div className={styles.desktopBlock}>
-                    {!isAdvertisementPage && (
+                    {isCatalogPage && (
                         <Button variant="outline" onClick={() => setIsAuthOpen(true)} className={styles.loginButton}>
                             Вход в личный кабинет
                         </Button>
                     )}
 
-                    {isAdvertisementPage && (
+                    {!isCatalogPage && (
                         <div className={styles.desktopActions}>
                             <Button
                                 variant="outline"
-                                onClick={() => navigate({ to: '/profile' })}
+                                onClick={handleOpenCreateAdvertisementModal}
                                 className={styles.desktopAction}
                             >
                                 Разместить объявление
@@ -46,7 +55,7 @@ export const Header = () => {
 
                             <Button
                                 variant="outline"
-                                onClick={() => setIsAuthOpen(true)}
+                                onClick={() => navigate({ to: '/profile' })}
                                 className={styles.desktopAction}
                             >
                                 Личный кабинет
@@ -57,6 +66,8 @@ export const Header = () => {
             </header>
 
             <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+
+            <CreateAdvertisementModal />
         </>
     )
 }

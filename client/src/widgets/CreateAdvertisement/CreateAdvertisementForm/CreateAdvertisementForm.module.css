@@ -1,0 +1,86 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.textarea {
+    min-height: 107px;
+    padding: 9px 17px;
+    border: var(--border-secondary);
+    border-radius: 30px;
+    resize: none;
+}
+
+.field input {
+    border: var(--border-secondary);
+    border-radius: 30px;
+    padding: 13px;
+    font-size: 14px;
+}
+
+.field label {
+    margin-left: 24px;
+}
+
+.field input:focus,
+.textarea:focus {
+    outline: none;
+}
+
+.field:focus-within .label {
+    color: var(--color-primary);
+}
+
+.field:focus-within input,
+.field:focus-within .textarea {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.saveButton {
+    padding: 10px 87px;
+}
+
+.error {
+    color: var(--color-text-error);
+    font-size: 14px;
+}
+
+@media (width >= 1248px) {
+    .field {
+        gap: 4px;
+    }
+
+    .field input {
+        border-radius: 6px;
+        font-size: 16px;
+    }
+
+    .field label {
+        margin-left: 0;
+        font-size: 16px;
+    }
+
+    .smallWidth input {
+        width: 200px;
+    }
+
+    .textarea {
+        width: 500px;
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+    .saveButton {
+        margin-top: 10px;
+        padding: 13px 37px;
+        width: 181px;
+    }
+}

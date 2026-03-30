@@ -24,6 +24,9 @@
 
 .search {
     flex: 1;
+}
+
+.search input {
     border-radius: 30px;
     padding-left: 17px;
 }
