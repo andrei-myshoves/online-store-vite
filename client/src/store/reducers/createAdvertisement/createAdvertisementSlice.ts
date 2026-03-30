@@ -1,16 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAdThunk } from './createAdvertisementThunks'
 
+type FormState = {
+    name: string
+    description: string
+    price: string
+}
+
 type CreateAdvertisementState = {
-    isOpen: boolean
+    isModalOpen: boolean
     loading: boolean
-    error: string | null
+    error?: string
+    form: FormState
 }
 
 const initialState: CreateAdvertisementState = {
-    isOpen: false,
+    isModalOpen: false,
     loading: false,
-    error: null,
+    error: undefined,
+    form: {
+        name: '',
+        description: '',
+        price: '',
+    },
 }
 
 const createAdvertisementSlice = createSlice({
@@ -18,29 +31,45 @@ const createAdvertisementSlice = createSlice({
     initialState,
     reducers: {
         openModal: state => {
-            state.isOpen = true
+            state.isModalOpen = true
         },
         closeModal: state => {
-            state.isOpen = false
-            state.error = null
+            state.isModalOpen = false
+            state.error = undefined
+        },
+        setName: (state, action: PayloadAction<string>) => {
+            state.form.name = action.payload
+        },
+        setDescription: (state, action: PayloadAction<string>) => {
+            state.form.description = action.payload
+        },
+        setPrice: (state, action: PayloadAction<string>) => {
+            state.form.price = action.payload
         },
     },
     extraReducers: builder => {
         builder
             .addCase(createAdThunk.pending, state => {
                 state.loading = true
-                state.error = null
+                state.error = undefined
             })
             .addCase(createAdThunk.fulfilled, state => {
                 state.loading = false
-                state.isOpen = false
+                state.isModalOpen = false
+
+                state.form = {
+                    name: '',
+                    description: '',
+                    price: '',
+                }
             })
             .addCase(createAdThunk.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.payload as string
+                state.error = action.payload
             })
     },
 })
 
-export const { openModal, closeModal } = createAdvertisementSlice.actions
+export const { openModal, closeModal, setName, setDescription, setPrice } = createAdvertisementSlice.actions
+
 export default createAdvertisementSlice.reducer

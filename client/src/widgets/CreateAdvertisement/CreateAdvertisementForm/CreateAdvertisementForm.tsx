@@ -1,31 +1,37 @@
-import { useState } from 'react'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { setName, setDescription, setPrice } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import {
+    selectCreateAdName,
+    selectCreateAdDescription,
+    selectCreateAdPrice,
+} from '@/store/reducers/selectors/createAdvertisementSelectors'
 import styles from './CreateAdvertisementForm.module.css'
-import clsx from 'clsx'
 
 type Props = {
     loading?: boolean
-    error?: string | null
-    disabled?: boolean
+    error?: string
     onSubmit?: (data: { name: string; description: string; price: number }) => void
 }
 
-export const CreateAdvertisementForm = ({ loading = false, error = null, disabled = false, onSubmit }: Props) => {
-    const [form, setForm] = useState({
-        name: '',
-        description: '',
-        price: '',
-    })
+export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Props) => {
+    const dispatch = useAppDispatch()
+
+    const name = useAppSelector(selectCreateAdName)
+    const description = useAppSelector(selectCreateAdDescription)
+    const priceValue = useAppSelector(selectCreateAdPrice)
+
+    const price = Number(priceValue)
+
+    const isDisabled = !name.trim() || !description.trim() || price <= 0 || loading
 
     const handleSubmit = () => {
-        const price = Number(form.price)
-
-        if (!form.name.trim() || !form.description.trim() || price <= 0 || disabled) return
+        if (isDisabled) return
 
         onSubmit?.({
-            name: form.name,
-            description: form.description,
+            name,
+            description,
             price,
         })
     }
@@ -33,13 +39,12 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
     return (
         <div className={styles.form}>
             <div className={styles.field}>
-                <label className={styles.label}>Название</label>
                 <Input
+                    label="Название"
                     placeholder="Введите название"
-                    value={form.name}
-                    inputClassName={styles.createInput}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
-                    disabled={loading || disabled}
+                    value={name}
+                    onChange={e => dispatch(setName(e.target.value))}
+                    disabled={loading}
                 />
             </div>
 
@@ -48,32 +53,27 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
                 <textarea
                     className={styles.textarea}
                     placeholder="Введите описание"
-                    value={form.description}
-                    onChange={e => setForm({ ...form, description: e.target.value })}
-                    disabled={loading || disabled}
+                    value={description}
+                    onChange={e => dispatch(setDescription(e.target.value))}
+                    disabled={loading}
                 />
             </div>
 
             <div className={styles.field}>
-                <label className={styles.label}>Цена</label>
-                <Input
-                    placeholder="Введите цену"
-                    value={form.price}
-                    inputClassName={clsx(styles.createInput, styles.smallWidth)}
-                    onChange={e => setForm({ ...form, price: e.target.value })}
-                    disabled={loading || disabled}
-                />
+                <div className={styles.smallWidth}>
+                    <Input
+                        label="Цена"
+                        placeholder="Введите цену"
+                        value={priceValue}
+                        onChange={e => dispatch(setPrice(e.target.value))}
+                        disabled={loading}
+                    />
+                </div>
             </div>
 
             {error && <div className={styles.error}>{error}</div>}
 
-            <Button
-                onClick={handleSubmit}
-                disabled={
-                    !form.name.trim() || !form.description.trim() || Number(form.price) <= 0 || loading || disabled
-                }
-                className={styles.saveButton}
-            >
+            <Button onClick={handleSubmit} disabled={isDisabled} className={styles.saveButton}>
                 {loading ? 'Публикация...' : 'Опубликовать'}
             </Button>
         </div>

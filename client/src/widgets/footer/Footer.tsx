@@ -6,21 +6,15 @@ import { PlusIcon } from '@/shared/ui/icons/PlusIcon'
 import { UserIcon } from '@/shared/ui/icons/UserIcon'
 
 import { useNavigate } from '@tanstack/react-router'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 
 export const Footer = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const handleOpenCreate = () => {
-        const isMobile = window.innerWidth < 768
-
-        if (isMobile) {
-            navigate({ to: '/create-advertisement' })
-        } else {
-            dispatch(openModal())
-        }
+    const handleAddClick = () => {
+        dispatch(openModal())
     }
 
     return (
@@ -29,7 +23,7 @@ export const Footer = () => {
                 <HomeIcon width={30} height={25} />
             </Button>
 
-            <Button variant="wrapper" aria-label="Добавить" onClick={handleOpenCreate}>
+            <Button variant="wrapper" aria-label="Добавить" onClick={handleAddClick}>
                 <PlusIcon width={42} height={42} />
             </Button>
 

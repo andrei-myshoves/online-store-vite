@@ -5,28 +5,22 @@ import styles from './Header.module.css'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AuthModal } from '@/widgets/auth/AuthModal'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal'
 
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
 
     const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
-    const handleOpenCreate = () => {
-        const isMobile = window.innerWidth < 768
-
-        if (isMobile) {
-            navigate({ to: '/create-advertisement' })
-        } else {
-            dispatch(openModal())
-        }
+    const handleOpenCreateAdvertisementModal = () => {
+        dispatch(openModal())
     }
 
     return (
@@ -51,7 +45,11 @@ export const Header = () => {
 
                     {!isCatalogPage && (
                         <div className={styles.desktopActions}>
-                            <Button variant="outline" onClick={handleOpenCreate} className={styles.desktopAction}>
+                            <Button
+                                variant="outline"
+                                onClick={handleOpenCreateAdvertisementModal}
+                                className={styles.desktopAction}
+                            >
                                 Разместить объявление
                             </Button>
 
