@@ -1,31 +1,23 @@
-import { useState } from 'react'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { setName, setDescription, setPrice } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import styles from './CreateAdvertisementForm.module.css'
 
 type Props = {
     loading?: boolean
-    error?: string | null
-    disabled?: boolean
+    error?: string
     onSubmit?: (data: { name: string; description: string; price: number }) => void
 }
 
-type FormState = {
-    name: string
-    description: string
-    price: string
-}
+export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Props) => {
+    const dispatch = useAppDispatch()
 
-const INITIAL_FORM: FormState = {
-    name: '',
-    description: '',
-    price: '',
-}
+    const form = useAppSelector(state => state.createAdvertisement.form)
 
-export const CreateAdvertisementForm = ({ loading = false, error = null, disabled = false, onSubmit }: Props) => {
-    const [form, setForm] = useState(INITIAL_FORM)
+    const price = Number(form.price)
 
-    const isDisabled = !form.name.trim() || !form.description.trim() || Number(form.price) <= 0 || loading || disabled
+    const isDisabled = !form.name.trim() || !form.description.trim() || price <= 0 || loading
 
     const handleSubmit = () => {
         if (isDisabled) return
@@ -33,7 +25,7 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
         onSubmit?.({
             name: form.name,
             description: form.description,
-            price: Number(form.price),
+            price,
         })
     }
 
@@ -44,8 +36,8 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
                     label="Название"
                     placeholder="Введите название"
                     value={form.name}
-                    onChange={e => setForm({ ...form, name: e.target.value })}
-                    disabled={loading || disabled}
+                    onChange={e => dispatch(setName(e.target.value))}
+                    disabled={loading}
                 />
             </div>
 
@@ -55,8 +47,8 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
                     className={styles.textarea}
                     placeholder="Введите описание"
                     value={form.description}
-                    onChange={e => setForm({ ...form, description: e.target.value })}
-                    disabled={loading || disabled}
+                    onChange={e => dispatch(setDescription(e.target.value))}
+                    disabled={loading}
                 />
             </div>
 
@@ -66,8 +58,8 @@ export const CreateAdvertisementForm = ({ loading = false, error = null, disable
                         label="Цена"
                         placeholder="Введите цену"
                         value={form.price}
-                        onChange={e => setForm({ ...form, price: e.target.value })}
-                        disabled={loading || disabled}
+                        onChange={e => dispatch(setPrice(e.target.value))}
+                        disabled={loading}
                     />
                 </div>
             </div>
