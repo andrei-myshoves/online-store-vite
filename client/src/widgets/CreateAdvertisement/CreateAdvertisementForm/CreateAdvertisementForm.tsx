@@ -10,12 +10,20 @@ type Props = {
     onSubmit?: (data: { name: string; description: string; price: number }) => void
 }
 
+type FormState = {
+    name: string
+    description: string
+    price: string
+}
+
+const INITIAL_FORM: FormState = {
+    name: '',
+    description: '',
+    price: '',
+}
+
 export const CreateAdvertisementForm = ({ loading = false, error = null, disabled = false, onSubmit }: Props) => {
-    const [form, setForm] = useState({
-        name: '',
-        description: '',
-        price: '',
-    })
+    const [form, setForm] = useState(INITIAL_FORM)
 
     const isDisabled = !form.name.trim() || !form.description.trim() || Number(form.price) <= 0 || loading || disabled
 
