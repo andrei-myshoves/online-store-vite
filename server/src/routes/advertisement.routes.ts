@@ -1,10 +1,5 @@
 import { Router } from 'express'
-import {
-    createAdvertisement,
-    getAdvertisements,
-    deleteAdvertisement,
-    uploadImages,
-} from '../controllers/advertisement.controller.js'
+import { createAdvertisement, getAdvertisements, deleteAdvertisement } from '../controllers/advertisement.controller.js'
 import { authMiddleware } from '@/middleware/authMiddleware'
 import { updateAdvertisement } from '@/controllers/advertisement.controller'
 import { validate, validateParams, validateQuery } from '../middleware/validate.js'
@@ -33,10 +28,10 @@ const router = Router()
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
- *             required: [name, description, price, city, images]
+ *             required: [name, description, price, city]
  *             properties:
  *               name:
  *                 type: string
@@ -50,6 +45,7 @@ const router = Router()
  *                 type: array
  *                 items:
  *                   type: string
+ *                   format: binary
  *     responses:
  *       201:
  *         description: Объявление создано
@@ -60,7 +56,7 @@ const router = Router()
  *       401:
  *         description: Не авторизован
  */
-router.post('/', authMiddleware, validate(createAdvertisementSchema), createAdvertisement)
+router.post('/', authMiddleware, upload.array('images'), validate(createAdvertisementSchema), createAdvertisement)
 
 /**
  * @swagger
@@ -199,43 +195,5 @@ router.delete(
     checkAdvertisementOwner,
     deleteAdvertisement
 )
-
-/**
- * @swagger
- * /upload:
- *   post:
- *     summary: Загрузка изображений объявления
- *     tags: [Upload]
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             required:
- *               - images
- *             properties:
- *               images:
- *                 type: array
- *                 items:
- *                   type: string
- *                   format: binary
- *     responses:
- *       200:
- *         description: Изображения успешно загружены
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 urls:
- *                   type: array
- *                   items:
- *                     type: string
- *                     example: https://bucket.s3.amazonaws.com/file.jpg
- *       400:
- *         description: Ошибка валидации (размер, формат, количество)
- */
-router.post('/', upload.array('images', 5), uploadImages)
 
 export default router

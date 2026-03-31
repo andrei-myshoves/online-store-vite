@@ -14,6 +14,15 @@ export const createAdvertisement = async (req: Request, res: Response) => {
 
     const { name, description, price, city } = req.body
 
+    const files = (req.files as Express.Multer.File[]) || []
+
+    validateImages({
+        files,
+        minCount: 0,
+    })
+
+    const imageUrls = files.map(file => `/static/advertisements/${file.filename}`)
+
     const slug = slugify(name, { lower: true, strict: true })
 
     const advertisement = await Advertisement.create({
@@ -23,6 +32,7 @@ export const createAdvertisement = async (req: Request, res: Response) => {
         city,
         slug,
         userId: req.user.userId,
+        images: imageUrls,
     })
 
     res.status(201).json(advertisement)
@@ -114,22 +124,5 @@ export const getAdvertisementById = async (req: Request, res: Response, next: Ne
         res.status(200).json(advertisement)
     } catch (error) {
         next(error)
-    }
-}
-
-export const uploadImages = (req: Request, res: Response) => {
-    try {
-        const files = req.files as Express.Multer.File[]
-
-        validateImages({
-            files,
-            minCount: 0,
-        })
-
-        const urls = files.map(file => `/static/advertisements/${file.filename}`)
-
-        return res.json({ urls })
-    } catch (e: any) {
-        return res.status(400).json({ message: e.message })
     }
 }
