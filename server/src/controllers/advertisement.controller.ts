@@ -5,6 +5,7 @@ import { TypedQueryRequest } from '@/middleware/withTypedQuery.js'
 import User from '@/models/User'
 import { GetAdvertisementsQuery } from '@/schemas/advertisement.schema.js'
 import slugify from 'slugify'
+import { validateImages } from '@/utils/validateImages'
 
 export const createAdvertisement = async (req: Request, res: Response) => {
     if (!req.user) {
@@ -113,5 +114,22 @@ export const getAdvertisementById = async (req: Request, res: Response, next: Ne
         res.status(200).json(advertisement)
     } catch (error) {
         next(error)
+    }
+}
+
+export const uploadImages = (req: Request, res: Response) => {
+    try {
+        const files = req.files as Express.Multer.File[]
+
+        validateImages({
+            files,
+            minCount: 0,
+        })
+
+        const urls = files.map(file => `/static/advertisements/${file.filename}`)
+
+        return res.json({ urls })
+    } catch (e: any) {
+        return res.status(400).json({ message: e.message })
     }
 }

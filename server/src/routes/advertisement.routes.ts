@@ -1,5 +1,10 @@
 import { Router } from 'express'
-import { createAdvertisement, getAdvertisements, deleteAdvertisement } from '../controllers/advertisement.controller.js'
+import {
+    createAdvertisement,
+    getAdvertisements,
+    deleteAdvertisement,
+    uploadImages,
+} from '../controllers/advertisement.controller.js'
 import { authMiddleware } from '@/middleware/authMiddleware'
 import { updateAdvertisement } from '@/controllers/advertisement.controller'
 import { validate, validateParams, validateQuery } from '../middleware/validate.js'
@@ -13,6 +18,7 @@ import {
 import type { GetAdvertisementsQuery } from '../schemas/advertisement.schema.js'
 import { checkAdvertisementOwner } from '@/middleware/checkAdvertisementOwner.js'
 import { getAdvertisementById } from '../controllers/advertisement.controller'
+import { upload } from '@/middleware/upload.middleware'
 
 const router = Router()
 
@@ -193,5 +199,43 @@ router.delete(
     checkAdvertisementOwner,
     deleteAdvertisement
 )
+
+/**
+ * @swagger
+ * /upload:
+ *   post:
+ *     summary: Загрузка изображений объявления
+ *     tags: [Upload]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - images
+ *             properties:
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       200:
+ *         description: Изображения успешно загружены
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 urls:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: https://bucket.s3.amazonaws.com/file.jpg
+ *       400:
+ *         description: Ошибка валидации (размер, формат, количество)
+ */
+router.post('/', upload.array('images', 5), uploadImages)
 
 export default router
