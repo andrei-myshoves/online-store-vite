@@ -13,6 +13,7 @@ import {
 import type { GetAdvertisementsQuery } from '../schemas/advertisement.schema.js'
 import { checkAdvertisementOwner } from '@/middleware/checkAdvertisementOwner.js'
 import { getAdvertisementById } from '../controllers/advertisement.controller'
+import { upload } from '@/middleware/upload.middleware'
 
 const router = Router()
 
@@ -27,10 +28,10 @@ const router = Router()
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
- *             required: [name, description, price, city, images]
+ *             required: [name, description, price, city]
  *             properties:
  *               name:
  *                 type: string
@@ -44,6 +45,7 @@ const router = Router()
  *                 type: array
  *                 items:
  *                   type: string
+ *                   format: binary
  *     responses:
  *       201:
  *         description: Объявление создано
@@ -54,7 +56,7 @@ const router = Router()
  *       401:
  *         description: Не авторизован
  */
-router.post('/', authMiddleware, validate(createAdvertisementSchema), createAdvertisement)
+router.post('/', authMiddleware, upload.array('images'), validate(createAdvertisementSchema), createAdvertisement)
 
 /**
  * @swagger
