@@ -10,6 +10,7 @@ import {
 import styles from './CreateAdvertisementForm.module.css'
 import { useState } from 'react'
 import { ImageUpload } from '../CreateAdvertisementForm/ImageUpload'
+import { RussianMoneyIcon } from '@/shared/ui/icons/RussianMoneyIcon'
 
 type Props = {
     loading?: boolean
@@ -64,17 +65,21 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
             </div>
             <ImageUpload images={images} setImages={setImages} />
             <div className={styles.field}>
-                <div className={styles.smallWidth}>
+                <div className={styles.inputWrapper}>
                     <Input
                         label="Цена"
                         placeholder="Введите цену"
                         value={priceValue}
                         onChange={e => dispatch(setPrice(e.target.value))}
                         disabled={loading}
+                        className={styles.inputWithIcon}
                     />
+
+                    <div className={styles.icon}>
+                        <RussianMoneyIcon />
+                    </div>
                 </div>
             </div>
-
             {error && <div className={styles.error}>{error}</div>}
 
             <Button onClick={handleSubmit} disabled={isDisabled} className={styles.saveButton}>

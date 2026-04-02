@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 import styles from './ImageUpload.module.css'
+import { AddFotoCreateAdverisementIcon } from '@/shared/ui/icons/AddFotoCreateAdvertisementIcon'
+import { Button } from '@/shared/ui/button'
 
 type Props = {
     images: File[]
@@ -31,15 +33,20 @@ export const ImageUpload = ({ images, setImages }: Props) => {
                     <div key={index} className={styles.imageItem}>
                         <img src={URL.createObjectURL(file)} alt="" />
 
-                        <button className={styles.remove} onClick={() => handleRemove(index)}>
+                        <Button
+                            type="button"
+                            variant="wrapper"
+                            className={styles.remove}
+                            onClick={() => handleRemove(index)}
+                        >
                             ✕
-                        </button>
+                        </Button>
                     </div>
                 ))}
 
                 {images.length < 5 && (
                     <div className={styles.placeholder} onClick={() => inputRef.current?.click()}>
-                        +
+                        <AddFotoCreateAdverisementIcon width={30} height={30} />
                     </div>
                 )}
             </div>

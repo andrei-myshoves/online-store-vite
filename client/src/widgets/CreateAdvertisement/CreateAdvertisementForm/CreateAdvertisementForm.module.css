@@ -17,6 +17,9 @@
     border-radius: 30px;
     resize: none;
 }
+.inputWrapper {
+    position: relative;
+}
 
 .field input {
     border: var(--border-secondary);
@@ -27,6 +30,10 @@
 
 .field label {
     margin-left: 24px;
+}
+
+.inputWithIcon input {
+    padding-right: 30px;
 }
 
 .field input:focus,
@@ -42,6 +49,14 @@
 .field:focus-within .textarea {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.icon {
+    position: absolute;
+    right: 18px;
+    top: 70%;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 
 .saveButton {
@@ -68,8 +83,8 @@
         font-size: 16px;
     }
 
-    .smallWidth input {
-        width: 200px;
+    .inputWrapper {
+        width: 200px; /* как у тебя smallWidth */
     }
 
     .textarea {
