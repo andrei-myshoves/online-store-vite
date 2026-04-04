@@ -54,9 +54,13 @@
 .icon {
     position: absolute;
     right: 18px;
-    top: 70%;
+    top: 67%;
     transform: translateY(-50%);
     pointer-events: none;
+}
+
+.ruble {
+    font-size: 16px;
 }
 
 .saveButton {

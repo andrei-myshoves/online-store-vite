@@ -9,7 +9,6 @@ import {
 } from '@/store/reducers/selectors/createAdvertisementSelectors'
 import styles from './CreateAdvertisementForm.module.css'
 import { ImageUpload } from '../CreateAdvertisementForm/ImageUpload'
-import { RussianMoneyIcon } from '@/shared/ui/icons/RussianMoneyIcon'
 
 type CreateAdFormData = {
     name: string
@@ -82,7 +81,7 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
                     />
 
                     <div className={styles.icon}>
-                        <RussianMoneyIcon />
+                        <span className={styles.ruble}>₽</span>
                     </div>
                 </div>
             </div>

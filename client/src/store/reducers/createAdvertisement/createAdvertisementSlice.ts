@@ -76,22 +76,11 @@ const createAdvertisementSlice = createSlice({
                     description: '',
                     price: '',
                 }
+                state.images = []
             })
             .addCase(createAdThunk.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.payload as string
-            })
-            .addCase(createAdThunk.fulfilled, state => {
-                state.loading = false
-                state.isModalOpen = false
-
-                state.form = {
-                    name: '',
-                    description: '',
-                    price: '',
-                }
-
-                state.images = []
             })
     },
 })
