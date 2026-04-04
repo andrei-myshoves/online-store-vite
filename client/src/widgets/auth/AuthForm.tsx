@@ -6,7 +6,7 @@ import { api } from '@/shared/api/api'
 import { useNavigate } from '@tanstack/react-router'
 import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { setEmail, setPassword, setUsername } from '@/store/reducers/auth/authSlice'
+import { setEmail, setPassword, setUsername, setUser } from '@/store/reducers/auth/authSlice'
 
 export const AuthForm = () => {
     const [mode, setMode] = useState<'login' | 'register'>('login')
@@ -32,6 +32,7 @@ export const AuthForm = () => {
 
                 Cookies.set('token', data.token)
                 localStorage.setItem('user', JSON.stringify(data.user))
+                dispatch(setUser(data.user))
 
                 navigate({ to: '/profile' })
             } else {

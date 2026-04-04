@@ -52,12 +52,12 @@ export interface paths {
             }
             requestBody: {
                 content: {
-                    'application/json': {
+                    'multipart/form-data': {
                         name: string
                         description: string
                         price: number
                         city: string
-                        images: string[]
+                        images?: string[]
                     }
                 }
             }

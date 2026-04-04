@@ -1,6 +1,7 @@
 import { Modal } from '@/shared/ui/modal'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { createAdThunk } from '@/store/reducers/createAdvertisement/createAdvertisementThunks'
+import { fetchProfileAdvertisements } from '@/store/reducers/profileAdvertisements/profileAdvertisementsThunks'
 import {
     selectCreateAdLoading,
     selectCreateAdError,
@@ -16,18 +17,32 @@ import { Button } from '@/shared/ui/button'
 export const CreateAdvertisementModal = () => {
     const dispatch = useAppDispatch()
 
+    const userId = useAppSelector(state => state.auth.user?.id)
+
     const loading = useAppSelector(selectCreateAdLoading)
     const error = useAppSelector(selectCreateAdError)
     const isOpen = useAppSelector(selectCreateAdIsModalOpen)
 
-    const handleSubmit = (data: { name: string; description: string; price: number }) => {
-        dispatch(
+    const handleSubmit = async (data: { name: string; description: string; price: number; images: File[] }) => {
+        console.log('SUBMIT IMAGES:', data.images)
+
+        const result = await dispatch(
             createAdThunk({
                 ...data,
                 city: 'Gdańsk',
-                images: [],
+                images: data.images,
             })
         )
+
+        if (createAdThunk.fulfilled.match(result) && userId) {
+            dispatch(
+                fetchProfileAdvertisements({
+                    userId,
+                    limit: 8,
+                    offset: 0,
+                })
+            )
+        }
     }
 
     return (

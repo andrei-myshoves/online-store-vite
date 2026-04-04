@@ -5,7 +5,6 @@ import { updateAdvertisement } from '@/controllers/advertisement.controller'
 import { validate, validateParams, validateQuery } from '../middleware/validate.js'
 import { withTypedQuery } from '@/middleware/withTypedQuery.js'
 import {
-    createAdvertisementSchema,
     updateAdvertisementSchema,
     getAdvertisementsQuerySchema,
     advertisementIdParamSchema,
@@ -56,7 +55,7 @@ const router = Router()
  *       401:
  *         description: Не авторизован
  */
-router.post('/', authMiddleware, upload.array('images'), validate(createAdvertisementSchema), createAdvertisement)
+router.post('/', authMiddleware, upload.array('images'), createAdvertisement)
 
 /**
  * @swagger
