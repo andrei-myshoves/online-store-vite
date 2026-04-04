@@ -29,6 +29,7 @@ export const AuthForm = () => {
                     email,
                     password,
                 })
+                if (!data) return
 
                 Cookies.set('token', data.token)
                 localStorage.setItem('user', JSON.stringify(data.user))

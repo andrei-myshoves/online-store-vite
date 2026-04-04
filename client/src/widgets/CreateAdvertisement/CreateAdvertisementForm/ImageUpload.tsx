@@ -2,26 +2,27 @@ import { useRef } from 'react'
 import styles from './ImageUpload.module.css'
 import { AddFotoCreateAdverisementIcon } from '@/shared/ui/icons/AddFotoCreateAdvertisementIcon'
 import { Button } from '@/shared/ui/button'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { addImage, removeImage } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 
-type Props = {
-    images: File[]
-    setImages: (files: File[]) => void
-}
-
-export const ImageUpload = ({ images, setImages }: Props) => {
+export const ImageUpload = () => {
     const inputRef = useRef<HTMLInputElement>(null)
+
+    const dispatch = useAppDispatch()
+    const images = useAppSelector(state => state.createAdvertisement.images)
 
     const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || [])
 
-        const newImages = [...images, ...files].slice(0, 5)
-
-        setImages(newImages)
+        files.forEach(file => {
+            if (images.length < 5) {
+                dispatch(addImage(file))
+            }
+        })
     }
 
     const handleRemove = (index: number) => {
-        const newImages = images.filter((_, i) => i !== index)
-        setImages(newImages)
+        dispatch(removeImage(index))
     }
 
     return (

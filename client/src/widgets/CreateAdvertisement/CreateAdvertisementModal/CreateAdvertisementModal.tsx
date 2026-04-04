@@ -24,8 +24,6 @@ export const CreateAdvertisementModal = () => {
     const isOpen = useAppSelector(selectCreateAdIsModalOpen)
 
     const handleSubmit = async (data: { name: string; description: string; price: number; images: File[] }) => {
-        console.log('SUBMIT IMAGES:', data.images)
-
         const result = await dispatch(
             createAdThunk({
                 ...data,

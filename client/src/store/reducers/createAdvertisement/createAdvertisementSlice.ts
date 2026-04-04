@@ -13,6 +13,7 @@ type CreateAdvertisementState = {
     loading: boolean
     error?: string
     form: FormState
+    images: File[]
 }
 
 const initialState: CreateAdvertisementState = {
@@ -24,6 +25,7 @@ const initialState: CreateAdvertisementState = {
         description: '',
         price: '',
     },
+    images: [],
 }
 
 const createAdvertisementSlice = createSlice({
@@ -46,6 +48,18 @@ const createAdvertisementSlice = createSlice({
         setPrice: (state, action: PayloadAction<string>) => {
             state.form.price = action.payload
         },
+        setImages: (state, action: PayloadAction<File[]>) => {
+            state.images = action.payload
+        },
+        addImage: (state, action: PayloadAction<File>) => {
+            state.images.push(action.payload)
+        },
+        removeImage: (state, action: PayloadAction<number>) => {
+            state.images.splice(action.payload, 1)
+        },
+        clearImages: state => {
+            state.images = []
+        },
     },
     extraReducers: builder => {
         builder
@@ -67,9 +81,31 @@ const createAdvertisementSlice = createSlice({
                 state.loading = false
                 state.error = action.payload as string
             })
+            .addCase(createAdThunk.fulfilled, state => {
+                state.loading = false
+                state.isModalOpen = false
+
+                state.form = {
+                    name: '',
+                    description: '',
+                    price: '',
+                }
+
+                state.images = []
+            })
     },
 })
 
-export const { openModal, closeModal, setName, setDescription, setPrice } = createAdvertisementSlice.actions
+export const {
+    openModal,
+    closeModal,
+    setName,
+    setDescription,
+    setPrice,
+    setImages,
+    addImage,
+    removeImage,
+    clearImages,
+} = createAdvertisementSlice.actions
 
 export default createAdvertisementSlice.reducer

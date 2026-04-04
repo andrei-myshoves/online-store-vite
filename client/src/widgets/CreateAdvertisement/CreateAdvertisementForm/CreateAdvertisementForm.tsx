@@ -8,19 +8,25 @@ import {
     selectCreateAdPrice,
 } from '@/store/reducers/selectors/createAdvertisementSelectors'
 import styles from './CreateAdvertisementForm.module.css'
-import { useState } from 'react'
 import { ImageUpload } from '../CreateAdvertisementForm/ImageUpload'
 import { RussianMoneyIcon } from '@/shared/ui/icons/RussianMoneyIcon'
+
+type CreateAdFormData = {
+    name: string
+    description: string
+    price: number
+    images: File[]
+}
 
 type Props = {
     loading?: boolean
     error?: string
-    onSubmit?: (data: { name: string; description: string; price: number; images: File[] }) => void
+    onSubmit?: (data: CreateAdFormData) => void
 }
 
 export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Props) => {
     const dispatch = useAppDispatch()
-    const [images, setImages] = useState<File[]>([])
+    const images = useAppSelector(state => state.createAdvertisement.images)
 
     const name = useAppSelector(selectCreateAdName)
     const description = useAppSelector(selectCreateAdDescription)
@@ -63,7 +69,7 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
                     disabled={loading}
                 />
             </div>
-            <ImageUpload images={images} setImages={setImages} />
+            <ImageUpload />
             <div className={styles.field}>
                 <div className={styles.inputWrapper}>
                     <Input
