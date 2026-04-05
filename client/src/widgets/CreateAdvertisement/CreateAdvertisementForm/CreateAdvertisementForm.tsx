@@ -8,15 +8,24 @@ import {
     selectCreateAdPrice,
 } from '@/store/reducers/selectors/createAdvertisementSelectors'
 import styles from './CreateAdvertisementForm.module.css'
+import { ImageUpload } from '../CreateAdvertisementForm/ImageUpload'
+
+type CreateAdFormData = {
+    name: string
+    description: string
+    price: number
+    images: File[]
+}
 
 type Props = {
     loading?: boolean
     error?: string
-    onSubmit?: (data: { name: string; description: string; price: number }) => void
+    onSubmit?: (data: CreateAdFormData) => void
 }
 
 export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Props) => {
     const dispatch = useAppDispatch()
+    const images = useAppSelector(state => state.createAdvertisement.images)
 
     const name = useAppSelector(selectCreateAdName)
     const description = useAppSelector(selectCreateAdDescription)
@@ -33,6 +42,7 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
             name,
             description,
             price,
+            images,
         })
     }
 
@@ -58,19 +68,23 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
                     disabled={loading}
                 />
             </div>
-
+            <ImageUpload />
             <div className={styles.field}>
-                <div className={styles.smallWidth}>
+                <div className={styles.inputWrapper}>
                     <Input
                         label="Цена"
                         placeholder="Введите цену"
                         value={priceValue}
                         onChange={e => dispatch(setPrice(e.target.value))}
                         disabled={loading}
+                        className={styles.inputWithIcon}
                     />
+
+                    <div className={styles.icon}>
+                        <span className={styles.ruble}>₽</span>
+                    </div>
                 </div>
             </div>
-
             {error && <div className={styles.error}>{error}</div>}
 
             <Button onClick={handleSubmit} disabled={isDisabled} className={styles.saveButton}>
