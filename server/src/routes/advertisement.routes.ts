@@ -138,8 +138,9 @@ router.get('/:id', validateParams(advertisementIdParamSchema), getAdvertisementB
  *         schema:
  *           type: integer
  *     requestBody:
+ *       required: false
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -151,9 +152,14 @@ router.get('/:id', validateParams(advertisementIdParamSchema), getAdvertisementB
  *                 type: number
  *               city:
  *                 type: string
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       200:
- *         description: Обновлено
+ *         description: Объявление обновлено
  *         content:
  *           application/json:
  *             schema:
@@ -163,7 +169,15 @@ router.get('/:id', validateParams(advertisementIdParamSchema), getAdvertisementB
  *       404:
  *         description: Не найдено
  */
-router.patch('/:id', authMiddleware, validate(updateAdvertisementSchema), checkAdvertisementOwner, updateAdvertisement)
+
+router.patch(
+    '/:id',
+    authMiddleware,
+    upload.array('images'),
+    validate(updateAdvertisementSchema),
+    checkAdvertisementOwner,
+    updateAdvertisement
+)
 
 /**
  * @swagger
