@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import path from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vite.dev/config/
 import { fileURLToPath } from 'node:url'
@@ -18,6 +19,13 @@ export default defineConfig({
             autoCodeSplitting: true,
         }),
         react(),
+
+        visualizer({
+            open: true,
+            filename: 'stats.html',
+            gzipSize: true,
+            brotliSize: true,
+        }),
         // ...,
     ],
     resolve: {
