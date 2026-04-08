@@ -82,12 +82,33 @@ export const updateAdvertisement = async (req: Request, res: Response, next: Nex
             throw ApiError.notFound('Advertisement not found')
         }
 
-        await advertisement.update(req.body)
+        const { name, description, price, city } = req.body
 
-        res.status(200).json({
-            success: true,
-            advertisement,
+        const files = (req.files as Express.Multer.File[]) || []
+
+        validateImages({
+            files,
+            minCount: 0,
         })
+
+        let imageUrls = advertisement.images
+
+        if (files.length > 0) {
+            imageUrls = files.map(file => `/static/advertisements/${file.filename}`)
+        }
+
+        const slug = name ? slugify(name, { lower: true, strict: true }) : advertisement.slug
+
+        await advertisement.update({
+            name: name ?? advertisement.name,
+            description: description ?? advertisement.description,
+            price: price ?? advertisement.price,
+            city: city ?? advertisement.city,
+            slug,
+            images: imageUrls,
+        })
+
+        res.status(200).json(advertisement)
     } catch (error) {
         next(error)
     }
