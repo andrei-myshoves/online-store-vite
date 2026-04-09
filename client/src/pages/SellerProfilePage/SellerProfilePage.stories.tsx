@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { SellerProfilePage } from './SellerProfilePage'
+import SellerProfilePage from './SellerProfilePage'
 import { withStore } from '@/shared/storybook/withStore'
 import { sellerMockState } from './SellerProfilePage.mock'
 

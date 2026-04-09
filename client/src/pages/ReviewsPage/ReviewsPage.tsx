@@ -1,7 +1,7 @@
 import { useParams } from '@tanstack/react-router'
 import { ReviewsBlock } from '@/widgets/reviews/ReviewsBlock'
 
-export const ReviewsPage = () => {
+const ReviewsPage = () => {
     const { id } = useParams({ from: '/reviews/$id' })
 
     return (
@@ -10,3 +10,5 @@ export const ReviewsPage = () => {
         </div>
     )
 }
+
+export default ReviewsPage

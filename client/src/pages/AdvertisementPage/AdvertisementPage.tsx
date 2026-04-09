@@ -30,7 +30,7 @@ const formatReviewsCount = (count = 0) => {
     return `${count} отзывов`
 }
 
-export const AdvertisementPage = () => {
+const AdvertisementPage = () => {
     const params = useParams({ from: '/advertisement/$id' })
     const id = params?.id ?? '1'
     const navigate = useNavigate()
@@ -163,3 +163,5 @@ export const AdvertisementPage = () => {
         </div>
     )
 }
+
+export default AdvertisementPage

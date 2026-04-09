@@ -7,7 +7,7 @@ import { selectProfile, selectProfileLoading, selectProfileError } from '@/store
 import styles from './ProfilePage.module.css'
 import { ProfileAdvertisements } from '@/widgets/ProfileAdvertisements/ProfileAdvertisements'
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
     const dispatch = useAppDispatch()
 
     const profile = useAppSelector(selectProfile)
@@ -37,3 +37,5 @@ export const ProfilePage = () => {
         </div>
     )
 }
+
+export default ProfilePage

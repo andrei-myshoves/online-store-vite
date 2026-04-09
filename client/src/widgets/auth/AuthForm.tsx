@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setEmail, setPassword, setUsername, setUser } from '@/store/reducers/auth/authSlice'
 
-export const AuthForm = () => {
+const AuthForm = () => {
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -94,3 +94,5 @@ export const AuthForm = () => {
         </form>
     )
 }
+
+export default AuthForm

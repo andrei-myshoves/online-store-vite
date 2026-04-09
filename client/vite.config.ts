@@ -16,7 +16,6 @@ export default defineConfig({
     plugins: [
         tanstackRouter({
             target: 'react',
-            autoCodeSplitting: true,
         }),
         react(),
 
@@ -39,6 +38,25 @@ export default defineConfig({
             '/api': {
                 target: 'http://localhost:5000',
                 changeOrigin: true,
+            },
+        },
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        return 'vendor'
+                    }
+
+                    if (id.includes('/pages/')) {
+                        return 'pages'
+                    }
+
+                    if (id.includes('/widgets/')) {
+                        return 'widgets'
+                    }
+                },
             },
         },
     },

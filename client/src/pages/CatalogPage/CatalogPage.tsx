@@ -9,7 +9,7 @@ import { selectCatalogData } from '@/store/reducers/selectors/catalogSelectors'
 
 const LIMIT = 10
 
-export const CatalogPage = () => {
+const CatalogPage = () => {
     const dispatch = useAppDispatch()
     const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
 
@@ -25,3 +25,5 @@ export const CatalogPage = () => {
         </div>
     )
 }
+
+export default CatalogPage
