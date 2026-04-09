@@ -11,7 +11,8 @@
         "type-check": "tsc --noEmit",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "generate:api": "openapi-typescript http://localhost:5000/api-docs/json -o ./src/shared/api/types/api.ts"
+        "generate:api": "openapi-typescript http://localhost:5000/api-docs/json -o ./src/shared/api/types/api.ts",
+        "analyzer": "vite build"
     },
     "dependencies": {
         "@reduxjs/toolkit": "^2.11.2",
@@ -48,6 +49,7 @@
         "globals": "^16.5.0",
         "openapi-typescript": "^7.13.0",
         "playwright": "^1.58.2",
+        "rollup-plugin-visualizer": "^7.0.1",
         "storybook": "^10.2.8",
         "typescript": "~5.9.3",
         "typescript-eslint": "^8.46.4",
