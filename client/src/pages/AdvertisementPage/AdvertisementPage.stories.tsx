@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { AdvertisementPage } from './AdvertisementPage'
+import AdvertisementPage from './AdvertisementPage'
 import { withStore } from '@/shared/storybook/withStore'
 import { advertisementMockState } from './AdvertisementPage.mock'
 

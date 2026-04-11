@@ -4,15 +4,22 @@ import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import styles from './Header.module.css'
 import { useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { AuthModal } from '@/widgets/auth/AuthModal'
 import { useAppDispatch } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
-import { CreateAdvertisementModal } from '@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal'
+import { lazy, Suspense } from 'react'
+import { Loader } from '@/shared/ui/loader/Loader'
+import { useAppSelector } from '@/hooks/redux'
+import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
 
+const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
+const CreateAdvertisementModal = lazy(
+    () => import('@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal')
+)
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
     const dispatch = useAppDispatch()
+    const isCreateAdOpen = useAppSelector(selectCreateAdIsModalOpen)
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
 
@@ -64,10 +71,16 @@ export const Header = () => {
                     )}
                 </div>
             </header>
-
-            <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
-
-            <CreateAdvertisementModal />
+            {isAuthOpen && (
+                <Suspense fallback={<Loader />}>
+                    <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+                </Suspense>
+            )}
+            {isCreateAdOpen && (
+                <Suspense fallback={<Loader />}>
+                    <CreateAdvertisementModal />
+                </Suspense>
+            )}
         </>
     )
 }

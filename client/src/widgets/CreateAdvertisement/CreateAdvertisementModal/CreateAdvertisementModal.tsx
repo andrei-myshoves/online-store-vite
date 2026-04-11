@@ -14,7 +14,7 @@ import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
 import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 import { Button } from '@/shared/ui/button'
 
-export const CreateAdvertisementModal = () => {
+const CreateAdvertisementModal = () => {
     const dispatch = useAppDispatch()
 
     const userId = useAppSelector(state => state.auth.user?.id)
@@ -63,3 +63,5 @@ export const CreateAdvertisementModal = () => {
         </Modal>
     )
 }
+
+export default CreateAdvertisementModal

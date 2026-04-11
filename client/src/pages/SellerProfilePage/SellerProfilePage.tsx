@@ -17,7 +17,7 @@ import {
 } from '@/store/reducers/selectors/sellerSelectors'
 import { Loader } from '@/shared/ui/loader/Loader'
 
-export const SellerProfilePage = () => {
+const SellerProfilePage = () => {
     const params = useParams({ from: '/seller/$id' })
     const id = params?.id ?? '1'
     const navigate = useNavigate()
@@ -100,3 +100,5 @@ export const SellerProfilePage = () => {
         </div>
     )
 }
+
+export default SellerProfilePage
