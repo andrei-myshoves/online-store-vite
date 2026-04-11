@@ -46,7 +46,9 @@ export const getAdvertisements = async (
     try {
         const { limit, offset, userId } = req.query
 
-        let where = undefined
+        let where: any = {
+            isPublished: true,
+        }
 
         if (userId) {
             const user = await User.findByPk(userId)
@@ -141,8 +143,34 @@ export const getAdvertisementById = async (req: Request, res: Response, next: Ne
         if (!advertisement) {
             throw ApiError.notFound('Advertisement not found')
         }
+        if (!advertisement || !advertisement.isPublished) {
+            throw ApiError.notFound('Advertisement not found')
+        }
 
         res.status(200).json(advertisement)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const unpublishAdvertisement = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const advertisement = await Advertisement.findByPk(id)
+
+        if (!advertisement) {
+            throw ApiError.notFound('Advertisement not found')
+        }
+
+        advertisement.isPublished = false
+
+        await advertisement.save()
+
+        res.status(200).json({
+            success: true,
+            advertisement,
+        })
     } catch (error) {
         next(error)
     }

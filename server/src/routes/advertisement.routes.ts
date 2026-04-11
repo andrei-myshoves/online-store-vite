@@ -1,5 +1,10 @@
 import { Router } from 'express'
-import { createAdvertisement, getAdvertisements, deleteAdvertisement } from '../controllers/advertisement.controller.js'
+import {
+    createAdvertisement,
+    getAdvertisements,
+    deleteAdvertisement,
+    unpublishAdvertisement,
+} from '../controllers/advertisement.controller.js'
 import { authMiddleware } from '@/middleware/authMiddleware'
 import { updateAdvertisement } from '@/controllers/advertisement.controller'
 import { validate, validateParams, validateQuery } from '../middleware/validate.js'
@@ -177,6 +182,50 @@ router.patch(
     validate(updateAdvertisementSchema),
     checkAdvertisementOwner,
     updateAdvertisement
+)
+
+/**
+ * @swagger
+ * /advertisement/{id}/unpublish:
+ *   patch:
+ *     summary: Снять объявление с публикации
+ *     description: Устанавливает isPublished = false. Доступно только автору объявления.
+ *     tags: [Advertisement]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID объявления
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Объявление успешно снято с публикации
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 advertisement:
+ *                   $ref: '#/components/schemas/Advertisement'
+ *       401:
+ *         description: Не авторизован
+ *       403:
+ *         description: Нет доступа (не владелец)
+ *       404:
+ *         description: Объявление не найдено
+ */
+router.patch(
+    '/:id/unpublish',
+    authMiddleware,
+    validateParams(advertisementIdParamSchema),
+    checkAdvertisementOwner,
+    unpublishAdvertisement
 )
 
 /**

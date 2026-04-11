@@ -11,13 +11,14 @@ interface AdvertisementAttributes {
     userId: string
     reviewsCount: number
     slug: string
+    isPublished: boolean
     createdAt?: Date
     updatedAt?: Date
 }
 
 interface AdvertisementCreationAttributes extends Optional<
     AdvertisementAttributes,
-    'id' | 'images' | 'reviewsCount' | 'slug' | 'createdAt' | 'updatedAt'
+    'id' | 'images' | 'reviewsCount' | 'slug' | 'createdAt' | 'updatedAt' | 'isPublished'
 > {}
 
 class Advertisement
@@ -33,6 +34,7 @@ class Advertisement
     declare userId: string
     declare reviewsCount: number
     declare slug: string
+    declare isPublished: boolean
     declare createdAt?: Date
     declare updatedAt?: Date
 }
@@ -77,6 +79,10 @@ Advertisement.init(
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
+        },
+        isPublished: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
         },
     },
 
