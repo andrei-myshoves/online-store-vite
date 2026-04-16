@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { ApiError } from '../error/ApiError.js'
+import { WhereOptions } from 'sequelize'
 import Advertisement from '@/models/Advertisement.js'
 import { TypedQueryRequest } from '@/middleware/withTypedQuery.js'
 import User from '@/models/User'
@@ -46,7 +47,7 @@ export const getAdvertisements = async (
     try {
         const { limit, offset, userId } = req.query
 
-        let where: any = {
+        let where: WhereOptions<Advertisement> = {
             isPublished: true,
         }
 
