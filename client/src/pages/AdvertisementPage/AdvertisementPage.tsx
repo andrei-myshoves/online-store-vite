@@ -7,8 +7,9 @@ import styles from './AdvertisementPage.module.css'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import clsx from 'clsx'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
+import { fetchAdvertisementById, unpublishAdvertisementThunk } from '@/store/reducers/advertisement/advertisementThunks'
 import { selectAdvertisementData } from '@/store/reducers/selectors/advertisementSelectors'
+import { EditAdvertisementModal } from '@/widgets/EditAdvertisementModal/EditAdvertisementModal'
 
 const mockImages = [
     'https://picsum.photos/800/800?1',
@@ -37,9 +38,11 @@ const AdvertisementPage = () => {
 
     const dispatch = useAppDispatch()
     const { data, isLoading, error } = useAppSelector(selectAdvertisementData)
+    const currentUser = useAppSelector(state => state.auth.user)
 
     const [activeIndex, setActiveIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
+    const [isEditOpen, setIsEditOpen] = useState(false)
 
     const handleOpenModal = () => {
         setIsReviewsOpen(true)
@@ -63,6 +66,12 @@ const AdvertisementPage = () => {
         })
     }
 
+    const handleUnpublish = async () => {
+        if (!data) return
+        await dispatch(unpublishAdvertisementThunk(data.id))
+        dispatch(fetchAdvertisementById(id))
+    }
+
     useEffect(() => {
         dispatch(fetchAdvertisementById(id))
     }, [dispatch, id])
@@ -83,6 +92,7 @@ const AdvertisementPage = () => {
         return <div className={styles.error}>Объявление не найдено</div>
     }
 
+    const isOwner = currentUser?.id === data.userId
     const images = mockImages
 
     return (
@@ -136,7 +146,15 @@ const AdvertisementPage = () => {
 
                     <div className={styles.price}>{data.price.toLocaleString()} ₽</div>
 
-                    <Button className={styles.phoneButton}>Показать телефон</Button>
+                    {isOwner ? (
+                        <div className={styles.ownerActions}>
+                            <Button onClick={() => setIsEditOpen(true)}>Редактировать</Button>
+
+                            <Button onClick={handleUnpublish}>Снять с публикации</Button>
+                        </div>
+                    ) : (
+                        <Button className={styles.phoneButton}>Показать телефон</Button>
+                    )}
 
                     <div className={styles.seller}>
                         <div className={styles.avatar} />
@@ -159,6 +177,10 @@ const AdvertisementPage = () => {
                 <Modal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)}>
                     <ReviewsBlock id={data.id} onClose={() => setIsReviewsOpen(false)} />
                 </Modal>
+            )}
+
+            {isEditOpen && (
+                <EditAdvertisementModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} advertisement={data} />
             )}
         </div>
     )

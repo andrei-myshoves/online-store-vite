@@ -13,3 +13,31 @@ export const fetchAdvertisementById = createAsyncThunk<Advertisement, string, { 
         }
     }
 )
+
+export const updateAdvertisementThunk = createAsyncThunk(
+    'advertisement/update',
+    async ({ id, name, description, price, images }: any) => {
+        const formData = new FormData()
+
+        formData.append('name', name)
+        formData.append('description', description)
+        formData.append('price', String(price))
+
+        images.forEach((img: File) => {
+            formData.append('images', img)
+        })
+
+        const response = await api.patch(`/advertisement/${id}`, formData)
+
+        return response.data
+    }
+)
+
+export const unpublishAdvertisementThunk = createAsyncThunk('advertisement/unpublish', async (id: number, thunkAPI) => {
+    try {
+        const response = await api.patch(`/advertisement/${id}/unpublish`)
+        return response.data
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка')
+    }
+})
