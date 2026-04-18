@@ -1,10 +1,14 @@
 import { Modal } from '@/shared/ui/modal'
 import { useAppDispatch } from '@/hooks/redux'
-import { closeModal, setFormData } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import { setFormData } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { CreateAdvertisementForm } from '@/widgets/CreateAdvertisement/CreateAdvertisementForm/CreateAdvertisementForm'
 import { useEffect } from 'react'
-import { updateAdvertisementThunk } from '@/store/reducers/advertisement/advertisementThunks'
-import { fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
+import { updateAdvertisementThunk, fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
+
+import styles from '@/widgets/EditAdvertisementModal/EditAdvertisementModal.module.css'
+import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
+import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
+import { Button } from '@/shared/ui/button'
 
 type Props = {
     isOpen: boolean
@@ -42,8 +46,25 @@ export const EditAdvertisementModal = ({ isOpen, onClose, advertisement }: Props
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={() => dispatch(closeModal())}>
-            <CreateAdvertisementForm onSubmit={handleSubmit} loading={false} error={undefined} />
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className={styles.wrapper}>
+                <div className={styles.headerTop}>
+                    <Button variant="wrapper" className={styles.backButton} onClick={onClose}>
+                        <LeftArrow width={16} height={16} />
+                    </Button>
+
+                    <h2 className={styles.title}>
+                        <span className={styles.mobileTitle}>Редактировать</span>
+                        <span className={styles.desktopTitle}>Редактировать объявление</span>
+                    </h2>
+
+                    <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>
+                        <CloseIcon width={30} height={30} />
+                    </Button>
+                </div>
+
+                <CreateAdvertisementForm onSubmit={handleSubmit} mode="edit" />
+            </div>
         </Modal>
     )
 }

@@ -92,7 +92,7 @@ const AdvertisementPage = () => {
         return <div className={styles.error}>Объявление не найдено</div>
     }
 
-    const isOwner = currentUser?.id === data.userId
+    const isOwner = Number(currentUser?.id) === Number(data.userId)
     const images = mockImages
 
     return (
@@ -148,9 +148,12 @@ const AdvertisementPage = () => {
 
                     {isOwner ? (
                         <div className={styles.ownerActions}>
-                            <Button onClick={() => setIsEditOpen(true)}>Редактировать</Button>
-
-                            <Button onClick={handleUnpublish}>Снять с публикации</Button>
+                            <Button className={styles.editButton} variant="primary" onClick={() => setIsEditOpen(true)}>
+                                Редактировать
+                            </Button>
+                            <Button className={styles.unpublishButton} variant="primary" onClick={handleUnpublish}>
+                                Снять с публикации
+                            </Button>{' '}
                         </div>
                     ) : (
                         <Button className={styles.phoneButton}>Показать телефон</Button>

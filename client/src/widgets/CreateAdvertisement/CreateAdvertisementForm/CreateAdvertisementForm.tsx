@@ -20,10 +20,11 @@ type CreateAdFormData = {
 type Props = {
     loading?: boolean
     error?: string
+    mode?: 'create' | 'edit'
     onSubmit?: (data: CreateAdFormData) => void
 }
 
-export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Props) => {
+export const CreateAdvertisementForm = ({ loading = false, mode = 'create', error, onSubmit }: Props) => {
     const dispatch = useAppDispatch()
     const images = useAppSelector(state => state.createAdvertisement.images)
 
@@ -88,7 +89,13 @@ export const CreateAdvertisementForm = ({ loading = false, error, onSubmit }: Pr
             {error && <div className={styles.error}>{error}</div>}
 
             <Button onClick={handleSubmit} disabled={isDisabled} className={styles.saveButton}>
-                {loading ? 'Публикация...' : 'Опубликовать'}
+                {loading
+                    ? mode === 'create'
+                        ? 'Публикация...'
+                        : 'Сохранение...'
+                    : mode === 'create'
+                      ? 'Опубликовать'
+                      : 'Сохранить'}
             </Button>
         </div>
     )
