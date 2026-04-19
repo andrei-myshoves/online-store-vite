@@ -35,17 +35,13 @@ const AdvertisementPage = () => {
     const { data, isLoading, error } = useAppSelector(selectAdvertisementData)
     const currentUser = useAppSelector(selectCurrentUser)
 
-    const [activeIndex, setActiveIndex] = useState(0)
+    const [imgSliderIndex, setImgSliderIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
 
     useEffect(() => {
         dispatch(fetchAdvertisementById(id))
     }, [dispatch, id])
-
-    useEffect(() => {
-        setActiveIndex(0)
-    }, [id])
 
     const handleOpenModal = () => {
         setIsReviewsOpen(true)
@@ -101,7 +97,7 @@ const AdvertisementPage = () => {
             <div className={styles.top}>
                 <div className={styles.gallery}>
                     <div className={styles.mainImage}>
-                        <img src={images[activeIndex]} alt={data.name} />
+                        <img src={images[imgSliderIndex]} alt={data.name} />
                     </div>
 
                     {images.length > 1 && (
@@ -109,8 +105,8 @@ const AdvertisementPage = () => {
                             {images.map((img, index) => (
                                 <button
                                     key={index}
-                                    className={clsx(styles.thumb, index === activeIndex && styles.active)}
-                                    onClick={() => setActiveIndex(index)}
+                                    className={clsx(styles.thumb, index === imgSliderIndex && styles.active)}
+                                    onClick={() => setImgSliderIndex(index)}
                                 >
                                     <img src={img} alt="" />
                                 </button>
