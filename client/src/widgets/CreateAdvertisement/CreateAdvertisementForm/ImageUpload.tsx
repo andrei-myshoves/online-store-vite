@@ -25,6 +25,11 @@ export const ImageUpload = () => {
         dispatch(removeImage(index))
     }
 
+    const getImageSrc = (file: File | string) => {
+        if (typeof file === 'string') return file
+        return URL.createObjectURL(file)
+    }
+
     return (
         <div className={styles.wrapper}>
             <p className={styles.label}>Фотографии товара (не более 5)</p>
@@ -32,7 +37,7 @@ export const ImageUpload = () => {
             <div className={styles.grid}>
                 {images.map((file, index) => (
                     <div key={index} className={styles.imageItem}>
-                        <img src={URL.createObjectURL(file)} alt="" />
+                        <img src={getImageSrc(file)} alt="" />
 
                         <Button
                             type="button"

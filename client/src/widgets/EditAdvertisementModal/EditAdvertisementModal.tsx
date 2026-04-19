@@ -1,6 +1,6 @@
 import { Modal } from '@/shared/ui/modal'
 import { useAppDispatch } from '@/hooks/redux'
-import { setFormData } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import { setFormData, setImages } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { CreateAdvertisementForm } from '@/widgets/CreateAdvertisement/CreateAdvertisementForm/CreateAdvertisementForm'
 import { useEffect } from 'react'
 import { updateAdvertisementThunk, fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
@@ -28,6 +28,7 @@ export const EditAdvertisementModal = ({ isOpen, onClose, advertisement }: Props
                     price: advertisement.price,
                 })
             )
+            dispatch(setImages(advertisement.images || []))
         }
     }, [advertisement, dispatch])
 

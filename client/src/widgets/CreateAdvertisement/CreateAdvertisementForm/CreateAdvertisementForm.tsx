@@ -10,11 +10,11 @@ import {
 import styles from './CreateAdvertisementForm.module.css'
 import { ImageUpload } from '../CreateAdvertisementForm/ImageUpload'
 
-type CreateAdFormData = {
+export type CreateAdFormData = {
     name: string
     description: string
     price: number
-    images: File[]
+    images: (File | string)[]
 }
 
 type Props = {
