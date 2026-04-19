@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { fetchAdvertisementById, unpublishAdvertisementThunk } from '@/store/reducers/advertisement/advertisementThunks'
 import { selectAdvertisementData } from '@/store/reducers/selectors/advertisementSelectors'
 import { EditAdvertisementModal } from '@/widgets/EditAdvertisementModal/EditAdvertisementModal'
+import { selectCurrentUser } from '@/store/reducers/selectors/authSelectors'
 
 const mockImages = [
     'https://picsum.photos/800/800?1',
@@ -20,14 +21,8 @@ const mockImages = [
 ]
 
 const formatReviewsCount = (count = 0) => {
-    if (count % 10 === 1 && count % 100 !== 11) {
-        return `${count} отзыв`
-    }
-
-    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
-        return `${count} отзыва`
-    }
-
+    if (count % 10 === 1 && count % 100 !== 11) return `${count} отзыв`
+    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return `${count} отзыва`
     return `${count} отзывов`
 }
 
@@ -38,11 +33,19 @@ const AdvertisementPage = () => {
 
     const dispatch = useAppDispatch()
     const { data, isLoading, error } = useAppSelector(selectAdvertisementData)
-    const currentUser = useAppSelector(state => state.auth.user)
+    const currentUser = useAppSelector(selectCurrentUser)
 
     const [activeIndex, setActiveIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
+
+    useEffect(() => {
+        dispatch(fetchAdvertisementById(id))
+    }, [dispatch, id])
+
+    useEffect(() => {
+        setActiveIndex(0)
+    }, [id])
 
     const handleOpenModal = () => {
         setIsReviewsOpen(true)
@@ -68,17 +71,13 @@ const AdvertisementPage = () => {
 
     const handleUnpublish = async () => {
         if (!data) return
-        await dispatch(unpublishAdvertisementThunk(data.id))
-        dispatch(fetchAdvertisementById(id))
+
+        const result = await dispatch(unpublishAdvertisementThunk(data.id))
+
+        if (unpublishAdvertisementThunk.fulfilled.match(result)) {
+            dispatch(fetchAdvertisementById(id))
+        }
     }
-
-    useEffect(() => {
-        dispatch(fetchAdvertisementById(id))
-    }, [dispatch, id])
-
-    useEffect(() => {
-        setActiveIndex(0)
-    }, [id])
 
     if (isLoading) {
         return <div className={styles.loader}>Загрузка...</div>
@@ -153,7 +152,7 @@ const AdvertisementPage = () => {
                             </Button>
                             <Button className={styles.unpublishButton} variant="primary" onClick={handleUnpublish}>
                                 Снять с публикации
-                            </Button>{' '}
+                            </Button>
                         </div>
                     ) : (
                         <Button className={styles.phoneButton}>Показать телефон</Button>
