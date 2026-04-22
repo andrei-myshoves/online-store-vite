@@ -55,7 +55,10 @@ export const getAdvertisements = async (
             const user = await User.findByPk(userId)
 
             if (user) {
-                where = { userId }
+                where = {
+                    ...where,
+                    userId,
+                }
             }
         }
 
