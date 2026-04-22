@@ -128,6 +128,19 @@
     color: var(--color-text-main);
 }
 
+.ownerActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.editButton,
+.unpublishButton {
+    width: 100%;
+    padding: 0;
+}
+
 @media (width >= 1248px) {
     .top {
         flex-direction: row;
@@ -190,6 +203,22 @@
     }
 
     .description {
+        font-size: 16px;
+    }
+
+    .ownerActions {
+        flex-direction: row;
+    }
+
+    .editButton {
+        width: 189px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .unpublishButton {
+        width: 225px;
+        height: 50px;
         font-size: 16px;
     }
 }

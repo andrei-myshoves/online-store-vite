@@ -13,6 +13,7 @@ import styles from './CreateAdvertisementModal.module.css'
 import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
 import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 import { Button } from '@/shared/ui/button'
+import type { CreateAdFormData } from '@/widgets/CreateAdvertisement/CreateAdvertisementForm/CreateAdvertisementForm'
 
 const CreateAdvertisementModal = () => {
     const dispatch = useAppDispatch()
@@ -23,12 +24,14 @@ const CreateAdvertisementModal = () => {
     const error = useAppSelector(selectCreateAdError)
     const isOpen = useAppSelector(selectCreateAdIsModalOpen)
 
-    const handleSubmit = async (data: { name: string; description: string; price: number; images: File[] }) => {
+    const handleSubmit = async (data: CreateAdFormData) => {
+        const onlyFiles = data.images.filter((img): img is File => img instanceof File)
+
         const result = await dispatch(
             createAdThunk({
                 ...data,
                 city: 'Gdańsk',
-                images: data.images,
+                images: onlyFiles,
             })
         )
 

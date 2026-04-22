@@ -7,8 +7,10 @@ import styles from './AdvertisementPage.module.css'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import clsx from 'clsx'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
+import { fetchAdvertisementById, unpublishAdvertisementThunk } from '@/store/reducers/advertisement/advertisementThunks'
 import { selectAdvertisementData } from '@/store/reducers/selectors/advertisementSelectors'
+import { EditAdvertisementModal } from '@/widgets/EditAdvertisementModal/EditAdvertisementModal'
+import { selectCurrentUser } from '@/store/reducers/selectors/authSelectors'
 
 const mockImages = [
     'https://picsum.photos/800/800?1',
@@ -19,14 +21,8 @@ const mockImages = [
 ]
 
 const formatReviewsCount = (count = 0) => {
-    if (count % 10 === 1 && count % 100 !== 11) {
-        return `${count} отзыв`
-    }
-
-    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) {
-        return `${count} отзыва`
-    }
-
+    if (count % 10 === 1 && count % 100 !== 11) return `${count} отзыв`
+    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return `${count} отзыва`
     return `${count} отзывов`
 }
 
@@ -37,9 +33,15 @@ const AdvertisementPage = () => {
 
     const dispatch = useAppDispatch()
     const { data, isLoading, error } = useAppSelector(selectAdvertisementData)
+    const currentUser = useAppSelector(selectCurrentUser)
 
-    const [activeIndex, setActiveIndex] = useState(0)
+    const [imgSliderIndex, setImgSliderIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
+    const [isEditOpen, setIsEditOpen] = useState(false)
+
+    useEffect(() => {
+        dispatch(fetchAdvertisementById(id))
+    }, [dispatch, id])
 
     const handleOpenModal = () => {
         setIsReviewsOpen(true)
@@ -63,13 +65,15 @@ const AdvertisementPage = () => {
         })
     }
 
-    useEffect(() => {
-        dispatch(fetchAdvertisementById(id))
-    }, [dispatch, id])
+    const handleUnpublish = async () => {
+        if (!data) return
 
-    useEffect(() => {
-        setActiveIndex(0)
-    }, [id])
+        const result = await dispatch(unpublishAdvertisementThunk(data.id))
+
+        if (unpublishAdvertisementThunk.fulfilled.match(result)) {
+            dispatch(fetchAdvertisementById(id))
+        }
+    }
 
     if (isLoading) {
         return <div className={styles.loader}>Загрузка...</div>
@@ -83,6 +87,7 @@ const AdvertisementPage = () => {
         return <div className={styles.error}>Объявление не найдено</div>
     }
 
+    const isOwner = Number(currentUser?.id) === Number(data.userId)
     const images = mockImages
 
     return (
@@ -92,7 +97,7 @@ const AdvertisementPage = () => {
             <div className={styles.top}>
                 <div className={styles.gallery}>
                     <div className={styles.mainImage}>
-                        <img src={images[activeIndex]} alt={data.name} />
+                        <img src={images[imgSliderIndex]} alt={data.name} />
                     </div>
 
                     {images.length > 1 && (
@@ -100,8 +105,8 @@ const AdvertisementPage = () => {
                             {images.map((img, index) => (
                                 <button
                                     key={index}
-                                    className={clsx(styles.thumb, index === activeIndex && styles.active)}
-                                    onClick={() => setActiveIndex(index)}
+                                    className={clsx(styles.thumb, index === imgSliderIndex && styles.active)}
+                                    onClick={() => setImgSliderIndex(index)}
                                 >
                                     <img src={img} alt="" />
                                 </button>
@@ -136,7 +141,18 @@ const AdvertisementPage = () => {
 
                     <div className={styles.price}>{data.price.toLocaleString()} ₽</div>
 
-                    <Button className={styles.phoneButton}>Показать телефон</Button>
+                    {isOwner ? (
+                        <div className={styles.ownerActions}>
+                            <Button className={styles.editButton} variant="primary" onClick={() => setIsEditOpen(true)}>
+                                Редактировать
+                            </Button>
+                            <Button className={styles.unpublishButton} variant="primary" onClick={handleUnpublish}>
+                                Снять с публикации
+                            </Button>
+                        </div>
+                    ) : (
+                        <Button className={styles.phoneButton}>Показать телефон</Button>
+                    )}
 
                     <div className={styles.seller}>
                         <div className={styles.avatar} />
@@ -159,6 +175,10 @@ const AdvertisementPage = () => {
                 <Modal isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)}>
                     <ReviewsBlock id={data.id} onClose={() => setIsReviewsOpen(false)} />
                 </Modal>
+            )}
+
+            {isEditOpen && (
+                <EditAdvertisementModal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} advertisement={data} />
             )}
         </div>
     )

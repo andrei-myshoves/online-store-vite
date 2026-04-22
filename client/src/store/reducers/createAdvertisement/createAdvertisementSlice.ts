@@ -60,6 +60,13 @@ const createAdvertisementSlice = createSlice({
         clearImages: state => {
             state.images = []
         },
+        setFormData: (state, action: PayloadAction<FormState>) => {
+            state.form = {
+                name: action.payload.name,
+                description: action.payload.description,
+                price: action.payload.price,
+            }
+        },
     },
     extraReducers: builder => {
         builder
@@ -95,6 +102,7 @@ export const {
     addImage,
     removeImage,
     clearImages,
+    setFormData,
 } = createAdvertisementSlice.actions
 
 export default createAdvertisementSlice.reducer

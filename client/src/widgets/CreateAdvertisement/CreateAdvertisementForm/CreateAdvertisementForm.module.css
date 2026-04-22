@@ -67,6 +67,11 @@
     padding: 10px 87px;
 }
 
+.saveButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .error {
     color: var(--color-text-error);
     font-size: 14px;

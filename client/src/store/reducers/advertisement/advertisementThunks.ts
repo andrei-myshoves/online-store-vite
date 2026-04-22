@@ -13,3 +13,46 @@ export const fetchAdvertisementById = createAsyncThunk<Advertisement, string, { 
         }
     }
 )
+
+type UpdateAdvertisementPayload = {
+    id: number
+    name: string
+    description: string
+    price: number
+    images: (File | string)[]
+}
+
+export const updateAdvertisementThunk = createAsyncThunk<
+    Advertisement,
+    UpdateAdvertisementPayload,
+    { rejectValue: string }
+>('advertisement/update', async ({ id, name, description, price, images }, thunkAPI) => {
+    try {
+        const formData = new FormData()
+
+        formData.append('name', name)
+        formData.append('description', description)
+        formData.append('price', String(price))
+
+        const onlyFiles = images.filter((img): img is File => img instanceof File)
+
+        onlyFiles.forEach(file => {
+            formData.append('images', file)
+        })
+
+        const response = await api.patch(`/advertisement/${id}`, formData)
+
+        return response.data
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка обновления')
+    }
+})
+
+export const unpublishAdvertisementThunk = createAsyncThunk('advertisement/unpublish', async (id: number, thunkAPI) => {
+    try {
+        const response = await api.patch(`/advertisement/${id}/unpublish`)
+        return response.data
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка')
+    }
+})
