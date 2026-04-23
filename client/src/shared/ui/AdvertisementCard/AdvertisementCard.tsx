@@ -8,10 +8,17 @@ interface Props {
 const BASE_URL = 'http://localhost:5000'
 
 export const AdvertisementCard = ({ item }: Props) => {
+    const image = item.images?.[0]
+
+    const imageSrc = image
+        ? image.startsWith('http')
+            ? image
+            : `${BASE_URL}${image}`
+        : 'https://picsum.photos/300/300'
     return (
         <Link to="/advertisement/$id" params={{ id: item.id.toString() }} className={styles.card}>
             <div className={styles.imageWrapper}>
-                <img src={item.images?.[0] ? `${BASE_URL}${item.images[0]}` : '/placeholder.png'} alt={item.name} />
+                <img src={imageSrc} alt={item.name} loading="lazy" />
             </div>
 
             <div className={styles.content}>
