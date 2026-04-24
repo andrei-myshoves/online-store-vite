@@ -5,16 +5,10 @@ import { Link } from '@tanstack/react-router'
 interface Props {
     item: Advertisement
 }
-const BASE_URL = 'http://localhost:5000'
 
 export const AdvertisementCard = ({ item }: Props) => {
-    const image = item.images?.[0]
+    const imageSrc = item.images?.[0] || '/placeholder.png'
 
-    const imageSrc = image
-        ? image.startsWith('http')
-            ? image
-            : `${BASE_URL}${image}`
-        : 'https://picsum.photos/300/300'
     return (
         <Link to="/advertisement/$id" params={{ id: item.id.toString() }} className={styles.card}>
             <div className={styles.imageWrapper}>
