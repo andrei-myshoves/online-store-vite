@@ -10,13 +10,17 @@ import router from './routes'
 
 import swaggerUi from 'swagger-ui-express'
 import { swaggerSpec } from './config/swagger.js'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const PORT = process.env.PORT || 5000
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use('/static', express.static(path.resolve('./static')))
+app.use('/static', express.static(path.resolve(__dirname, '../static')))
 app.use('/api', router)
 app.use(errorMiddleware)
 
