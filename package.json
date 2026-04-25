@@ -42,7 +42,8 @@
         "prettier": "^3.3.3",
         "stylelint": "^16.26.1",
         "stylelint-config-standard": "^36.0.1",
-        "stylelint-order": "^7.0.0"
+        "stylelint-order": "^7.0.0",
+        "tsup": "^8.5.1"
     },
     "lint-staged": {
         "client/**/*.{ts,tsx}": [
@@ -69,5 +70,8 @@
         "typescript"
     ],
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "tsconfig-paths": "^4.2.0"
+    }
 }
