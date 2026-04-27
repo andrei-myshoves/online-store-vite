@@ -5,8 +5,8 @@
     "main": "dist/index.js",
     "type": "module",
     "scripts": {
-        "dev": "nodemon",
-        "build": "tsc",
+        "dev": "tsx watch src/index.ts",
+        "build": "tsdown",
         "start": "node dist/index.js",
         "type-check": "tsc --noEmit",
         "db:seed": "tsx src/seed/index.ts"
@@ -38,6 +38,8 @@
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
         "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "tsdown": "^0.21.10",
         "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     },
