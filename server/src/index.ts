@@ -8,7 +8,6 @@ import { errorMiddleware } from './middleware/error.middleware.js'
 import path from 'path'
 import router from './routes'
 
-import swaggerUi from 'swagger-ui-express'
 import { swaggerSpec } from './config/swagger.js'
 import { fileURLToPath } from 'url'
 
@@ -18,6 +17,9 @@ const __dirname = path.dirname(__filename)
 const PORT = process.env.PORT || 5000
 
 const app = express()
+
+app.set('trust proxy', 1)
+
 app.use(cors())
 app.use(express.json())
 app.use('/static', express.static(path.resolve(__dirname, '../static')))
@@ -30,6 +32,8 @@ const start = async () => {
         await sequelize.sync()
 
         if (process.env.NODE_ENV !== 'production') {
+            const swaggerUi = await import('swagger-ui-express')
+
             app.get('/api-docs/json', (_, res) => {
                 res.json(swaggerSpec)
             })
