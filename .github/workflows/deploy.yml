@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Deploy Full App
 
 on:
   push:
@@ -22,7 +22,13 @@ jobs:
 
             git pull origin main
 
-            cd server
+            # FRONTEND
+            cd client
+            npm ci
+            npm run build
+
+            # BACKEND
+            cd ../server
             npm ci
             npm run build
 
