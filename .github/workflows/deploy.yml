@@ -1,0 +1,35 @@
+name: Deploy Full App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/online-store-vite
+
+            git pull origin main
+
+            # FRONTEND
+            cd client
+            npm ci
+            npm run build
+
+            # BACKEND
+            cd ../server
+            npm ci
+            npm run build
+
+            pm2 restart backend
