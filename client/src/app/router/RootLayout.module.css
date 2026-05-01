@@ -13,6 +13,7 @@ header {
 
 main {
     flex: 1 1 auto;
+    padding-bottom: var(--footer-height);
 }
 
 footer {
