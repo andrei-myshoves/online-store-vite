@@ -10,6 +10,8 @@ import { lazy, Suspense } from 'react'
 import { Loader } from '@/shared/ui/loader/Loader'
 import { useAppSelector } from '@/hooks/redux'
 import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
+import { setQuery } from '@/store/reducers/search/searchSlice'
+import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -19,6 +21,7 @@ export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
     const dispatch = useAppDispatch()
+    const query = useAppSelector(selectSearchQuery)
     const isCreateAdOpen = useAppSelector(selectCreateAdIsModalOpen)
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
@@ -40,7 +43,14 @@ export const Header = () => {
                         </div>
                     </div>
 
-                    {!isAdvertisementPage && <Input className={styles.search} placeholder="Поиск" />}
+                    {!isAdvertisementPage && (
+                        <Input
+                            className={styles.search}
+                            placeholder="Поиск"
+                            value={query}
+                            onChange={e => dispatch(setQuery(e.target.value))}
+                        />
+                    )}
                 </div>
 
                 <div className={styles.desktopBlock}>

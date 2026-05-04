@@ -13,4 +13,8 @@
     .backButton {
         padding: 13px 36px;
     }
+
+    .search {
+        flex: 1;
+    }
 }
