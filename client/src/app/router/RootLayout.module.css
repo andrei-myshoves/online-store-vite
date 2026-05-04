@@ -11,19 +11,21 @@ header {
     flex: 0 0 var(--header-height-mobile);
 }
 
-main {
-    flex: 1 1 auto;
-}
-
 footer {
     flex: 0 0 var(--footer-height);
 }
 
 header,
-main,
 footer {
     padding: 0 18px;
     background-color: var(--color-bg-surface);
+}
+
+main {
+    flex: 1 1 auto;
+    padding: 0 18px;
+    background-color: var(--color-bg-surface);
+    padding-bottom: var(--footer-height);
 }
 
 @media (width >= 768px) {
