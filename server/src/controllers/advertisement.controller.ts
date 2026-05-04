@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { ApiError } from '../error/ApiError.js'
-import { WhereOptions } from 'sequelize'
+import { WhereOptions, Op } from 'sequelize'
 import Advertisement from '@/models/Advertisement.js'
 import { TypedQueryRequest } from '@/middleware/withTypedQuery.js'
 import User from '@/models/User'
@@ -177,5 +177,41 @@ export const unpublishAdvertisement = async (req: Request, res: Response, next: 
         })
     } catch (error) {
         next(error)
+    }
+}
+
+export const searchAdvertisements = async (req: Request, res: Response) => {
+    try {
+        const { limit = 10, offset = 0 } = req.query
+
+        const rawQ = req.query.q
+        const searchQuery = typeof rawQ === 'string' ? rawQ : ''
+
+        const where: WhereOptions = searchQuery.trim()
+            ? {
+                  isPublished: true,
+                  [Op.or]: [
+                      { name: { [Op.iLike]: `%${searchQuery}%` } },
+                      { description: { [Op.iLike]: `%${searchQuery}%` } },
+                  ],
+              }
+            : {
+                  isPublished: true,
+              }
+
+        const { rows, count } = await Advertisement.findAndCountAll({
+            where,
+            limit: Number(limit),
+            offset: Number(offset),
+            order: [['createdAt', 'DESC']],
+        })
+
+        res.json({
+            data: rows,
+            count,
+        })
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ message: 'Search error' })
     }
 }

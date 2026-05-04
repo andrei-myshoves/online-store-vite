@@ -4,6 +4,7 @@ import {
     getAdvertisements,
     deleteAdvertisement,
     unpublishAdvertisement,
+    searchAdvertisements,
 } from '../controllers/advertisement.controller.js'
 import { authMiddleware } from '@/middleware/authMiddleware'
 import { updateAdvertisement } from '@/controllers/advertisement.controller'
@@ -103,6 +104,49 @@ router.post('/', authMiddleware, upload.array('images'), createAdvertisement)
  *                   type: integer
  */
 router.get('/', validateQuery(getAdvertisementsQuerySchema), withTypedQuery<GetAdvertisementsQuery>(getAdvertisements))
+
+/**
+ * @swagger
+ * /advertisement/search:
+ *   get:
+ *     summary: Поиск объявлений
+ *     description: Поиск по названию и описанию (ILIKE), только опубликованные объявления
+ *     tags: [Advertisement]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         description: Поисковая строка
+ *         example: iphone
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *       - in: query
+ *         name: offset
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *     responses:
+ *       200:
+ *         description: Результаты поиска
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Advertisement'
+ *                 count:
+ *                   type: integer
+ *       500:
+ *         description: Ошибка сервера
+ */
+router.get('/search', searchAdvertisements)
 
 /**
  * @swagger
