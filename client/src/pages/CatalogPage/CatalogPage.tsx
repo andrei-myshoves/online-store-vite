@@ -50,6 +50,8 @@ const CatalogPage = () => {
         <div className={styles.page}>
             <AdvertisementTopBar showBackButton={false} showSearch />
 
+            <h1 className={styles.title}>Объявления</h1>
+
             <AdvertisementsList items={items} loading={isLoading} error={error} />
 
             <Pagination page={page} limit={LIMIT} total={total} onChange={p => dispatch(setPage(p))} />
