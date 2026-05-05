@@ -52,8 +52,6 @@ const CatalogPage = () => {
 
             <AdvertisementsList items={items} loading={isLoading} error={error} />
 
-            {!isLoading && items.length === 0 && <div className={styles.empty}>Ничего не найдено</div>}
-
             <Pagination page={page} limit={LIMIT} total={total} onChange={p => dispatch(setPage(p))} />
         </div>
     )

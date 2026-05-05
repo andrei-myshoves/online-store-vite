@@ -16,5 +16,10 @@
 
     .search {
         flex: 1;
+        padding-right: 80px;
+    }
+
+    .search input {
+        padding: 13px;
     }
 }

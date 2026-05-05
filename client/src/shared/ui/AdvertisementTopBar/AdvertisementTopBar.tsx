@@ -28,8 +28,9 @@ export const AdvertisementTopBar = ({ showBackButton = true, showSearch = false 
 
             {showSearch && (
                 <Input
+                    variant="outline"
                     className={styles.search}
-                    placeholder="Поиск"
+                    placeholder="Поиск по обьявлениям"
                     value={query}
                     onChange={e => dispatch(setQuery(e.target.value))}
                 />
