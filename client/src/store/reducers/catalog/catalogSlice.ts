@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { Advertisement } from '@/entities/advertisement/models/types'
 import { fetchCatalog } from './catalogThunks'
+import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
 
 interface CatalogState {
     items: Advertisement[]
@@ -40,6 +41,19 @@ export const catalogSlice = createSlice({
             .addCase(fetchCatalog.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload ?? 'Ошибка'
+            })
+            .addCase(searchAdvertisements.pending, state => {
+                state.isLoading = true
+                state.error = null
+            })
+            .addCase(searchAdvertisements.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.items = action.payload.data
+                state.total = action.payload.count
+            })
+            .addCase(searchAdvertisements.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.payload ?? 'Ошибка поиска'
             })
     },
 })

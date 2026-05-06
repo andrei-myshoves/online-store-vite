@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
-interface SearchState {
+type SearchState = {
     query: string
 }
 
@@ -14,7 +13,7 @@ const searchSlice = createSlice({
     initialState,
     reducers: {
         setQuery: (state, action: PayloadAction<string>) => {
-            state.query = action.payload
+            state.query = action.payload.trimStart()
         },
     },
 })

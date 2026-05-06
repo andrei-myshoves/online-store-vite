@@ -4,18 +4,17 @@ import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import styles from './AdvertisementTopBar.module.css'
 
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { setQuery } from '@/store/reducers/search/searchSlice'
+import { useAppSelector } from '@/hooks/redux'
 import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
 
 interface Props {
     showBackButton?: boolean
     showSearch?: boolean
+    onSearchChange?: (value: string) => void
 }
 
-export const AdvertisementTopBar = ({ showBackButton = true, showSearch = false }: Props) => {
+export const AdvertisementTopBar = ({ showBackButton = true, showSearch = false, onSearchChange }: Props) => {
     const navigate = useNavigate()
-    const dispatch = useAppDispatch()
     const query = useAppSelector(selectSearchQuery)
 
     const handleBack = () => {
@@ -30,9 +29,9 @@ export const AdvertisementTopBar = ({ showBackButton = true, showSearch = false 
                 <Input
                     variant="outline"
                     className={styles.search}
-                    placeholder="Поиск по обьявлениям"
+                    placeholder="Поиск по объявлениям"
                     value={query}
-                    onChange={e => dispatch(setQuery(e.target.value))}
+                    onChange={e => onSearchChange?.(e.target.value)}
                 />
             )}
 

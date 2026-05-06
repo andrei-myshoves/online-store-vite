@@ -7,48 +7,67 @@ import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
 import { setPage } from '@/store/reducers/catalog/catalogSlice'
 import { selectCatalogData } from '@/store/reducers/selectors/catalogSelectors'
 
-import { useDeferredValue } from 'react'
-import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
+
+import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
+import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
+import { setQuery } from '@/store/reducers/search/searchSlice'
+
+import { useDebounce } from '@/hooks/useDebounce'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 
 const LIMIT = 10
 
 const CatalogPage = () => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
     const query = useAppSelector(selectSearchQuery)
 
-    const deferredQuery = useDeferredValue(query)
+    const debouncedQuery = useDebounce(query)
+
+    const searchParams = useSearch({ from: '/' }) as { search?: string }
+    const search = searchParams.search
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            dispatch(
-                fetchCatalog({
-                    page,
-                    limit: LIMIT,
-                    q: deferredQuery.trim(),
-                })
-            )
-        }, 400)
-
-        return () => clearTimeout(timeout)
-    }, [dispatch, page, deferredQuery])
-
-    useEffect(() => {
-        if (!query.trim()) {
-            dispatch(
-                fetchCatalog({
-                    page,
-                    limit: LIMIT,
-                })
-            )
+        if (search && search !== query) {
+            dispatch(setQuery(search))
         }
-    }, [query, dispatch, page])
+    }, [search, dispatch])
+
+    useEffect(() => {
+        const q = debouncedQuery?.trim()
+
+        if (q) {
+            dispatch(
+                searchAdvertisements({
+                    query: q,
+                    limit: LIMIT,
+                    offset: (page - 1) * LIMIT,
+                })
+            )
+        } else {
+            dispatch(fetchCatalog({ page, limit: LIMIT }))
+        }
+    }, [debouncedQuery, page, dispatch])
+
+    const handleSearchChange = (value: string) => {
+        console.log('HANDLER:', value)
+        dispatch(setQuery(value))
+        dispatch(setPage(1))
+
+        navigate({
+            to: '/',
+            search: {
+                search: value || undefined,
+            },
+        })
+    }
 
     return (
         <div className={styles.page}>
-            <AdvertisementTopBar showBackButton={false} showSearch />
+            <AdvertisementTopBar showBackButton={false} showSearch onSearchChange={handleSearchChange} />
 
             <h1 className={styles.title}>Объявления</h1>
 
