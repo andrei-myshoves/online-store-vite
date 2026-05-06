@@ -13,6 +13,9 @@ import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdve
 import { setQuery } from '@/store/reducers/search/searchSlice'
 import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
 import { setPage } from '@/store/reducers/catalog/catalogSlice'
+import { useDebounceFn } from '@/hooks/useDebounceFn'
+import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
+import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -33,6 +36,22 @@ export const Header = () => {
     const handleOpenCreateAdvertisementModal = () => {
         dispatch(openModal())
     }
+
+    const debouncedSearch = useDebounceFn((value: string) => {
+        const q = value.trim()
+
+        if (q) {
+            dispatch(
+                searchAdvertisements({
+                    query: q,
+                    limit: 10,
+                    offset: 0,
+                })
+            )
+        } else {
+            dispatch(fetchCatalog({ page: 1, limit: 10 }))
+        }
+    }, 400)
 
     return (
         <>
@@ -61,6 +80,8 @@ export const Header = () => {
                                         search: value || undefined,
                                     },
                                 })
+
+                                debouncedSearch(value)
                             }}
                         />
                     )}

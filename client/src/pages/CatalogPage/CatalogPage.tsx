@@ -13,8 +13,8 @@ import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
 import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
 import { setQuery } from '@/store/reducers/search/searchSlice'
 
-import { useDebounce } from '@/hooks/useDebounce'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useDebounceFn } from '@/hooks/useDebounceFn'
 
 const LIMIT = 10
 
@@ -24,20 +24,8 @@ const CatalogPage = () => {
 
     const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
     const query = useAppSelector(selectSearchQuery)
-
-    const debouncedQuery = useDebounce(query)
-
-    const searchParams = useSearch({ from: '/' }) as { search?: string }
-    const search = searchParams.search
-
-    useEffect(() => {
-        if (search && search !== query) {
-            dispatch(setQuery(search))
-        }
-    }, [search, dispatch])
-
-    useEffect(() => {
-        const q = debouncedQuery?.trim()
+    const debouncedSearch = useDebounceFn((value: string, page: number) => {
+        const q = value.trim()
 
         if (q) {
             dispatch(
@@ -50,7 +38,17 @@ const CatalogPage = () => {
         } else {
             dispatch(fetchCatalog({ page, limit: LIMIT }))
         }
-    }, [debouncedQuery, page, dispatch])
+    }, 400)
+
+    const searchParams = useSearch({ from: '/' }) as { search?: string }
+    const search = searchParams.search
+
+    useEffect(() => {
+        if (search && search !== query) {
+            dispatch(setQuery(search))
+            debouncedSearch(search, 1)
+        }
+    }, [search, dispatch])
 
     const handleSearchChange = (value: string) => {
         dispatch(setQuery(value))
@@ -62,7 +60,25 @@ const CatalogPage = () => {
                 search: value || undefined,
             },
         })
+
+        debouncedSearch(value, 1)
     }
+
+    const handlePageChange = (p: number) => {
+        dispatch(setPage(p))
+
+        if (query.trim()) {
+            debouncedSearch(query, p)
+        } else {
+            dispatch(fetchCatalog({ page: p, limit: LIMIT }))
+        }
+    }
+
+    useEffect(() => {
+        if (!query.trim()) {
+            dispatch(fetchCatalog({ page, limit: LIMIT }))
+        }
+    }, [dispatch])
 
     return (
         <div className={styles.page}>
@@ -72,7 +88,7 @@ const CatalogPage = () => {
 
             <AdvertisementsList items={items} loading={isLoading} error={error} />
 
-            <Pagination page={page} limit={LIMIT} total={total} onChange={p => dispatch(setPage(p))} />
+            <Pagination page={page} limit={LIMIT} total={total} onChange={handlePageChange} />
         </div>
     )
 }
