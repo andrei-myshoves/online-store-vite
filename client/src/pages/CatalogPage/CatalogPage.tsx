@@ -25,12 +25,10 @@ const CatalogPage = () => {
     const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
     const query = useAppSelector(selectSearchQuery)
     const debouncedSearch = useDebounceFn((value: string, page: number) => {
-        const q = value.trim()
-
-        if (q) {
+        if (value) {
             dispatch(
                 searchAdvertisements({
-                    query: q,
+                    query: value,
                     limit: LIMIT,
                     offset: (page - 1) * LIMIT,
                 })
@@ -67,7 +65,7 @@ const CatalogPage = () => {
     const handlePageChange = (p: number) => {
         dispatch(setPage(p))
 
-        if (query.trim()) {
+        if (query) {
             debouncedSearch(query, p)
         } else {
             dispatch(fetchCatalog({ page: p, limit: LIMIT }))
@@ -75,7 +73,7 @@ const CatalogPage = () => {
     }
 
     useEffect(() => {
-        if (!query.trim()) {
+        if (!query) {
             dispatch(fetchCatalog({ page, limit: LIMIT }))
         }
     }, [dispatch])

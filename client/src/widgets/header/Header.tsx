@@ -38,12 +38,12 @@ export const Header = () => {
     }
 
     const debouncedSearch = useDebounceFn((value: string) => {
-        const q = value.trim()
+        const searchQuery = value.trim()
 
-        if (q) {
+        if (searchQuery) {
             dispatch(
                 searchAdvertisements({
-                    query: q,
+                    query: searchQuery,
                     limit: 10,
                     offset: 0,
                 })
