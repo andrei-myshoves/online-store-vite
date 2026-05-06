@@ -48,8 +48,8 @@ export const catalogSlice = createSlice({
             })
             .addCase(searchAdvertisements.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.items = action.payload.data
-                state.total = action.payload.count
+                state.items = action.payload.items
+                state.total = action.payload.total
             })
             .addCase(searchAdvertisements.rejected, (state, action) => {
                 state.isLoading = false

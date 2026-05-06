@@ -12,6 +12,7 @@ import { useAppSelector } from '@/hooks/redux'
 import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
 import { setQuery } from '@/store/reducers/search/searchSlice'
 import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
+import { setPage } from '@/store/reducers/catalog/catalogSlice'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -48,7 +49,19 @@ export const Header = () => {
                             className={styles.search}
                             placeholder="Поиск"
                             value={query}
-                            onChange={e => dispatch(setQuery(e.target.value))}
+                            onChange={e => {
+                                const value = e.target.value
+
+                                dispatch(setQuery(value))
+                                dispatch(setPage(1))
+
+                                navigate({
+                                    to: '/',
+                                    search: {
+                                        search: value || undefined,
+                                    },
+                                })
+                            }}
                         />
                     )}
                 </div>

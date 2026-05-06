@@ -53,7 +53,6 @@ const CatalogPage = () => {
     }, [debouncedQuery, page, dispatch])
 
     const handleSearchChange = (value: string) => {
-        console.log('HANDLER:', value)
         dispatch(setQuery(value))
         dispatch(setPage(1))
 

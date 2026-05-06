@@ -8,12 +8,12 @@ type SearchArgs = {
     offset: number
 }
 
-type SearchResponse = {
-    data: Advertisement[]
-    count: number
+type CatalogResponse = {
+    items: Advertisement[]
+    total: number
 }
 
-export const searchAdvertisements = createAsyncThunk<SearchResponse, SearchArgs, { rejectValue: string }>(
+export const searchAdvertisements = createAsyncThunk<CatalogResponse, SearchArgs, { rejectValue: string }>(
     'search/fetch',
     async ({ query, limit, offset }, thunkAPI) => {
         try {
@@ -25,7 +25,10 @@ export const searchAdvertisements = createAsyncThunk<SearchResponse, SearchArgs,
                 },
             })
 
-            return data
+            return {
+                items: data.data,
+                total: data.count,
+            }
         } catch {
             return thunkAPI.rejectWithValue('Ошибка поиска')
         }
