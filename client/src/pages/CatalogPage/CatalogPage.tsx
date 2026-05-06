@@ -44,7 +44,7 @@ const CatalogPage = () => {
     useEffect(() => {
         if (search && search !== query) {
             dispatch(setQuery(search))
-            debouncedSearch(search, 1)
+            dispatch(setPage(1))
         }
     }, [search, dispatch])
 
@@ -73,10 +73,12 @@ const CatalogPage = () => {
     }
 
     useEffect(() => {
-        if (!query) {
-            dispatch(fetchCatalog({ page, limit: LIMIT }))
+        if (search) {
+            debouncedSearch(search, 1)
+        } else {
+            dispatch(fetchCatalog({ page: 1, limit: LIMIT }))
         }
-    }, [dispatch])
+    }, [])
 
     return (
         <div className={styles.page}>
