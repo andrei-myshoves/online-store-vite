@@ -2,30 +2,23 @@ import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import styles from './Header.module.css'
-import { useMatchRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
-import { useAppDispatch } from '@/hooks/redux'
-import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
-import { lazy, Suspense } from 'react'
+import { useMatchRoute, useNavigate, useSearch } from '@tanstack/react-router'
+import { useState, lazy, Suspense } from 'react'
 import { Loader } from '@/shared/ui/loader/Loader'
-import { useAppSelector } from '@/hooks/redux'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
-import { setQuery } from '@/store/reducers/search/searchSlice'
-import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
-import { setPage } from '@/store/reducers/catalog/catalogSlice'
-import { useDebounceFn } from '@/hooks/useDebounceFn'
-import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
-import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
     () => import('@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal')
 )
+
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
+
     const dispatch = useAppDispatch()
-    const query = useAppSelector(selectSearchQuery)
     const isCreateAdOpen = useAppSelector(selectCreateAdIsModalOpen)
 
     const [isAuthOpen, setIsAuthOpen] = useState(false)
@@ -33,25 +26,21 @@ export const Header = () => {
     const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
+    const searchParams = useSearch({ from: '/' }) as { search?: string }
+    const query = searchParams.search || ''
+    const handleSearchChange = (value: string) => {
+        navigate({
+            to: '/',
+            search: {
+                search: value,
+                page: 1,
+            },
+        })
+    }
+
     const handleOpenCreateAdvertisementModal = () => {
         dispatch(openModal())
     }
-
-    const debouncedSearch = useDebounceFn((value: string) => {
-        const searchQuery = value.trim()
-
-        if (searchQuery) {
-            dispatch(
-                searchAdvertisements({
-                    query: searchQuery,
-                    limit: 10,
-                    offset: 0,
-                })
-            )
-        } else {
-            dispatch(fetchCatalog({ page: 1, limit: 10 }))
-        }
-    }, 400)
 
     return (
         <>
@@ -68,21 +57,7 @@ export const Header = () => {
                             className={styles.search}
                             placeholder="Поиск"
                             value={query}
-                            onChange={e => {
-                                const value = e.target.value
-
-                                dispatch(setQuery(value))
-                                dispatch(setPage(1))
-
-                                navigate({
-                                    to: '/',
-                                    search: {
-                                        search: value || undefined,
-                                    },
-                                })
-
-                                debouncedSearch(value)
-                            }}
+                            onChange={e => handleSearchChange(e.target.value)}
                         />
                     )}
                 </div>
@@ -115,11 +90,13 @@ export const Header = () => {
                     )}
                 </div>
             </header>
+
             {isAuthOpen && (
                 <Suspense fallback={<Loader />}>
                     <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
                 </Suspense>
             )}
+
             {isCreateAdOpen && (
                 <Suspense fallback={<Loader />}>
                     <CreateAdvertisementModal />

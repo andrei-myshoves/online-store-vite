@@ -5,6 +5,14 @@ import { lazy } from 'react'
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
+
+    validateSearch: (search: Record<string, unknown>) => {
+        return {
+            search: typeof search.search === 'string' ? search.search : '',
+            page: Number(search.page) || 1,
+        }
+    },
+
     component: lazy(() => import('@/pages/CatalogPage/CatalogPage')),
 })
 

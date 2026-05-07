@@ -19,7 +19,19 @@ export const Footer = () => {
 
     return (
         <footer className={styles.footer}>
-            <Button variant="wrapper" aria-label="Главная" onClick={() => navigate({ to: '/' })}>
+            <Button
+                variant="wrapper"
+                aria-label="Главная"
+                onClick={() =>
+                    navigate({
+                        to: '/',
+                        search: {
+                            search: '',
+                            page: 1,
+                        },
+                    })
+                }
+            >
                 <HomeIcon width={30} height={25} />
             </Button>
 

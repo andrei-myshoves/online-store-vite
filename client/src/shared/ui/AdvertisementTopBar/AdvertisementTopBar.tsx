@@ -4,21 +4,29 @@ import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import styles from './AdvertisementTopBar.module.css'
 
-import { useAppSelector } from '@/hooks/redux'
-import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
-
 interface Props {
     showBackButton?: boolean
     showSearch?: boolean
+    searchValue?: string
     onSearchChange?: (value: string) => void
 }
 
-export const AdvertisementTopBar = ({ showBackButton = true, showSearch = false, onSearchChange }: Props) => {
+export const AdvertisementTopBar = ({
+    showBackButton = true,
+    showSearch = false,
+    onSearchChange,
+    searchValue,
+}: Props) => {
     const navigate = useNavigate()
-    const query = useAppSelector(selectSearchQuery)
 
     const handleBack = () => {
-        navigate({ to: '/' })
+        navigate({
+            to: '/',
+            search: {
+                search: '',
+                page: 1,
+            },
+        })
     }
 
     return (
@@ -30,7 +38,7 @@ export const AdvertisementTopBar = ({ showBackButton = true, showSearch = false,
                     variant="outline"
                     className={styles.search}
                     placeholder="Поиск по объявлениям"
-                    value={query}
+                    value={searchValue || ''}
                     onChange={e => onSearchChange?.(e.target.value)}
                 />
             )}

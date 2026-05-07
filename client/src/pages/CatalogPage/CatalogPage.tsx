@@ -4,17 +4,10 @@ import { Pagination } from '@/widgets/pagination/Pagination'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
-import { setPage } from '@/store/reducers/catalog/catalogSlice'
 import { selectCatalogData } from '@/store/reducers/selectors/catalogSelectors'
-
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
-
-import { selectSearchQuery } from '@/store/reducers/selectors/searchSelectors'
 import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
-import { setQuery } from '@/store/reducers/search/searchSlice'
-
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { useDebounceFn } from '@/hooks/useDebounceFn'
 
 const LIMIT = 10
 
@@ -22,13 +15,18 @@ const CatalogPage = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
-    const query = useAppSelector(selectSearchQuery)
-    const debouncedSearch = useDebounceFn((value: string, page: number) => {
-        if (value) {
+    const { items, total, isLoading, error } = useAppSelector(selectCatalogData)
+
+    const params = useSearch({ from: '/' })
+
+    const search: string = typeof params.search === 'string' ? params.search : ''
+    const page: number = typeof params.page === 'number' ? params.page : Number(params.page) || 1
+
+    useEffect(() => {
+        if (search) {
             dispatch(
                 searchAdvertisements({
-                    query: value,
+                    query: search,
                     limit: LIMIT,
                     offset: (page - 1) * LIMIT,
                 })
@@ -36,53 +34,36 @@ const CatalogPage = () => {
         } else {
             dispatch(fetchCatalog({ page, limit: LIMIT }))
         }
-    }, 400)
+    }, [search, page, dispatch])
 
-    const searchParams = useSearch({ from: '/' }) as { search?: string }
-    const search = searchParams.search
-
-    useEffect(() => {
-        if (search && search !== query) {
-            dispatch(setQuery(search))
-            dispatch(setPage(1))
-        }
-    }, [search, dispatch])
-
-    const handleSearchChange = (value: string) => {
-        dispatch(setQuery(value))
-        dispatch(setPage(1))
-
+    const handlePageChange = (p: number) => {
         navigate({
             to: '/',
             search: {
-                search: value || undefined,
+                search: search,
+                page: p,
             },
         })
-
-        debouncedSearch(value, 1)
     }
 
-    const handlePageChange = (p: number) => {
-        dispatch(setPage(p))
-
-        if (query) {
-            debouncedSearch(query, p)
-        } else {
-            dispatch(fetchCatalog({ page: p, limit: LIMIT }))
-        }
+    const handleSearchChange = (value: string) => {
+        navigate({
+            to: '/',
+            search: {
+                search: value,
+                page: 1,
+            },
+        })
     }
-
-    useEffect(() => {
-        if (search) {
-            debouncedSearch(search, 1)
-        } else {
-            dispatch(fetchCatalog({ page: 1, limit: LIMIT }))
-        }
-    }, [])
 
     return (
         <div className={styles.page}>
-            <AdvertisementTopBar showBackButton={false} showSearch onSearchChange={handleSearchChange} />
+            <AdvertisementTopBar
+                showBackButton={false}
+                showSearch
+                searchValue={search}
+                onSearchChange={handleSearchChange}
+            />
 
             <h1 className={styles.title}>Объявления</h1>
 

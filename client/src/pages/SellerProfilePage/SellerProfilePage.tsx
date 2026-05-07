@@ -62,7 +62,19 @@ const SellerProfilePage = () => {
             </div>
 
             <div className={styles.mobileHeader}>
-                <Button variant="wrapper" className={styles.backButton} onClick={() => navigate({ to: '/' })}>
+                <Button
+                    variant="wrapper"
+                    className={styles.backButton}
+                    onClick={() =>
+                        navigate({
+                            to: '/',
+                            search: {
+                                search: '',
+                                page: 1,
+                            },
+                        })
+                    }
+                >
                     <LeftArrow width={12} height={20} />
                 </Button>
 
