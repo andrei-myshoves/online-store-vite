@@ -17,10 +17,7 @@ const CatalogPage = () => {
 
     const { items, total, isLoading, error } = useAppSelector(selectCatalogData)
 
-    const params = useSearch({ from: '/' })
-
-    const search: string = typeof params.search === 'string' ? params.search : ''
-    const page: number = typeof params.page === 'number' ? params.page : Number(params.page) || 1
+    const { search, page } = useSearch({ from: '/' })
 
     useEffect(() => {
         if (search) {
@@ -40,7 +37,7 @@ const CatalogPage = () => {
         navigate({
             to: '/',
             search: {
-                search: search,
+                search,
                 page: p,
             },
         })
