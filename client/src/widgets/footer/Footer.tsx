@@ -8,30 +8,22 @@ import { UserIcon } from '@/shared/ui/icons/UserIcon'
 import { useNavigate } from '@tanstack/react-router'
 import { useAppDispatch } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 export const Footer = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-
+    const navigateCatalog = useCatalogPageSearch()
+    const handleGoHome = () => {
+        navigateCatalog()
+    }
     const handleAddClick = () => {
         dispatch(openModal())
     }
 
     return (
         <footer className={styles.footer}>
-            <Button
-                variant="wrapper"
-                aria-label="Главная"
-                onClick={() =>
-                    navigate({
-                        to: '/',
-                        search: {
-                            search: '',
-                            page: 1,
-                        },
-                    })
-                }
-            >
+            <Button variant="wrapper" aria-label="Главная" onClick={handleGoHome}>
                 <HomeIcon width={30} height={25} />
             </Button>
 

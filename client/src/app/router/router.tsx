@@ -1,18 +1,17 @@
 import { createRouter, createRoute } from '@tanstack/react-router'
 import { rootRoute } from './rootRoute'
 import { lazy } from 'react'
+import { z } from 'zod'
+
+const catalogSearchSchema = z.object({
+    search: z.string().default(''),
+    page: z.coerce.number().default(1),
+})
 
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
-
-    validateSearch: (search: Record<string, unknown>) => {
-        return {
-            search: typeof search.search === 'string' ? search.search : '',
-            page: Number(search.page) || 1,
-        }
-    },
-
+    validateSearch: search => catalogSearchSchema.parse(search),
     component: lazy(() => import('@/pages/CatalogPage/CatalogPage')),
 })
 

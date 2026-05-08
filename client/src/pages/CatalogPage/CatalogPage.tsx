@@ -7,13 +7,14 @@ import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
 import { selectCatalogData } from '@/store/reducers/selectors/catalogSelectors'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
-import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useSearch } from '@tanstack/react-router'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 const LIMIT = 10
 
 const CatalogPage = () => {
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
+    const navigateCatalog = useCatalogPageSearch()
 
     const { items, total, isLoading, error } = useAppSelector(selectCatalogData)
 
@@ -34,22 +35,13 @@ const CatalogPage = () => {
     }, [search, page, dispatch])
 
     const handlePageChange = (p: number) => {
-        navigate({
-            to: '/',
-            search: {
-                search,
-                page: p,
-            },
-        })
+        navigateCatalog({ page: p })
     }
 
     const handleSearchChange = (value: string) => {
-        navigate({
-            to: '/',
-            search: {
-                search: value,
-                page: 1,
-            },
+        navigateCatalog({
+            search: value,
+            page: 1,
         })
     }
 

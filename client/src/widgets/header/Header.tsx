@@ -8,6 +8,7 @@ import { Loader } from '@/shared/ui/loader/Loader'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -17,6 +18,7 @@ const CreateAdvertisementModal = lazy(
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
+    const navigateCatalog = useCatalogPageSearch()
 
     const dispatch = useAppDispatch()
     const isCreateAdOpen = useAppSelector(selectCreateAdIsModalOpen)
@@ -29,13 +31,7 @@ export const Header = () => {
     const searchParams = useSearch({ from: '/' }) as { search?: string }
     const query = searchParams.search || ''
     const handleSearchChange = (value: string) => {
-        navigate({
-            to: '/',
-            search: {
-                search: value,
-                page: 1,
-            },
-        })
+        navigateCatalog({ search: value, page: 1 })
     }
 
     const handleOpenCreateAdvertisementModal = () => {

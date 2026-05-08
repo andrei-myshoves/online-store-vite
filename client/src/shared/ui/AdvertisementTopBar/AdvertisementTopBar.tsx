@@ -1,8 +1,8 @@
-import { useNavigate } from '@tanstack/react-router'
 import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import styles from './AdvertisementTopBar.module.css'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 interface Props {
     showBackButton?: boolean
@@ -17,16 +17,10 @@ export const AdvertisementTopBar = ({
     onSearchChange,
     searchValue,
 }: Props) => {
-    const navigate = useNavigate()
+    const navigateCatalog = useCatalogPageSearch()
 
     const handleBack = () => {
-        navigate({
-            to: '/',
-            search: {
-                search: '',
-                page: 1,
-            },
-        })
+        navigateCatalog()
     }
 
     return (

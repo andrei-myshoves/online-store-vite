@@ -7,7 +7,6 @@ import profileReducer from '@/store/reducers/profile/profileSlice'
 import authReducer from './reducers/auth/authSlice'
 import profileAdvertisementsReducer from './reducers/profileAdvertisements/profileAdvertisementsSlice'
 import createAdvertisementReducer from './reducers/createAdvertisement/createAdvertisementSlice'
-import searchReducer from '@/store/reducers/search/searchSlice'
 
 const rootReducer = combineReducers({
     catalog: catalogReducer,
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
     auth: authReducer,
     profileAdvertisements: profileAdvertisementsReducer,
     createAdvertisement: createAdvertisementReducer,
-    search: searchReducer,
 })
 
 export const setupStore = (preloadedState?: Partial<RootState>) =>
