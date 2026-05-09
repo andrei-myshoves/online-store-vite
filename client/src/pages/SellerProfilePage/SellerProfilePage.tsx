@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from '@tanstack/react-router'
+import { useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
@@ -16,11 +16,11 @@ import {
     selectSellerError,
 } from '@/store/reducers/selectors/sellerSelectors'
 import { Loader } from '@/shared/ui/loader/Loader'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 const SellerProfilePage = () => {
     const params = useParams({ from: '/seller/$id' })
     const id = params?.id ?? '1'
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
     const profile = useAppSelector(selectSellerProfile)
@@ -29,6 +29,10 @@ const SellerProfilePage = () => {
     const isProfileLoading = useAppSelector(selectSellerProfileLoading)
     const isAdvertisementsLoading = useAppSelector(selectSellerAdvertisementsLoading)
     const error = useAppSelector(selectSellerError)
+    const navigateCatalog = useCatalogPageSearch()
+    const handleGoBack = () => {
+        navigateCatalog()
+    }
 
     useEffect(() => {
         dispatch(fetchSellerProfile(id))
@@ -62,7 +66,7 @@ const SellerProfilePage = () => {
             </div>
 
             <div className={styles.mobileHeader}>
-                <Button variant="wrapper" className={styles.backButton} onClick={() => navigate({ to: '/' })}>
+                <Button variant="wrapper" className={styles.backButton} onClick={handleGoBack}>
                     <LeftArrow width={12} height={20} />
                 </Button>
 

@@ -1,3 +1,14 @@
 .page {
     padding: 16px;
 }
+
+.title {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+@media (width >= 1248px) {
+    .title {
+        font-size: 40px;
+    }
+}

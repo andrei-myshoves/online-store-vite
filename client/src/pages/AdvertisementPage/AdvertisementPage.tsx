@@ -92,7 +92,7 @@ const AdvertisementPage = () => {
 
     return (
         <div className={styles.page}>
-            <AdvertisementTopBar />
+            <AdvertisementTopBar showBackButton />
 
             <div className={styles.top}>
                 <div className={styles.gallery}>

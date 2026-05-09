@@ -4,24 +4,61 @@ import { Pagination } from '@/widgets/pagination/Pagination'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { fetchCatalog } from '@/store/reducers/catalog/catalogThunks'
-import { setPage } from '@/store/reducers/catalog/catalogSlice'
 import { selectCatalogData } from '@/store/reducers/selectors/catalogSelectors'
+import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
+import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
+import { useSearch } from '@tanstack/react-router'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 const LIMIT = 10
 
 const CatalogPage = () => {
     const dispatch = useAppDispatch()
-    const { items, page, total, isLoading, error } = useAppSelector(selectCatalogData)
+    const navigateCatalog = useCatalogPageSearch()
+
+    const { items, total, isLoading, error } = useAppSelector(selectCatalogData)
+
+    const { search, page } = useSearch({ from: '/' })
 
     useEffect(() => {
-        dispatch(fetchCatalog({ page, limit: LIMIT }))
-    }, [dispatch, page])
+        if (search) {
+            dispatch(
+                searchAdvertisements({
+                    query: search,
+                    limit: LIMIT,
+                    offset: (page - 1) * LIMIT,
+                })
+            )
+        } else {
+            dispatch(fetchCatalog({ page, limit: LIMIT }))
+        }
+    }, [search, page, dispatch])
+
+    const handlePageChange = (p: number) => {
+        navigateCatalog({ page: p })
+    }
+
+    const handleSearchChange = (value: string) => {
+        navigateCatalog({
+            search: value,
+            page: 1,
+        })
+    }
 
     return (
         <div className={styles.page}>
+            <AdvertisementTopBar
+                showBackButton={false}
+                showSearch
+                searchValue={search}
+                onSearchChange={handleSearchChange}
+            />
+
+            <h1 className={styles.title}>Объявления</h1>
+
             <AdvertisementsList items={items} loading={isLoading} error={error} />
 
-            <Pagination page={page} limit={LIMIT} total={total} onChange={p => dispatch(setPage(p))} />
+            <Pagination page={page} limit={LIMIT} total={total} onChange={handlePageChange} />
         </div>
     )
 }

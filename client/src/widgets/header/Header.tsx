@@ -2,22 +2,24 @@ import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import styles from './Header.module.css'
-import { useMatchRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
-import { useAppDispatch } from '@/hooks/redux'
-import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
-import { lazy, Suspense } from 'react'
+import { useMatchRoute, useNavigate, useSearch } from '@tanstack/react-router'
+import { useState, lazy, Suspense } from 'react'
 import { Loader } from '@/shared/ui/loader/Loader'
-import { useAppSelector } from '@/hooks/redux'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
+import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
     () => import('@/widgets/CreateAdvertisement/CreateAdvertisementModal/CreateAdvertisementModal')
 )
+
 export const Header = () => {
     const navigate = useNavigate()
     const matchRoute = useMatchRoute()
+    const navigateCatalog = useCatalogPageSearch()
+
     const dispatch = useAppDispatch()
     const isCreateAdOpen = useAppSelector(selectCreateAdIsModalOpen)
 
@@ -25,6 +27,12 @@ export const Header = () => {
 
     const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
+
+    const params = useSearch({ strict: false })
+    const query = typeof params.search === 'string' ? params.search : ''
+    const handleSearchChange = (value: string) => {
+        navigateCatalog({ search: value, page: 1 })
+    }
 
     const handleOpenCreateAdvertisementModal = () => {
         dispatch(openModal())
@@ -40,7 +48,14 @@ export const Header = () => {
                         </div>
                     </div>
 
-                    {!isAdvertisementPage && <Input className={styles.search} placeholder="Поиск" />}
+                    {!isAdvertisementPage && (
+                        <Input
+                            className={styles.search}
+                            placeholder="Поиск"
+                            value={query}
+                            onChange={e => handleSearchChange(e.target.value)}
+                        />
+                    )}
                 </div>
 
                 <div className={styles.desktopBlock}>
@@ -71,11 +86,13 @@ export const Header = () => {
                     )}
                 </div>
             </header>
+
             {isAuthOpen && (
                 <Suspense fallback={<Loader />}>
                     <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
                 </Suspense>
             )}
+
             {isCreateAdOpen && (
                 <Suspense fallback={<Loader />}>
                     <CreateAdvertisementModal />
