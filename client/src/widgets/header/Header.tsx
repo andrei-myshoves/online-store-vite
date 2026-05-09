@@ -28,8 +28,8 @@ export const Header = () => {
     const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
-    const searchParams = useSearch({ from: '/' }) as { search?: string }
-    const query = searchParams.search || ''
+    const params = useSearch({ strict: false })
+    const query = typeof params.search === 'string' ? params.search : ''
     const handleSearchChange = (value: string) => {
         navigateCatalog({ search: value, page: 1 })
     }
