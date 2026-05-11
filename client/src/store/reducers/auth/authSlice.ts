@@ -11,6 +11,7 @@ interface AuthState {
     password: string
     username: string
     user: User | null
+    isAuthModalOpen: boolean
 }
 
 const initialState: AuthState = {
@@ -18,6 +19,7 @@ const initialState: AuthState = {
     password: '',
     username: '',
     user: null,
+    isAuthModalOpen: false,
 }
 
 export const authSlice = createSlice({
@@ -36,8 +38,15 @@ export const authSlice = createSlice({
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload
         },
+
+        openAuthModal: state => {
+            state.isAuthModalOpen = true
+        },
+        closeAuthModal: state => {
+            state.isAuthModalOpen = false
+        },
     },
 })
 
-export const { setEmail, setPassword, setUsername, setUser } = authSlice.actions
+export const { setEmail, setPassword, setUsername, setUser, openAuthModal, closeAuthModal } = authSlice.actions
 export default authSlice.reducer
