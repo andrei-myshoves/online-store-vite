@@ -11,7 +11,6 @@ import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdve
 import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 import { selectIsAuthModalOpen } from '@/store/reducers/selectors/authSelectors'
 import { openAuthModal, closeAuthModal } from '@/store/reducers/auth/authSlice'
-import { useStore } from 'react-redux'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -39,8 +38,6 @@ export const Header = () => {
     const handleOpenCreateAdvertisementModal = () => {
         dispatch(openModal())
     }
-    const store = useStore()
-    console.log('HEADER STORE', store)
 
     return (
         <>

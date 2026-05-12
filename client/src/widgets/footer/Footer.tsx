@@ -11,7 +11,6 @@ import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisem
 import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 import { selectCurrentUser } from '@/store/reducers/selectors/authSelectors'
 import { openAuthModal } from '@/store/reducers/auth/authSlice'
-import { useStore } from 'react-redux'
 
 export const Footer = () => {
     const navigate = useNavigate()
@@ -27,7 +26,6 @@ export const Footer = () => {
     }
 
     const handleProfileClick = () => {
-        console.log('CLICK')
         if (!user) {
             dispatch(openAuthModal())
             return
@@ -35,8 +33,6 @@ export const Footer = () => {
 
         navigate({ to: '/profile' })
     }
-    const store = useStore()
-    console.log('FOOTER STORE', store)
 
     return (
         <footer className={styles.footer}>
