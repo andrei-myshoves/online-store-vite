@@ -38,7 +38,6 @@ export const authSlice = createSlice({
         setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload
         },
-
         openAuthModal: state => {
             state.isAuthModalOpen = true
         },

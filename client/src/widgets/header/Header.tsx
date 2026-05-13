@@ -39,6 +39,18 @@ export const Header = () => {
         dispatch(openModal())
     }
 
+    const handleOpenAuthModal = () => {
+        dispatch(openAuthModal())
+    }
+
+    const handleCloseAuthModal = () => {
+        dispatch(closeAuthModal())
+    }
+
+    const handleGoProfile = () => {
+        navigate({ to: '/profile' })
+    }
+
     return (
         <>
             <header className={styles.header}>
@@ -61,11 +73,7 @@ export const Header = () => {
 
                 <div className={styles.desktopBlock}>
                     {isCatalogPage && (
-                        <Button
-                            variant="outline"
-                            onClick={() => dispatch(openAuthModal())}
-                            className={styles.loginButton}
-                        >
+                        <Button variant="outline" onClick={handleOpenAuthModal} className={styles.loginButton}>
                             Вход в личный кабинет
                         </Button>
                     )}
@@ -80,11 +88,7 @@ export const Header = () => {
                                 Разместить объявление
                             </Button>
 
-                            <Button
-                                variant="outline"
-                                onClick={() => navigate({ to: '/profile' })}
-                                className={styles.desktopAction}
-                            >
+                            <Button variant="outline" onClick={handleGoProfile} className={styles.desktopAction}>
                                 Личный кабинет
                             </Button>
                         </div>
@@ -94,7 +98,7 @@ export const Header = () => {
 
             {isAuthOpen && (
                 <Suspense fallback={<Loader />}>
-                    <AuthModal isOpen={isAuthOpen} onClose={() => dispatch(closeAuthModal())} />
+                    <AuthModal isOpen={isAuthOpen} onClose={handleCloseAuthModal} />
                 </Suspense>
             )}
 
