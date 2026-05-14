@@ -5,7 +5,7 @@
 .logo {
     display: flex;
     justify-content: center;
-    margin-bottom: 42px;
+    margin-bottom: 30px;
 }
 
 .form {
@@ -17,12 +17,43 @@
 .fields {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 14px;
+}
+
+.fields input {
+    padding: 9px 17px;
+    border: var(--border-secondary);
+    border-radius: 30px;
+}
+
+.fields ::placeholder {
+    font-size: 14px;
 }
 
 .actions {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 60px;
+    margin-top: 40px;
+}
+
+@media (width >= 1248px) {
+    .logo {
+        margin-bottom: 42px;
+    }
+    .fields {
+        gap: 38px;
+    }
+    .fields input {
+        border: none;
+        border-bottom: var(--border-secondary);
+        border-radius: 0;
+        padding: 8px 0;
+    }
+    .fields ::placeholder {
+        font-size: 18px;
+    }
+    .actions {
+        margin-top: 60px;
+    }
 }

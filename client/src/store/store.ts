@@ -4,7 +4,7 @@ import advertisementReducer from '@/store/reducers/advertisement/advertisementSl
 import reviewsReducer from '@/store/reducers/reviews/reviewsSlice'
 import sellerReducer from '@/store/reducers/seller/sellerSlice'
 import profileReducer from '@/store/reducers/profile/profileSlice'
-import authReducer from './reducers/auth/authSlice'
+import authReducer from '@/store/reducers/auth/authSlice'
 import profileAdvertisementsReducer from './reducers/profileAdvertisements/profileAdvertisementsSlice'
 import createAdvertisementReducer from './reducers/createAdvertisement/createAdvertisementSlice'
 

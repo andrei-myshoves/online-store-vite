@@ -3,12 +3,14 @@ import { Button } from '@/shared/ui/button'
 import { BrandIcon } from '@/shared/ui/icons/BrandIcon'
 import styles from './Header.module.css'
 import { useMatchRoute, useNavigate, useSearch } from '@tanstack/react-router'
-import { useState, lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import { Loader } from '@/shared/ui/loader/Loader'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { openModal } from '@/store/reducers/createAdvertisement/createAdvertisementSlice'
 import { selectCreateAdIsModalOpen } from '@/store/reducers/selectors/createAdvertisementSelectors'
 import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
+import { selectIsAuthModalOpen } from '@/store/reducers/selectors/authSelectors'
+import { openAuthModal, closeAuthModal } from '@/store/reducers/auth/authSlice'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -23,8 +25,7 @@ export const Header = () => {
     const dispatch = useAppDispatch()
     const isCreateAdOpen = useAppSelector(selectCreateAdIsModalOpen)
 
-    const [isAuthOpen, setIsAuthOpen] = useState(false)
-
+    const isAuthOpen = useAppSelector(selectIsAuthModalOpen)
     const isCatalogPage = matchRoute({ to: '/' })
     const isAdvertisementPage = matchRoute({ to: '/advertisement/$id' })
 
@@ -36,6 +37,18 @@ export const Header = () => {
 
     const handleOpenCreateAdvertisementModal = () => {
         dispatch(openModal())
+    }
+
+    const handleOpenAuthModal = () => {
+        dispatch(openAuthModal())
+    }
+
+    const handleCloseAuthModal = () => {
+        dispatch(closeAuthModal())
+    }
+
+    const handleGoProfile = () => {
+        navigate({ to: '/profile' })
     }
 
     return (
@@ -60,7 +73,7 @@ export const Header = () => {
 
                 <div className={styles.desktopBlock}>
                     {isCatalogPage && (
-                        <Button variant="outline" onClick={() => setIsAuthOpen(true)} className={styles.loginButton}>
+                        <Button variant="outline" onClick={handleOpenAuthModal} className={styles.loginButton}>
                             Вход в личный кабинет
                         </Button>
                     )}
@@ -75,11 +88,7 @@ export const Header = () => {
                                 Разместить объявление
                             </Button>
 
-                            <Button
-                                variant="outline"
-                                onClick={() => navigate({ to: '/profile' })}
-                                className={styles.desktopAction}
-                            >
+                            <Button variant="outline" onClick={handleGoProfile} className={styles.desktopAction}>
                                 Личный кабинет
                             </Button>
                         </div>
@@ -89,7 +98,7 @@ export const Header = () => {
 
             {isAuthOpen && (
                 <Suspense fallback={<Loader />}>
-                    <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+                    <AuthModal isOpen={isAuthOpen} onClose={handleCloseAuthModal} />
                 </Suspense>
             )}
 
