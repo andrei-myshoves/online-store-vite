@@ -9,6 +9,8 @@ import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/Advertiseme
 import { searchAdvertisements } from '@/store/reducers/search/searchThunks'
 import { useSearch } from '@tanstack/react-router'
 import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
+import { useTranslation } from 'react-i18next'
+import i18n from 'i18next'
 
 const LIMIT = 10
 
@@ -16,8 +18,9 @@ const CatalogPage = () => {
     const dispatch = useAppDispatch()
     const navigateCatalog = useCatalogPageSearch()
 
-    const { items, total, isLoading, error } = useAppSelector(selectCatalogData)
+    const { t } = useTranslation('advertisement')
 
+    const { items, total, isLoading, error } = useAppSelector(selectCatalogData)
     const { search, page } = useSearch({ from: '/' })
 
     useEffect(() => {
@@ -44,6 +47,9 @@ const CatalogPage = () => {
             page: 1,
         })
     }
+    const changeLanguage = (lng: 'ru' | 'en') => {
+        i18n.changeLanguage(lng)
+    }
 
     return (
         <div className={styles.page}>
@@ -53,11 +59,10 @@ const CatalogPage = () => {
                 searchValue={search}
                 onSearchChange={handleSearchChange}
             />
-
-            <h1 className={styles.title}>Объявления</h1>
-
+            <h1 className={styles.title}>{t('title')}</h1>
+            <button onClick={() => changeLanguage('ru')}>RU</button>
+            <button onClick={() => changeLanguage('en')}>EN</button>
             <AdvertisementsList items={items} loading={isLoading} error={error} />
-
             <Pagination page={page} limit={LIMIT} total={total} onChange={handlePageChange} />
         </div>
     )
