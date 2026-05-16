@@ -7,6 +7,7 @@ const reactHooks = require('eslint-plugin-react-hooks')
 const reactRefresh = require('eslint-plugin-react-refresh')
 const prettier = require('eslint-config-prettier')
 
+
 module.exports = [
     js.configs.recommended,
     prettier,

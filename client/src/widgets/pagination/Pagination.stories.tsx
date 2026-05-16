@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Pagination } from './Pagination'
 import { useState } from 'react'
 
@@ -10,8 +10,9 @@ const meta: Meta<typeof Pagination> = {
 export default meta
 
 type Story = StoryObj<typeof Pagination>
+type PaginationStoryArgs = React.ComponentProps<typeof Pagination>
 
-const PaginationWithState = (args: any) => {
+const PaginationWithState = (args: PaginationStoryArgs) => {
     const [page, setPage] = useState(args.page)
 
     return <Pagination {...args} page={page} onChange={setPage} />

@@ -17,7 +17,7 @@ i18n.use(Backend)
         },
 
         backend: {
-            loadPath: '/locales/{{lng}}/{{ns}}.json',
+            loadPath: `${import.meta.env.BASE_URL}locales/{{lng}}/{{ns}}.json`,
         },
 
         react: {

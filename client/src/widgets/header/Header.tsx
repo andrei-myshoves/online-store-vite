@@ -12,6 +12,7 @@ import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
 import { selectIsAuthModalOpen } from '@/store/reducers/selectors/authSelectors'
 import { openAuthModal, closeAuthModal } from '@/store/reducers/auth/authSlice'
 import { useTranslation } from 'react-i18next'
+import { LanguageSwitcher } from '@/widgets/language-switcher/LanguageSwitcher'
 
 const AuthModal = lazy(() => import('@/widgets/auth/AuthModal'))
 const CreateAdvertisementModal = lazy(
@@ -32,6 +33,7 @@ export const Header = () => {
 
     const params = useSearch({ strict: false })
     const query = typeof params.search === 'string' ? params.search : ''
+    const { t } = useTranslation('profile')
     const handleSearchChange = (value: string) => {
         navigateCatalog({ search: value, page: 1 })
     }
@@ -52,16 +54,6 @@ export const Header = () => {
         navigate({ to: '/profile' })
     }
 
-    const handleChangeLanguage = (lng: 'ru' | 'en') => {
-        i18n.changeLanguage(lng)
-    }
-
-    const handleChangeLanguageRu = () => handleChangeLanguage('ru')
-    const handleChangeLanguageEn = () => handleChangeLanguage('en')
-
-    const { i18n } = useTranslation()
-    const currentLang = i18n.language.split('-')[0]
-
     return (
         <>
             <header className={styles.header}>
@@ -70,31 +62,13 @@ export const Header = () => {
                         <div className={styles.mobileLogoWrapper}>
                             <BrandIcon width={20} height={14} />
                         </div>
-                        <div className={styles.languageSwitcher}>
-                            <Button
-                                className={`${styles.languageButton} ${
-                                    currentLang === 'ru' ? styles.languageButtonActive : ''
-                                }`}
-                                onClick={handleChangeLanguageRu}
-                            >
-                                RU
-                            </Button>
-
-                            <Button
-                                className={`${styles.languageButton} ${
-                                    currentLang === 'en' ? styles.languageButtonActive : ''
-                                }`}
-                                onClick={handleChangeLanguageEn}
-                            >
-                                EN
-                            </Button>
-                        </div>
+                        <LanguageSwitcher />
                     </div>
 
                     {!isAdvertisementPage && (
                         <Input
                             className={styles.search}
-                            placeholder="Поиск"
+                            placeholder={t('search')}
                             value={query}
                             onChange={e => handleSearchChange(e.target.value)}
                         />
@@ -102,28 +76,10 @@ export const Header = () => {
                 </div>
 
                 <div className={styles.desktopBlock}>
-                    <div className={styles.languageSwitcher}>
-                        <Button
-                            className={`${styles.languageButton} ${
-                                currentLang === 'ru' ? styles.languageButtonActive : ''
-                            }`}
-                            onClick={handleChangeLanguageRu}
-                        >
-                            RU
-                        </Button>
-
-                        <Button
-                            className={`${styles.languageButton} ${
-                                currentLang === 'en' ? styles.languageButtonActive : ''
-                            }`}
-                            onClick={handleChangeLanguageEn}
-                        >
-                            EN
-                        </Button>
-                    </div>
+                    <LanguageSwitcher />
                     {isCatalogPage && (
                         <Button variant="outline" onClick={handleOpenAuthModal} className={styles.loginButton}>
-                            Вход в личный кабинет
+                            {t('login')}
                         </Button>
                     )}
 
@@ -134,11 +90,11 @@ export const Header = () => {
                                 onClick={handleOpenCreateAdvertisementModal}
                                 className={styles.desktopAction}
                             >
-                                Разместить объявление
+                                {t('createAdvertisement')}
                             </Button>
 
                             <Button variant="outline" onClick={handleGoProfile} className={styles.desktopAction}>
-                                Личный кабинет
+                                {t('profile')}
                             </Button>
                         </div>
                     )}

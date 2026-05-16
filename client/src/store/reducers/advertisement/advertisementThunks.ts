@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '@/shared/api/api'
 import type { Advertisement } from '../../../entities/advertisement/models/types'
+import axios from 'axios'
 
 export const fetchAdvertisementById = createAsyncThunk<Advertisement, string, { rejectValue: string }>(
     'advertisement/fetchById',
@@ -8,7 +9,7 @@ export const fetchAdvertisementById = createAsyncThunk<Advertisement, string, { 
         try {
             const response = await api.get(`/advertisement/${id}`)
             return response.data
-        } catch (e) {
+        } catch {
             return thunkAPI.rejectWithValue('Не удалось загрузить объявление')
         }
     }
@@ -43,8 +44,12 @@ export const updateAdvertisementThunk = createAsyncThunk<
         const response = await api.patch(`/advertisement/${id}`, formData)
 
         return response.data
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка обновления')
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка обновления')
+        }
+
+        return thunkAPI.rejectWithValue('Ошибка обновления')
     }
 })
 
@@ -52,7 +57,11 @@ export const unpublishAdvertisementThunk = createAsyncThunk('advertisement/unpub
     try {
         const response = await api.patch(`/advertisement/${id}/unpublish`)
         return response.data
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка')
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            return thunkAPI.rejectWithValue(error.response?.data?.message || 'Ошибка')
+        }
+
+        return thunkAPI.rejectWithValue('Ошибка')
     }
 })

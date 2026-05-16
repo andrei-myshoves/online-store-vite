@@ -1,0 +1,28 @@
+{
+    "sellerProfile": "Профиль продавца",
+    "sellerProducts": "Товары продавца",
+    "emptyProducts": "У продавца пока нет товаров",
+    "showPhone": "Показать телефон",
+    "sellerSince": "Продаёт товары с августа 2021",
+
+    "greeting": "Здравствуйте, {{username}}!",
+    "settings": "Настройки профиля",
+    "replaceAvatar": "Заменить",
+    "editData": "Изменить данные",
+    "save": "Сохранить",
+
+    "profile": "Личный кабинет",
+    "login": "Вход в личный кабинет",
+    "createAdvertisement": "Разместить объявление",
+
+    "loadingProfile": "Загрузка профиля...",
+
+    "sellerNotFound": "Продавец не найден",
+    "search": "Поиск",
+    "myProducts": "Мои товары",
+
+    "name": "Имя",
+    "lastName": "Фамилия",
+    "city": "Город",
+    "phone": "Телефон"
+}

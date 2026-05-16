@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import CatalogPage from './CatalogPage'
 import { withStore } from '@/shared/storybook/withStore'
 import { catalogMockState } from './CatalogPage.mock'

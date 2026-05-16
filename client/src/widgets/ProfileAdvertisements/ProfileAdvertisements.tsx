@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { AdvertisementsList } from '@/widgets/AdvertisementsList/AdvertisementsList'
 import { fetchProfileAdvertisements } from '@/store/reducers/profileAdvertisements/profileAdvertisementsThunks'
@@ -26,6 +27,7 @@ export const ProfileAdvertisements = ({ userId }: Props) => {
     const total = useAppSelector(selectProfileAdvertisementsTotal)
 
     const [page, setPage] = useState(1)
+    const { t } = useTranslation('profile')
 
     useEffect(() => {
         if (userId) {
@@ -37,14 +39,14 @@ export const ProfileAdvertisements = ({ userId }: Props) => {
                 })
             )
         }
-    }, [userId, page])
+    }, [dispatch, userId, page])
 
     return (
         <>
             <AdvertisementsList
                 className={styles.profileList}
                 gridClassName={styles.profileGrid}
-                title="Мои товары"
+                title={t('myProducts')}
                 items={items}
                 loading={loading}
                 error={error}

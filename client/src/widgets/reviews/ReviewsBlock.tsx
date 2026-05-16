@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/shared/ui/button'
 import styles from './ReviewsBlock.module.css'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
@@ -31,6 +32,8 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
 
     const { items, page, total, isLoading, createLoading, createError, hasMore } =
         useAppSelector(selectReviewsViewModel)
+
+    const { t } = useTranslation('reviews')
 
     useEffect(() => {
         dispatch(resetReviews())
@@ -71,8 +74,11 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
                     <LeftArrow width={12} height={20} />
                 </Button>
 
-                <h2 className={styles.title}>Отзывы о товаре ({total})</h2>
-
+                <h2 className={styles.title}>
+                    {t('reviewsTitle', {
+                        count: total,
+                    })}
+                </h2>
                 {onClose && (
                     <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>
                         <CloseIcon width={24} height={24} />
@@ -82,7 +88,7 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
 
             <ReviewForm loading={createLoading} error={createError} onSubmit={handleSubmit} />
 
-            {items.length === 0 && !isLoading && <div className={styles.empty}>Пока нет отзывов</div>}
+            {items.length === 0 && !isLoading && <div className={styles.empty}>{t('noReviews')}</div>}
 
             <div className={styles.list}>
                 {items.map(review => (
@@ -102,7 +108,7 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
                             </div>
                         </div>
 
-                        <div className={styles.commentLabel}>Комментарий</div>
+                        <div className={styles.commentLabel}>{t('comment')}</div>
                         <div className={styles.text}>{review.text}</div>
                     </div>
                 ))}
@@ -110,7 +116,7 @@ export const ReviewsBlock = ({ id, onClose }: Props) => {
 
             {hasMore && (
                 <Button className={styles.loadMore} onClick={handleLoadMore} disabled={isLoading}>
-                    {isLoading ? 'Загрузка...' : 'Показать ещё'}
+                    {isLoading ? t('loading') : t('showMore')}
                 </Button>
             )}
         </div>

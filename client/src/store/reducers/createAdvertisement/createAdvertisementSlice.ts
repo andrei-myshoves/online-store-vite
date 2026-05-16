@@ -13,7 +13,7 @@ type CreateAdvertisementState = {
     loading: boolean
     error?: string
     form: FormState
-    images: File[]
+    images: (File | string)[]
 }
 
 const initialState: CreateAdvertisementState = {
@@ -48,7 +48,7 @@ const createAdvertisementSlice = createSlice({
         setPrice: (state, action: PayloadAction<string>) => {
             state.form.price = action.payload
         },
-        setImages: (state, action: PayloadAction<File[]>) => {
+        setImages: (state, action: PayloadAction<(File | string)[]>) => {
             state.images = action.payload
         },
         addImage: (state, action: PayloadAction<File>) => {

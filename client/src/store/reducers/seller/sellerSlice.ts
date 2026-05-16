@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { fetchSellerProfile, fetchSellerAdvertisements } from './sellerThunks'
+import type { Advertisement, Profile } from '@/entities/advertisement/models/types'
 
 interface SellerState {
-    profile: any | null
-    advertisements: any[]
+    profile: Profile | null
+    advertisements: Advertisement[]
     total: number
     page: number
     isProfileLoading: boolean
