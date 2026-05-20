@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import ProfilePage from './ProfilePage'
 import { withStore } from '@/shared/storybook/withStore'
 import { profileMockState } from './ProfilePage.mock'
@@ -23,9 +23,11 @@ export const Loading: Story = {
                 data: null,
                 isLoading: true,
                 error: null,
-                isEditing: false,
+                isEditingProfile: false,
             },
+
             seller: {
+                profile: null,
                 advertisements: [],
                 total: 0,
                 page: 1,
@@ -44,9 +46,10 @@ export const Error: Story = {
                 data: null,
                 isLoading: false,
                 error: 'Ошибка загрузки профиля',
-                isEditing: false,
+                isEditingProfile: false,
             },
             seller: {
+                profile: null,
                 advertisements: [],
                 total: 0,
                 page: 1,

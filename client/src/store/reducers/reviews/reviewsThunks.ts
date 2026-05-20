@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '@/shared/api/api'
 import type { Review } from '@/entities/advertisement/models/types'
+import axios from 'axios'
 
 interface FetchReviewsArgs {
     advertisementId: number
@@ -40,13 +41,15 @@ export const createReview = createAsyncThunk<Review, CreateReviewPayload, { reje
         try {
             const { data } = await api.post('/reviews', payload)
             return data
-        } catch (e: any) {
-            if (e.response?.status === 401) {
-                return thunkAPI.rejectWithValue('Пользователь не авторизован')
-            }
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    return thunkAPI.rejectWithValue('Пользователь не авторизован')
+                }
 
-            if (e.response?.status === 400) {
-                return thunkAPI.rejectWithValue('Вы уже оставляли отзыв')
+                if (error.response?.status === 400) {
+                    return thunkAPI.rejectWithValue('Вы уже оставляли отзыв')
+                }
             }
 
             return thunkAPI.rejectWithValue('Ошибка создания отзыва')

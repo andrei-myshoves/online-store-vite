@@ -1,19 +1,12 @@
 import { Provider } from 'react-redux'
 import { setupStore } from '@/store/store'
+import type { FC } from 'react'
+import type { RootState } from '@/store/store'
 
-export const withStore = (mockState?: any) => {
+export const withStore = (mockState?: Partial<RootState>) => {
     const store = setupStore(mockState)
 
-    const originalDispatch = store.dispatch
-
-    store.dispatch = (action: any) => {
-        if (typeof action === 'function') {
-            return null
-        }
-        return originalDispatch(action)
-    }
-
-    return (Story: any) => (
+    return (Story: FC) => (
         <Provider store={store}>
             <Story />
         </Provider>

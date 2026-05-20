@@ -4,20 +4,24 @@ import { setFormData, setImages } from '@/store/reducers/createAdvertisement/cre
 import { CreateAdvertisementForm } from '@/widgets/CreateAdvertisement/CreateAdvertisementForm/CreateAdvertisementForm'
 import { useEffect } from 'react'
 import { updateAdvertisementThunk, fetchAdvertisementById } from '@/store/reducers/advertisement/advertisementThunks'
-
+import { useTranslation } from 'react-i18next'
 import styles from '@/widgets/EditAdvertisementModal/EditAdvertisementModal.module.css'
 import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
 import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 import { Button } from '@/shared/ui/button'
+import type { Advertisement } from '@/entities/advertisement/models/types'
+import type { CreateAdFormData } from '@/widgets/CreateAdvertisement/CreateAdvertisementForm/CreateAdvertisementForm'
 
 type Props = {
     isOpen: boolean
     onClose: () => void
-    advertisement: any
+    advertisement: Advertisement
 }
 
 export const EditAdvertisementModal = ({ isOpen, onClose, advertisement }: Props) => {
     const dispatch = useAppDispatch()
+
+    const { t } = useTranslation('advertisement')
 
     useEffect(() => {
         if (advertisement) {
@@ -25,14 +29,14 @@ export const EditAdvertisementModal = ({ isOpen, onClose, advertisement }: Props
                 setFormData({
                     name: advertisement.name,
                     description: advertisement.description,
-                    price: advertisement.price,
+                    price: String(advertisement.price),
                 })
             )
             dispatch(setImages(advertisement.images || []))
         }
     }, [advertisement, dispatch])
 
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: CreateAdFormData) => {
         const result = await dispatch(
             updateAdvertisementThunk({
                 id: advertisement.id,
@@ -41,7 +45,7 @@ export const EditAdvertisementModal = ({ isOpen, onClose, advertisement }: Props
         )
 
         if (updateAdvertisementThunk.fulfilled.match(result)) {
-            dispatch(fetchAdvertisementById(advertisement.id))
+            dispatch(fetchAdvertisementById(String(advertisement.id)))
             onClose()
         }
     }
@@ -55,8 +59,8 @@ export const EditAdvertisementModal = ({ isOpen, onClose, advertisement }: Props
                     </Button>
 
                     <h2 className={styles.title}>
-                        <span className={styles.mobileTitle}>Редактировать</span>
-                        <span className={styles.desktopTitle}>Редактировать объявление</span>
+                        <span className={styles.mobileTitle}>{t('editShort')}</span>
+                        <span className={styles.desktopTitle}>{t('editAdvertisement')}</span>
                     </h2>
 
                     <Button variant="wrapper" className={styles.closeButton} onClick={onClose}>

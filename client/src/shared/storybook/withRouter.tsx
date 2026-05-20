@@ -1,7 +1,8 @@
 import { createRoute, createRouter, createMemoryHistory, RouterProvider } from '@tanstack/react-router'
 import { rootRoute } from '@/app/router/rootRoute'
+import type { FC } from 'react'
 
-export const withRouter = (Story: any) => {
+export const withRouter = (Story: FC) => {
     const sellerRoute = createRoute({
         getParentRoute: () => rootRoute,
         path: '/seller/$id',

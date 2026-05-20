@@ -13,6 +13,7 @@ import { selectIsEditingProfile } from '@/store/reducers/selectors/profileSelect
 import type { Profile } from '@/entities/advertisement/models/types'
 import styles from './ProfileSettings.module.css'
 import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
     profile: Profile
@@ -21,11 +22,17 @@ type Props = {
 export const ProfileSettings = ({ profile }: Props) => {
     const dispatch = useAppDispatch()
 
+    const isEditingProfile = useAppSelector(selectIsEditingProfile)
+
+    const { t } = useTranslation('profile')
+
     const handleSave = () => {
         dispatch(updateProfile(profile))
     }
 
-    const isEditingProfile = useAppSelector(selectIsEditingProfile)
+    const handleEnableEdit = () => {
+        dispatch(enableProfileEditing())
+    }
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(changeUsername(e.target.value))
@@ -43,24 +50,24 @@ export const ProfileSettings = ({ profile }: Props) => {
         dispatch(changePhone(e.target.value))
     }
 
-    const handleEnableEdit = () => {
-        dispatch(enableProfileEditing())
-    }
-
     return (
         <section className={styles.wrapper}>
-            <h1 className={styles.greeting}>Здравствуйте, {profile.username}!</h1>
+            <h1 className={styles.greeting}>
+                {t('greeting', {
+                    username: profile.username,
+                })}
+            </h1>
 
-            <h2 className={styles.title}>Настройки профиля</h2>
+            <h2 className={styles.title}>{t('settings')}</h2>
 
             <div className={styles.profileBlock}>
                 <div className={styles.avatarBlock}>
                     <div className={styles.avatar} />
-                    <button className={styles.changeAvatar}>Заменить</button>
+                    <button className={styles.changeAvatar}>{t('replaceAvatar')}</button>
                 </div>
                 <div className={styles.form}>
                     <Input
-                        label="Имя"
+                        label={t('name')}
                         value={profile.username}
                         onChange={onChangeUsername}
                         disabled={!isEditingProfile}
@@ -68,7 +75,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                     />
 
                     <Input
-                        label="Фамилия"
+                        label={t('lastName')}
                         value={profile.lastName ?? ''}
                         onChange={onChangeLastName}
                         disabled={!isEditingProfile}
@@ -76,7 +83,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                     />
 
                     <Input
-                        label="Город"
+                        label={t('city')}
                         value={profile.city ?? ''}
                         onChange={onChangeCity}
                         disabled={!isEditingProfile}
@@ -84,7 +91,7 @@ export const ProfileSettings = ({ profile }: Props) => {
                     />
 
                     <Input
-                        label="Телефон"
+                        label={t('phone')}
                         value={profile.phone ?? ''}
                         onChange={onChangePhone}
                         disabled={!isEditingProfile}
@@ -93,11 +100,11 @@ export const ProfileSettings = ({ profile }: Props) => {
 
                     {!isEditingProfile ? (
                         <Button className={styles.saveButton} onClick={handleEnableEdit}>
-                            Изменить данные
+                            {t('editData')}
                         </Button>
                     ) : (
                         <Button className={styles.saveButton} onClick={handleSave}>
-                            Сохранить
+                            {t('save')}
                         </Button>
                     )}
                 </div>

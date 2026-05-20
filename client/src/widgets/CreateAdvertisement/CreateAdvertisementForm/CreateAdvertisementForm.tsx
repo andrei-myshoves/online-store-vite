@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
@@ -31,8 +32,10 @@ export const CreateAdvertisementForm = ({ loading = false, mode = 'create', erro
     const name = useAppSelector(selectCreateAdName)
     const description = useAppSelector(selectCreateAdDescription)
     const priceValue = useAppSelector(selectCreateAdPrice)
+    const { t } = useTranslation('advertisement')
 
     const price = Number(priceValue)
+    const isCreateMode = mode === 'create'
 
     const isDisabled = !name.trim() || !description.trim() || price <= 0 || loading
 
@@ -51,8 +54,8 @@ export const CreateAdvertisementForm = ({ loading = false, mode = 'create', erro
         <div className={styles.form}>
             <div className={styles.field}>
                 <Input
-                    label="Название"
-                    placeholder="Введите название"
+                    label={t('title')}
+                    placeholder={t('enterTitle')}
                     value={name}
                     onChange={e => dispatch(setName(e.target.value))}
                     disabled={loading}
@@ -60,10 +63,10 @@ export const CreateAdvertisementForm = ({ loading = false, mode = 'create', erro
             </div>
 
             <div className={styles.field}>
-                <label className={styles.label}>Описание</label>
+                <label className={styles.label}>{t('descriptionLabel')}</label>
                 <textarea
                     className={styles.textarea}
-                    placeholder="Введите описание"
+                    placeholder={t('enterDescription')}
                     value={description}
                     onChange={e => dispatch(setDescription(e.target.value))}
                     disabled={loading}
@@ -73,8 +76,8 @@ export const CreateAdvertisementForm = ({ loading = false, mode = 'create', erro
             <div className={styles.field}>
                 <div className={styles.inputWrapper}>
                     <Input
-                        label="Цена"
-                        placeholder="Введите цену"
+                        label={t('price')}
+                        placeholder={t('enterPrice')}
                         value={priceValue}
                         onChange={e => dispatch(setPrice(e.target.value))}
                         disabled={loading}
@@ -82,20 +85,14 @@ export const CreateAdvertisementForm = ({ loading = false, mode = 'create', erro
                     />
 
                     <div className={styles.icon}>
-                        <span className={styles.ruble}>₽</span>
+                        <span className={styles.ruble}>{t('priceCurrency')}</span>
                     </div>
                 </div>
             </div>
             {error && <div className={styles.error}>{error}</div>}
 
             <Button onClick={handleSubmit} disabled={isDisabled} className={styles.saveButton}>
-                {loading
-                    ? mode === 'create'
-                        ? 'Публикация...'
-                        : 'Сохранение...'
-                    : mode === 'create'
-                      ? 'Опубликовать'
-                      : 'Сохранить'}
+                {loading ? (isCreateMode ? t('publishing') : t('saving')) : isCreateMode ? t('publish') : t('save')}
             </Button>
         </div>
     )

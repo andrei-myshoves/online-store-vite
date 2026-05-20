@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import styles from './ImageUpload.module.css'
 import { AddFotoCreateAdverisementIcon } from '@/shared/ui/icons/AddFotoCreateAdvertisementIcon'
 import { Button } from '@/shared/ui/button'
@@ -10,6 +11,8 @@ export const ImageUpload = () => {
 
     const dispatch = useAppDispatch()
     const images = useAppSelector(state => state.createAdvertisement.images)
+
+    const { t } = useTranslation('advertisement')
 
     const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || [])
@@ -32,7 +35,7 @@ export const ImageUpload = () => {
 
     return (
         <div className={styles.wrapper}>
-            <p className={styles.label}>Фотографии товара (не более 5)</p>
+            <p className={styles.label}>{t('photos')}</p>
 
             <div className={styles.grid}>
                 {images.map((file, index) => (
@@ -45,7 +48,7 @@ export const ImageUpload = () => {
                             className={styles.remove}
                             onClick={() => handleRemove(index)}
                         >
-                            ✕
+                            <span>✕</span>
                         </Button>
                     </div>
                 ))}

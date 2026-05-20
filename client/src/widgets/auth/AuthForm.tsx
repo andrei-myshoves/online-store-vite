@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router'
 import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setEmail, setPassword, setUsername, setUser } from '@/store/reducers/auth/authSlice'
+import { useTranslation } from 'react-i18next'
 
 const AuthForm = () => {
     const [mode, setMode] = useState<'login' | 'register'>('login')
@@ -15,16 +16,19 @@ const AuthForm = () => {
     const email = useAppSelector(state => state.auth.email)
     const password = useAppSelector(state => state.auth.password)
     const username = useAppSelector(state => state.auth.username)
+    const { t } = useTranslation('auth')
+
+    const isLoginMode = mode === 'login'
 
     const handleModeChange = () => {
-        setMode(mode === 'login' ? 'register' : 'login')
+        setMode(isLoginMode ? 'register' : 'login')
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         try {
-            if (mode === 'login') {
+            if (isLoginMode) {
                 const { data } = await api.post('/auth/login', {
                     email,
                     password,
@@ -55,40 +59,40 @@ const AuthForm = () => {
             <div className={styles.fields}>
                 <Input
                     type="email"
-                    placeholder="Email"
+                    placeholder={t('email')}
                     value={email}
                     onChange={e => dispatch(setEmail(e.target.value))}
                 />
 
                 <Input
                     type="password"
-                    placeholder="Пароль"
+                    placeholder={t('password')}
                     value={password}
                     onChange={e => dispatch(setPassword(e.target.value))}
                 />
 
-                {mode === 'register' && (
+                {!isLoginMode && (
                     <>
-                        <Input type="password" placeholder="Повторите пароль" />
+                        <Input type="password" placeholder={t('repeatPassword')} />
                         <Input
                             type="text"
-                            placeholder="Username"
+                            placeholder={t('username')}
                             value={username}
                             onChange={e => dispatch(setUsername(e.target.value))}
                         />
-                        <Input type="text" placeholder="Фамилия (необязательно)" />
-                        <Input type="text" placeholder="Город (необязательно)" />
+                        <Input type="text" placeholder={t('surnameOptional')} />
+                        <Input type="text" placeholder={t('cityOptional')} />
                     </>
                 )}
             </div>
 
             <div className={styles.actions}>
                 <Button type="submit" variant="primary">
-                    {mode === 'login' ? 'Войти' : 'Зарегистрироваться'}
+                    {isLoginMode ? t('login') : t('register')}
                 </Button>
 
                 <Button type="button" variant="outline" onClick={handleModeChange}>
-                    {mode === 'login' ? 'Зарегистрироваться' : 'Войти'}
+                    {isLoginMode ? t('register') : t('login')}
                 </Button>
             </div>
         </form>

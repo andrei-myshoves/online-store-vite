@@ -3,6 +3,7 @@ import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import styles from './AdvertisementTopBar.module.css'
 import { useCatalogPageSearch } from '@/hooks/useCatalogPageSearch'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
     showBackButton?: boolean
@@ -19,6 +20,7 @@ export const AdvertisementTopBar = ({
 }: Props) => {
     const navigateCatalog = useCatalogPageSearch()
 
+    const { t } = useTranslation('common')
     const handleBack = () => {
         navigateCatalog()
     }
@@ -39,7 +41,7 @@ export const AdvertisementTopBar = ({
 
             {showBackButton && (
                 <Button onClick={handleBack} className={styles.backButton}>
-                    Вернуться на главную
+                    {t('backToHome')}
                 </Button>
             )}
         </div>

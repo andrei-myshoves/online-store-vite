@@ -1,5 +1,6 @@
 import { useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { AdvertisementTopBar } from '@/shared/ui/AdvertisementTopBar/AdvertisementTopBar'
 import { Button } from '@/shared/ui/button'
@@ -30,6 +31,7 @@ const SellerProfilePage = () => {
     const isAdvertisementsLoading = useAppSelector(selectSellerAdvertisementsLoading)
     const error = useAppSelector(selectSellerError)
     const navigateCatalog = useCatalogPageSearch()
+    const { t } = useTranslation('profile')
     const handleGoBack = () => {
         navigateCatalog()
     }
@@ -56,7 +58,7 @@ const SellerProfilePage = () => {
     }
 
     if (!profile) {
-        return <div className={styles.error}>Продавец не найден</div>
+        return <div className={styles.error}>{t('sellerNotFound')}</div>
     }
 
     return (
@@ -70,11 +72,11 @@ const SellerProfilePage = () => {
                     <LeftArrow width={12} height={20} />
                 </Button>
 
-                <div className={styles.mobileHeaderTitle}>Профиль продавца</div>
+                <div className={styles.mobileHeaderTitle}>{t('sellerProfile')}</div>
             </div>
 
             <div className={styles.container}>
-                <h1 className={styles.title}>Профиль продавца</h1>
+                <h1 className={styles.title}>{t('sellerProfile')}</h1>
 
                 <div className={styles.profileBlock}>
                     <div className={styles.avatar} />
@@ -82,12 +84,12 @@ const SellerProfilePage = () => {
                     <div className={styles.profileInfo}>
                         <div className={styles.name}>{profile.username}</div>
                         <div className={styles.city}>{profile.city}</div>
-                        <div className={styles.meta}>Продаёт товары с августа 2021</div>
+                        <div className={styles.meta}>{t('sellerSince')}</div>
                     </div>
 
-                    <Button className={styles.phoneButton}>Показать телефон</Button>
+                    <Button className={styles.phoneButton}>{t('showPhone')}</Button>
                 </div>
-                <h2 className={styles.productsTitle}>Товары продавца</h2>
+                <h2 className={styles.productsTitle}>{t('sellerProducts')}</h2>
 
                 <div className={styles.productsGrid}>
                     {isAdvertisementsLoading ? (
@@ -97,7 +99,7 @@ const SellerProfilePage = () => {
                     ) : advertisements.length > 0 ? (
                         advertisements.map(item => <AdvertisementCard key={item.id} item={item} />)
                     ) : (
-                        <div className={styles.empty}>У продавца пока нет товаров</div>
+                        <div className={styles.empty}>{t('emptyProducts')}</div>
                     )}{' '}
                 </div>
             </div>

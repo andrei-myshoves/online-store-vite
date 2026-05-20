@@ -11,6 +11,7 @@ import { fetchAdvertisementById, unpublishAdvertisementThunk } from '@/store/red
 import { selectAdvertisementData } from '@/store/reducers/selectors/advertisementSelectors'
 import { EditAdvertisementModal } from '@/widgets/EditAdvertisementModal/EditAdvertisementModal'
 import { selectCurrentUser } from '@/store/reducers/selectors/authSelectors'
+import { useTranslation } from 'react-i18next'
 
 const mockImages = [
     'https://picsum.photos/800/800?1',
@@ -19,12 +20,6 @@ const mockImages = [
     'https://picsum.photos/800/800?4',
     'https://picsum.photos/800/800?5',
 ]
-
-const formatReviewsCount = (count = 0) => {
-    if (count % 10 === 1 && count % 100 !== 11) return `${count} отзыв`
-    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return `${count} отзыва`
-    return `${count} отзывов`
-}
 
 const AdvertisementPage = () => {
     const params = useParams({ from: '/advertisement/$id' })
@@ -38,6 +33,8 @@ const AdvertisementPage = () => {
     const [imgSliderIndex, setImgSliderIndex] = useState(0)
     const [isReviewsOpen, setIsReviewsOpen] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
+
+    const { t } = useTranslation('advertisement')
 
     useEffect(() => {
         dispatch(fetchAdvertisementById(id))
@@ -76,7 +73,7 @@ const AdvertisementPage = () => {
     }
 
     if (isLoading) {
-        return <div className={styles.loader}>Загрузка...</div>
+        return <div className={styles.loader}>{t('loading')}</div>
     }
 
     if (error) {
@@ -84,7 +81,7 @@ const AdvertisementPage = () => {
     }
 
     if (!data) {
-        return <div className={styles.error}>Объявление не найдено</div>
+        return <div className={styles.error}>{t('notFound')}</div>
     }
 
     const isOwner = Number(currentUser?.id) === Number(data.userId)
@@ -119,15 +116,15 @@ const AdvertisementPage = () => {
                     <h1 className={styles.title}>{data.name}</h1>
 
                     <div className={styles.meta}>
-                        <span>Сегодня в 10:45</span>
-                        <span>Санкт-Петербург</span>
+                        <span>{t('todayAt')}</span>
+                        <span>{t('city')}</span>
 
                         <Button
                             variant="wrapper"
                             className={clsx(styles.reviewsButton, styles.mobileOnly)}
                             onClick={handleNavigateToReviews}
                         >
-                            {formatReviewsCount(data.reviewsCount)}
+                            {t('reviewsTitle', { count: data.reviewsCount })}
                         </Button>
 
                         <Button
@@ -135,40 +132,44 @@ const AdvertisementPage = () => {
                             className={clsx(styles.reviewsButton, styles.desktopOnly)}
                             onClick={handleOpenModal}
                         >
-                            {formatReviewsCount(data.reviewsCount)}
+                            {t('reviewsTitle', { count: data.reviewsCount })}
                         </Button>
                     </div>
 
-                    <div className={styles.price}>{data.price.toLocaleString()} ₽</div>
+                    <div className={styles.price}>
+                        {data.price.toLocaleString()} {t('priceCurrency')}
+                    </div>
 
                     {isOwner ? (
                         <div className={styles.ownerActions}>
                             <Button className={styles.editButton} variant="primary" onClick={() => setIsEditOpen(true)}>
-                                Редактировать
+                                {t('edit')}
                             </Button>
                             <Button className={styles.unpublishButton} variant="primary" onClick={handleUnpublish}>
-                                Снять с публикации
+                                {t('unpublish')}
                             </Button>
                         </div>
                     ) : (
-                        <Button className={styles.phoneButton}>Показать телефон</Button>
+                        <Button className={styles.phoneButton}>{t('showPhone')}</Button>
                     )}
 
                     <div className={styles.seller}>
                         <div className={styles.avatar} />
                         <div>
                             <Button variant="wrapper" className={styles.sellerButton} onClick={handleNavigateToSeller}>
-                                <div className={styles.sellerName}>Кирилл</div>
+                                <div className={styles.sellerName}>{t('sellerName')}</div>
                             </Button>
-                            <div className={styles.sellerMeta}>Продаёт товары с августа 2021</div>
+
+                            <div className={styles.sellerMeta}>{t('sellerSince')}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className={styles.descriptionBlock}>
-                <h2 className={styles.descriptionTitle}>Описание товара</h2>
-                <p className={styles.description}>{data.description || 'Описание отсутствует'}</p>
+                <h2 className={styles.descriptionTitle}>{t('description')}</h2>
+
+                <p className={styles.description}>{data.description || t('emptyDescription')}</p>
             </div>
 
             {isReviewsOpen && (

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import styles from './Footer.module.css'
 import { Button } from '@/shared/ui/button'
 
@@ -18,6 +20,7 @@ export const Footer = () => {
     const navigateCatalog = useCatalogPageSearch()
     const user = useAppSelector(selectCurrentUser)
 
+    const { t } = useTranslation('common')
     const handleGoHome = () => {
         navigateCatalog()
     }
@@ -36,15 +39,15 @@ export const Footer = () => {
 
     return (
         <footer className={styles.footer}>
-            <Button variant="wrapper" aria-label="Главная" onClick={handleGoHome}>
+            <Button variant="wrapper" aria-label={t('home')} onClick={handleGoHome}>
                 <HomeIcon width={30} height={25} />
             </Button>
 
-            <Button variant="wrapper" aria-label="Добавить" onClick={handleAddClick}>
+            <Button variant="wrapper" aria-label={t('add')} onClick={handleAddClick}>
                 <PlusIcon width={42} height={42} />
             </Button>
 
-            <Button variant="wrapper" aria-label="Профиль" onClick={handleProfileClick}>
+            <Button variant="wrapper" aria-label={t('profile')} onClick={handleProfileClick}>
                 <UserIcon width={27} height={27} />
             </Button>
         </footer>

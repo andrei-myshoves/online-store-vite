@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { api } from '@/shared/api/api'
+import axios from 'axios'
 
 export const fetchSellerProfile = createAsyncThunk(
     'seller/fetchProfile',
@@ -7,8 +8,12 @@ export const fetchSellerProfile = createAsyncThunk(
         try {
             const response = await api.get(`/seller/${sellerId}`)
             return response.data
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки профиля')
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки профиля')
+            }
+
+            return rejectWithValue('Ошибка загрузки профиля')
         }
     }
 )
@@ -29,8 +34,12 @@ export const fetchSellerAdvertisements = createAsyncThunk(
                 total: response.data.total,
                 page,
             }
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки объявлений')
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки объявлений')
+            }
+
+            return rejectWithValue('Ошибка загрузки объявлений')
         }
     }
 )

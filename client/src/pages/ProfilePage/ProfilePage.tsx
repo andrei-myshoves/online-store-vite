@@ -6,6 +6,7 @@ import { fetchProfile } from '@/store/reducers/profile/profileThunks'
 import { selectProfile, selectProfileLoading, selectProfileError } from '@/store/reducers/selectors/profileSelectors'
 import styles from './ProfilePage.module.css'
 import { ProfileAdvertisements } from '@/widgets/ProfileAdvertisements/ProfileAdvertisements'
+import { useTranslation } from 'react-i18next'
 
 const ProfilePage = () => {
     const dispatch = useAppDispatch()
@@ -13,13 +14,14 @@ const ProfilePage = () => {
     const profile = useAppSelector(selectProfile)
     const isLoading = useAppSelector(selectProfileLoading)
     const error = useAppSelector(selectProfileError)
+    const { t } = useTranslation('profile')
 
     useEffect(() => {
         dispatch(fetchProfile())
     }, [dispatch])
 
     if (isLoading) {
-        return <div>Загрузка профиля...</div>
+        return <div>{t('loadingProfile')}</div>
     }
 
     if (error) {

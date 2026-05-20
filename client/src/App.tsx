@@ -3,6 +3,7 @@ import { router } from '@/app/router/router'
 import { Provider } from 'react-redux'
 import { setupStore } from '@/store/store'
 import { setUser } from '@/store/reducers/auth/authSlice'
+import '@/shared/i18n/i18n'
 
 const store = setupStore()
 

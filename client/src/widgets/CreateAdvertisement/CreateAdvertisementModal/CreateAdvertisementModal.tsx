@@ -14,6 +14,7 @@ import { CloseIcon } from '@/shared/ui/icons/CloseIcon'
 import { LeftArrow } from '@/shared/ui/icons/LeftArrow'
 import { Button } from '@/shared/ui/button'
 import type { CreateAdFormData } from '@/widgets/CreateAdvertisement/CreateAdvertisementForm/CreateAdvertisementForm'
+import { useTranslation } from 'react-i18next'
 
 const CreateAdvertisementModal = () => {
     const dispatch = useAppDispatch()
@@ -23,6 +24,8 @@ const CreateAdvertisementModal = () => {
     const loading = useAppSelector(selectCreateAdLoading)
     const error = useAppSelector(selectCreateAdError)
     const isOpen = useAppSelector(selectCreateAdIsModalOpen)
+
+    const { t } = useTranslation('advertisement')
 
     const handleSubmit = async (data: CreateAdFormData) => {
         const onlyFiles = data.images.filter((img): img is File => img instanceof File)
@@ -54,7 +57,7 @@ const CreateAdvertisementModal = () => {
                         <LeftArrow width={16} height={16} />
                     </Button>
 
-                    <h2 className={styles.title}>Новое объявление</h2>
+                    <h2 className={styles.title}>{t('newAdvertisement')}</h2>
 
                     <Button variant="wrapper" className={styles.closeButton} onClick={() => dispatch(closeModal())}>
                         <CloseIcon width={30} height={30} />
