@@ -25,7 +25,6 @@ export default defineConfig([
 
         rules: {
             'storybook/no-renderer-packages': 'off',
-            'i18next/no-literal-string': 'off',
             'i18next/no-literal-string': [
                 'warn',
                 {
